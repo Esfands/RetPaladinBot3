@@ -2,11 +2,13 @@ import fs from "fs";
 import path from "path";
 import { Userstate } from "tmi.js";
 import * as globalemotes from "../../datasets/global_emotes.json";
+import { getEmotes } from "../../utils/emotes";
 
 var twitchEmotes: Array<Buffer> = [];
 var emoteString: RegExp;
 
 async function fetchAllEmotes() {
+  await getEmotes();
   var thirdParty = fs.readFileSync(path.join(__dirname, '../../datasets/emotes.json'));
   var global = fs.readFileSync(path.join(__dirname, '../../datasets/global_emotes.json'));
 

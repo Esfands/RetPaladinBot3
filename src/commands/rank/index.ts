@@ -10,7 +10,7 @@ export = {
   dynamicDescription: [
     "<code>!rank</code>"
   ],
-  testing: false,
+  testing: true,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];

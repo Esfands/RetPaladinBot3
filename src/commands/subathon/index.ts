@@ -18,7 +18,6 @@ export = {
     tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
 
     var currFollowers = await getFollowers("esfandtv");
-    console.log(currFollowers)
     var goalFollowers = 1000000 - currFollowers;
     var response = (goalFollowers >= 1000000) ? `Pause 👉 ${goalFollowers.toLocaleString()} followers away from an uncapped subathon.` : `Esfand's at ${currFollowers.toLocaleString('en-US')} followers, he'll start the subathon towards the end of this month FeelsLateMan`;
     client.action(channel, `@${tagged} ${response}`);
