@@ -71,12 +71,10 @@ export async function checkEmoteStreak(message: string, user: Userstate["usernam
     // emote streak broken
     if (test[0] !== emoteStreak.emote) {
       broken = emoteStreakBroken(user, { emote: emoteStreak.emote, count: emoteStreak.count });
-      console.log(emoteStreak)
       emoteStreak.emote = test[0]!;
       emoteStreak.count = 1;
     } else {
       // Continued the streak
-      console.log(emoteStreak)
       emoteStreak.emote = test[0];
       emoteStreak.count++;
     }

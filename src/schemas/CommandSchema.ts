@@ -30,4 +30,4 @@ let CommandSchema = new Schema({
   path: String
 })
 
-export const Command: Model<ICommand | null> = model(`normalcommands`, CommandSchema);
+export const Command: Model<ICommand | null> = model(`commands`, CommandSchema);
