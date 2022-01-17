@@ -21,7 +21,7 @@ const rank: CommandInt = {
 
     let query = await axios({
       method: "GET",
-      url: "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/tVcXlTGiJle6Bjpy3n53bIR3PqNt9ksrfrwdLpmYpmjlozk?api_key=RGAPI-cbf8843c-8c94-4535-ae15-a5ebdcb70614",
+      url: `https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/tVcXlTGiJle6Bjpy3n53bIR3PqNt9ksrfrwdLpmYpmjlozk?api_key=${config.apiKeys.riot}`,
     });
 
     let res = query.data[0];
