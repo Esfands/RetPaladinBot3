@@ -3,7 +3,7 @@ import { Command, ICommand } from "../../schemas/CommandSchema";
 export = {
   name: "help",
   aliases: ["about", "commands"],
-  permissions: ["developer"],
+  permissions: [],
   globalCooldown: 10,
   cooldown: 30,
   description: "Get the URL for the documentation site.",
