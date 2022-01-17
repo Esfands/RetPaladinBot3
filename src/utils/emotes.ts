@@ -1,7 +1,7 @@
 import { addStr, fetchAPI } from ".";
 import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
-var emoteFile = require("../datasets/emotes.json");
+import * as emoteFile from "../datasets/emotes.json";
 
 export function otfResponseEmote(response: string, toTag: string | null) {
   // ${user} 2017(?) Nissan Maxima $e{WICKED, PagMan}
