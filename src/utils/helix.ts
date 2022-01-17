@@ -30,8 +30,8 @@ export async function getStream(user: string | number) {
 }
 
 export async function getStreamData(username: string | number): Promise<any> {
-  let id = await getUser(username);
-  return await getStream(id);
+  var id = await getUser(username);
+  return await getStream(id["data"][0]["id"]); 
 }
 
 export async function isFollowingUser(streamer: string, user: string) {

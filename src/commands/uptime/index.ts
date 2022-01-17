@@ -22,7 +22,7 @@ export = {
 
     try {
       var streamData = await getStreamData("esfandtv");
-      var startTime = await streamData["started_at"];
+      var startTime = await streamData["data"][0]["started_at"];
       if (typeof startTime === "undefined") return client.say(channel, `@${tagged} stream is offline currently Sadge`);
 
       var elapsed = timeDifference(new Date(), new Date(startTime), false);
