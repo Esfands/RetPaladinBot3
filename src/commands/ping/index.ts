@@ -1,6 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { secondsToHms } from "../../utils";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const ping: CommandInt = {
   name: "ping",
   aliases: [],
   permissions: [],
@@ -12,8 +13,8 @@ export = {
   ],
   testing: false,
   offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: []) => {
-    var uptime = process.uptime();
+  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: any[]) => {
+    let uptime = process.uptime();
 
     await client.ping().then(function (data) {
       let ping: number = Math.floor(Math.round(data as any * 1000));
@@ -21,3 +22,5 @@ export = {
     });
   }
 }
+
+export = ping;

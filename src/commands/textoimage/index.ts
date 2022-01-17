@@ -2,7 +2,8 @@ import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
 import { shortenURL } from "../../utils";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const textoimage: CommandInt = {
   name: "texttoimage",
   aliases: ["tti"],
   permissions: [],
@@ -19,7 +20,7 @@ export = {
     const message = context.join(" ");
     const user = userstate["display-name"];
 
-    var headers = {
+    let headers = {
       "Api-Key": config.apiKeys.deep_api,
       "text": message
     }
@@ -33,3 +34,5 @@ export = {
     client.action(channel, `@${user} monkaLaugh 👍 ${await shortenURL(response.data.output_url)}`);
   }
 }
+
+export = textoimage;

@@ -1,7 +1,8 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { applyFont } from "../../utils";
 import { bold, fancy, fancyBold, outline } from "../../utils/data";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const font: CommandInt = {
   name: "font",
   aliases: [],
   permissions: [],
@@ -28,11 +29,11 @@ export = {
   testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
-    var askedFont = context[0].toLowerCase();
+    let askedFont = context[0].toLowerCase();
 
     function getTranslated() {
       context.shift();
-      var message = context.join(" ").toLowerCase();
+      let message = context.join(" ").toLowerCase();
       return message;
     }
 
@@ -51,3 +52,5 @@ export = {
     } else client.say(channel, `@${userstate["display-name"]} incorrect syntax: !font (fancy, fancybold, outline, bold) (message)`);
   }
 }
+
+export = font;

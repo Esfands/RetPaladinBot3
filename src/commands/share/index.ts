@@ -1,6 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { CommandInt } from "../../validation/CommandSchema";
 
-export = {
+const share: CommandInt = {
   name: "share",
   aliases: ["broadcast"],
   permissions: ["broadcaster", "moderator"],
@@ -16,17 +17,17 @@ export = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     // $share (how many times to spam) (delay in seconds (optional)) (message)
-    var shareCount = parseInt(context[0], 10);
-    var defaultTO = 300;
+    let shareCount = parseInt(context[0], 10);
+    let defaultTO = 300;
 
     // means delay has been added
-    var conNum = parseInt(context[1]);
-    var isDelay: any = (Number(conNum)) ? conNum * 500 : defaultTO;
+    let conNum = parseInt(context[1]);
+    let isDelay: any = (Number(conNum)) ? conNum * 500 : defaultTO;
     if (context[1].toLowerCase() === "volt") isDelay = 0.01;
 
     if (shareCount > 80) return client.action(channel, `@${userstate["display-name"]} anything over 80 times the purple snakes will get me monkaOMEGA`);
 
-    var message: string | null = null;
+    let message: string | null = null;
     if (isDelay === defaultTO) {
       context.splice(0, 1)
       message = context.join(" ");
@@ -35,8 +36,8 @@ export = {
       message = context.join(" ");
     }
 
-    var stepCount = 1;
-    var shareLinkId = setInterval(function () {
+    let stepCount = 1;
+    let shareLinkId = setInterval(function () {
       if (stepCount === shareCount) {
         clearInterval(shareLinkId);
       }
@@ -45,3 +46,5 @@ export = {
     }, isDelay);
   }
 }
+
+export = share;

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
+import { CommandInt } from "../../validation/CommandSchema";
 
-export = {
+const numbers: CommandInt = {
   name: "numbers",
   aliases: [],
   permissions: [],
@@ -21,8 +22,8 @@ export = {
     const type = context[0];
     const numSearch = context[1];
 
-    var typeRegex = /(trivia|math|date|year|random)/gi
-    var tested = typeRegex.exec(type);
+    let typeRegex = /(trivia|math|date|year|random)/gi
+    let tested = typeRegex.exec(type);
 
     if (type) {
       if (tested) {
@@ -30,7 +31,7 @@ export = {
           if (numSearch === "year" || numSearch === "date") {
           } else client.action(channel, `@${userstate["display-name"]} incorrect syntax: !numbers random (date/year)`);
         }
-        var URL = (tested["input"] === "random") ? `http://numbersapi.com/${type}/${numSearch}` : `http://numbersapi.com/${numSearch}/${type}`;
+        let URL = (tested["input"] === "random") ? `http://numbersapi.com/${type}/${numSearch}` : `http://numbersapi.com/${numSearch}/${type}`;
         const response = await axios.get(URL);
         const body = await response.data;
         client.action(channel, `@${userstate["display-name"]} ${body}`);
@@ -39,3 +40,5 @@ export = {
     } else client.action(channel, `@${userstate["display-name"]} incorrect syntax: !numbers (trivia, math, date, year) (number or date(month/day)) `)
   }
 }
+
+export = numbers;

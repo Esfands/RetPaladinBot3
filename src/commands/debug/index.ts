@@ -1,8 +1,9 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { getEmotes } from "../../utils/emotes";
 import { getEventSubs } from "../../utils/EventSub";
+import { CommandInt } from "../../validation/CommandSchema";
 
-export = {
+const debug: CommandInt = {
   name: "debug",
   aliases: ["developer"],
   permissions: [],
@@ -28,8 +29,10 @@ export = {
       client.action(channel, `${context.join(' ')}`);
 
     } else if (context[0] === "eventsub") {
-      var eventSub = await getEventSubs();
+      let eventSub = await getEventSubs();
       console.log(eventSub["data"]);
     }
   }
 }
+
+export = debug;

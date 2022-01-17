@@ -1,5 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const roles: CommandInt = {
   name: "roles",
   aliases: [],
   permissions: [],
@@ -16,10 +17,12 @@ export = {
   testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
-    var target = (context[0]) ? `@${context[0]}` : `@${userstate["username"]}`;
-    var link = `https://twitchdatabase.com/roles/${target.substring(1)}`;
+    let target = (context[0]) ? `@${context[0]}` : `@${userstate["username"]}`;
+    let link = `https://twitchdatabase.com/roles/${target.substring(1)}`;
 
-    var response = (userstate["username"] === target.substring(1)) ? `here are your roles: ${link}` : `here are ${target}'s roles: ${link}`;
+    let response = (userstate["username"] === target.substring(1)) ? `here are your roles: ${link}` : `here are ${target}'s roles: ${link}`;
     client.action(channel, `@${userstate["display-name"]} ${response}`);
   }
 }
+
+export = roles;

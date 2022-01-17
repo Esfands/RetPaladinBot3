@@ -1,8 +1,9 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { getStreamData } from "../../utils/helix";
 import { timeDifference } from "../../utils";
+import { CommandInt } from "../../validation/CommandSchema";
 
-export = {
+const uptime: CommandInt = {
   name: "uptime",
   aliases: [],
   permissions: [],
@@ -17,18 +18,20 @@ export = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
-    var tagged = (context[0]) ? context[0] : user; // Might need to change.
+    let tagged = (context[0]) ? context[0] : user; // Might need to change.
     tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
 
     try {
-      var streamData = await getStreamData("esfandtv");
-      var startTime = await streamData["data"][0]["started_at"];
+      let streamData = await getStreamData("esfandtv");
+      let startTime = await streamData["data"][0]["started_at"];
       if (typeof startTime === "undefined") return client.say(channel, `@${tagged} stream is offline currently Sadge`);
 
-      var elapsed = timeDifference(new Date(), new Date(startTime), false);
+      let elapsed = timeDifference(new Date(), new Date(startTime), false);
       client.say(channel, `@${tagged} Esfand has been streaming for ${elapsed}`)
     } catch (error) {
       client.say(channel, `@${tagged} stream is offline currently Sadge`);
     }
   }
 }
+
+export = uptime;

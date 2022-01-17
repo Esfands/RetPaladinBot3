@@ -1,5 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const time: CommandInt = {
   name: "time",
   aliases: [],
   permissions: [],
@@ -14,15 +15,17 @@ export = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
-    var tagged = (context[0]) ? context[0] : user;
+    let tagged = (context[0]) ? context[0] : user;
     tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
-    var response = null;
+    let response = null;
 
-    var date = new Date();
-    var cst = date.toLocaleString("en-US", { timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true });
-    var mil = date.toLocaleString("en-US", { timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: false });
+    let date = new Date();
+    let cst = date.toLocaleString("en-US", { timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true });
+    let mil = date.toLocaleString("en-US", { timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: false });
     response = `Esfand's local time is ${cst} CST KKona (${mil})`;
 
     client.action(channel, `@${tagged} ${response}`);
   }
 }
+
+export = time;

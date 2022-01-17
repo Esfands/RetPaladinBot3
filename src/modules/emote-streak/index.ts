@@ -4,16 +4,16 @@ import { Userstate } from "tmi.js";
 import * as globalemotes from "../../datasets/global_emotes.json";
 import { getEmotes } from "../../utils/emotes";
 
-var twitchEmotes: Array<Buffer> = [];
-var emoteString: RegExp;
+let twitchEmotes: Array<Buffer> = [];
+let emoteString: RegExp;
 
 async function fetchAllEmotes() {
   await getEmotes();
-  var thirdParty = fs.readFileSync(path.join(__dirname, '../../datasets/emotes.json'));
-  var global = fs.readFileSync(path.join(__dirname, '../../datasets/global_emotes.json'));
+  let thirdParty = fs.readFileSync(path.join(__dirname, '../../datasets/emotes.json'));
+  let global = fs.readFileSync(path.join(__dirname, '../../datasets/global_emotes.json'));
 
-  var thirdPartyArr = JSON.parse(thirdParty.toString());
-  var globalArr = JSON.parse(global.toString());
+  let thirdPartyArr = JSON.parse(thirdParty.toString());
+  let globalArr = JSON.parse(global.toString());
 
   twitchEmotes = thirdPartyArr.concat(globalArr);
   emoteString = new RegExp(twitchEmotes.join("|"));
@@ -37,38 +37,38 @@ function isBetween(number: number, start: number, end: number) {
 }
 
 function emoteStreakBroken(user: string, emoteStreak: EmoteStreak) {
-  var count = emoteStreak.count;
-  var emote = emoteStreak.emote;
-  var response: string = "";
+  let count = emoteStreak.count;
+  let emote = emoteStreak.emote;
+  let response: string = "";
 
-  var triggers = Object.keys(streakOptions);
+  let triggers = Object.keys(streakOptions);
   triggers.forEach((trig, index) => {
     if (isBetween(count, parseInt(triggers[index]), parseInt(triggers[index+1]))) response = streakOptions[triggers[index]];
   });
 
-  var emoteTag = RegExp("({emote})", 'gmi');
-  var countTag = RegExp("({count})", 'gmi');
-  var userTag = RegExp("({user})", 'gmi');
+  let emoteTag = RegExp("({emote})", 'gmi');
+  let countTag = RegExp("({count})", 'gmi');
+  let userTag = RegExp("({user})", 'gmi');
 
   // Clueless surely this this the best way to do this.
   if (emoteTag.test(response)) {
-    var newRes = response.replace(emoteTag, emote);
+    let newRes = response.replace(emoteTag, emote);
     if (countTag.test(newRes)) {
-      var newRes2 = newRes.replace(countTag, count);
+      let newRes2 = newRes.replace(countTag, count);
       if (userTag.test(newRes2)) {
-        var newRes3 = newRes2.replace(userTag, user);
+        let newRes3 = newRes2.replace(userTag, user);
         return newRes3;
       } else return newRes2;
     } else return newRes;
   }
 }
 
-var emoteStreak: EmoteStreak = { emote: null, count: 0 };
+let emoteStreak: EmoteStreak = { emote: null, count: 0 };
 export async function checkEmoteStreak(message: string, user: Userstate["username"]) {
   if (twitchEmotes.length === 0) await fetchAllEmotes();
 
-  var test = emoteString.exec(message);
-  var broken;
+  let test = emoteString.exec(message);
+  let broken;
   if (test) {
     // emote streak broken
     if (test[0] !== emoteStreak.emote) {

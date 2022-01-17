@@ -1,6 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { CommandInt } from "../../validation/CommandSchema";
 import { checkLoop, createLoop, listLoops, removeLoop, toggleLoop, updateLoop } from "./loopcommand";
-export = {
+const loopcommand: CommandInt = {
   name: "loopcommand",
   aliases: ["loopcmd"],
   permissions: ["trusted"],
@@ -36,32 +37,34 @@ export = {
       if (command === "create" || command === "add") {
         // Check if title and time are present
         if (context[1]) {
-          var creation = await createLoop(context[1], context, client, channel);
+          let creation = await createLoop(context[1], context, client, channel);
           client.action(channel, `@${display} ${creation}`);
         }
 
       } else if (command === "list") {
-        var list = await listLoops();
+        let list = await listLoops();
         if (list.length === 0) return client.action(channel, `@${display} no jobs are running currently.`);
         client.action(channel, `@${display} ${list}`);
 
       } else if (command === "check") {
-        var checked = await checkLoop(context[1]);
+        let checked = await checkLoop(context[1]);
         client.action(channel, `@${display} ${checked}`);
 
       } else if (command === "remove" || command === "delete") {
-        var removed = await removeLoop(context[1]);
+        let removed = await removeLoop(context[1]);
         client.action(channel, `@${display} ${removed}`);
 
       } else if (command === "toggle") {
-        var toggled = await toggleLoop(context[1], client, channel);
+        let toggled = await toggleLoop(context[1], client, channel);
         client.action(channel, `@${display} ${toggled}`);
 
       } else if (command === "edit" || command === "update") {
         // =loopcmd edit (name) (name, pattern, response) (whatever)
-        var updated = await updateLoop(context, client, channel);
+        let updated = await updateLoop(context, client, channel);
         client.action(channel, `@${display} ${updated}`);
       }
     } else client.action(channel, `Incorrect syntax`);
   }
 }
+
+export = loopcommand;

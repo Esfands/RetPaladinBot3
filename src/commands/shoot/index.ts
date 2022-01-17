@@ -1,5 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const shoot: CommandInt = {
   name: "shoot",
   aliases: [],
   permissions: [],
@@ -24,3 +25,5 @@ export = {
       })
   }
 }
+
+export = shoot;

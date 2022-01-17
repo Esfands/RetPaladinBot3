@@ -1,6 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { CommandInt } from "../../validation/CommandSchema";
 import { checkRoundsNumber, createWSTGame, startWSTGame, stopWSTGame } from "./whosaidthat";
-export = {
+const whosaidthat: CommandInt = {
   name: "whosaidthat",
   aliases: ["wst"],
   permissions: [],
@@ -30,25 +31,25 @@ export = {
 
     console.log('hello?')
 
-    var gameData = {}
+    let gameData = {}
     if (command) {
       if (command === "create") {
         // If they provide a number for a round set it to that otherwise the default is one
-        var gameRounds = (context[1]) ? await checkRoundsNumber(parseInt(context[1])) : await checkRoundsNumber(1); 
+        let gameRounds = (context[1]) ? await checkRoundsNumber(parseInt(context[1])) : await checkRoundsNumber(1); 
         if (typeof gameRounds === "number") {
           if (gameRounds <= 0) return client.action(channel, `[WST?] ${gameMaster} game can't be created with "${gameRounds}" rounds.`);
-          var createGame = await createWSTGame(userstate["username"], gameRounds, client, channel);
+          let createGame = await createWSTGame(userstate["username"], gameRounds, client, channel);
           if (createGame) {
             client.action(channel, `[WST? - ${gameRounds} rounds] A game has been created by ${gameMaster}! Type "!join" to join in and ${gameMaster} will type "!wst start" to begin the game.`);
           } else return client.action(channel, `[WST?] ${gameMaster} a game has already started.`);
         } else return client.action(channel, `[WST?] ${gameMaster} ${gameRounds}`)
 
       } else if (command === "start") {
-        var startedGame = await startWSTGame(userstate["username"], client, channel);
+        let startedGame = await startWSTGame(userstate["username"], client, channel);
         client.action(channel, `[WST?] ${startedGame}`);
 
       } else if (command === "stop") {
-        var gameStop = await stopWSTGame(userstate);
+        let gameStop = await stopWSTGame(userstate);
         client.action(channel, `[WST?] @${gameMaster} ${gameStop}`);
 
       } else if (command === "about") {
@@ -59,3 +60,5 @@ export = {
     }
   }
 }
+
+export = whosaidthat;

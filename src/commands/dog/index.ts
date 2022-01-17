@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import { shortenURL } from "../../utils";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const dog: CommandInt = {
   name: 'dog',
   aliases: ['doggo'],
   permissions: [],
@@ -22,3 +23,5 @@ export = {
     });
   }
 }
+
+export = dog;

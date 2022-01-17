@@ -6,7 +6,7 @@ import { Command } from "../schemas/CommandSchema";
 import { OTFCommand } from "../schemas/OTFSchema";
 
 export function checkObjectTypes(object: object): string {
-  var types: string[] = [];
+  let types: string[] = [];
 
   Object.entries(object).forEach(entry => {
     const [key, value] = entry;
@@ -24,9 +24,9 @@ export function checkObjectTypes(object: object): string {
  */
 import { colors } from "./data";
 export function colorLog(color: string, message: string, options: string): string {
-  var toSend;
+  let toSend;
   if (!message) toSend = "[WARNING] Please provide a message.";
-  var hasOptions = (options in colors) ? colors[options] : "";
+  let hasOptions = (options in colors) ? colors[options] : "";
   if (color) {
     if (color in colors) {
       toSend = colors[color] + hasOptions + message + colors.reset;
@@ -39,60 +39,60 @@ export function colorLog(color: string, message: string, options: string): strin
 
 export function secondsToHms(d: number): string {
   d = Number(d);
-  var h = Math.floor(d / 3600);
-  var m = Math.floor(d % 3600 / 60);
-  var s = Math.floor(d % 3600 % 60);
-  var hDisplay = h > 0 ? h + (h == 1 ? " hr" : " hrs") + (m > 0 || s > 0 ? ", " : "") : "";
-  var mDisplay = m > 0 ? m + (m == 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
-  var sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
+  let h = Math.floor(d / 3600);
+  let m = Math.floor(d % 3600 / 60);
+  let s = Math.floor(d % 3600 % 60);
+  let hDisplay = h > 0 ? h + (h == 1 ? " hr" : " hrs") + (m > 0 || s > 0 ? ", " : "") : "";
+  let mDisplay = m > 0 ? m + (m == 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
+  let sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
   return hDisplay + mDisplay + sDisplay;
 }
 
 export function timeDifference(date1: Date, date2: Date, includeSeconds: boolean): string {
-  var difference = date1.getTime() - date2.getTime();
+  let difference = date1.getTime() - date2.getTime();
 
-  var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
+  let daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
   difference -= daysDifference * 1000 * 60 * 60 * 24
 
-  var hoursDifference = Math.floor(difference / 1000 / 60 / 60);
+  let hoursDifference = Math.floor(difference / 1000 / 60 / 60);
   difference -= hoursDifference * 1000 * 60 * 60
 
-  var minutesDifference = Math.floor(difference / 1000 / 60);
+  let minutesDifference = Math.floor(difference / 1000 / 60);
   difference -= minutesDifference * 1000 * 60
 
-  var secondsDifference = Math.floor(difference / 1000);
+  let secondsDifference = Math.floor(difference / 1000);
 
-  var daysStr = (daysDifference > 0) ? daysDifference + " days " : "";
-  var hourStr = (hoursDifference > 0) ? hoursDifference + " hours " : "";
-  var minuteStr = (minutesDifference > 0) ? minutesDifference + " mins " : "";
-  var secondStr = (secondsDifference > 0) ? secondsDifference + " secs" : "";
+  let daysStr = (daysDifference > 0) ? daysDifference + " days " : "";
+  let hourStr = (hoursDifference > 0) ? hoursDifference + " hours " : "";
+  let minuteStr = (minutesDifference > 0) ? minutesDifference + " mins " : "";
+  let secondStr = (secondsDifference > 0) ? secondsDifference + " secs" : "";
 
-  var toReturn = (includeSeconds) ? daysStr + hourStr + minuteStr + secondStr : daysStr + hourStr + minuteStr;
+  let toReturn = (includeSeconds) ? daysStr + hourStr + minuteStr + secondStr : daysStr + hourStr + minuteStr;
   return toReturn;
 }
 
 export function dateDiff(startingDate: Date | string, endingDate: Date | string) {
-  var startDate = new Date(new Date(startingDate).toISOString().substr(0, 10));
+  let startDate = new Date(new Date(startingDate).toISOString().substr(0, 10));
   if (!endingDate) {
     endingDate = new Date().toISOString().substr(0, 10).toString();    // need date in YYYY-MM-DD format
   }
-  var endDate = new Date(endingDate);
+  let endDate = new Date(endingDate);
   if (startDate > endDate) {
-    var swap = startDate;
+    let swap = startDate;
     startDate = endDate;
     endDate = swap;
   }
-  var startYear = startDate.getFullYear();
-  var february = (startYear % 4 === 0 && startYear % 100 !== 0) || startYear % 400 === 0 ? 29 : 28;
-  var daysInMonth = [31, february, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  let startYear = startDate.getFullYear();
+  let february = (startYear % 4 === 0 && startYear % 100 !== 0) || startYear % 400 === 0 ? 29 : 28;
+  let daysInMonth = [31, february, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-  var yearDiff = endDate.getFullYear() - startYear;
-  var monthDiff = endDate.getMonth() - startDate.getMonth();
+  let yearDiff = endDate.getFullYear() - startYear;
+  let monthDiff = endDate.getMonth() - startDate.getMonth();
   if (monthDiff < 0) {
     yearDiff--;
     monthDiff += 12;
   }
-  var dayDiff = endDate.getDate() - startDate.getDate();
+  let dayDiff = endDate.getDate() - startDate.getDate();
   if (dayDiff < 0) {
     if (monthDiff > 0) {
       monthDiff--;
@@ -103,9 +103,9 @@ export function dateDiff(startingDate: Date | string, endingDate: Date | string)
     dayDiff += daysInMonth[startDate.getMonth()];
   }
 
-  var yearStr = (yearDiff > 0) ? yearDiff + " years " : "";
-  var monthStr = (monthDiff > 0) ? monthDiff + " months " : "";
-  var dayStr = (dayDiff > 0) ? dayDiff + " days" : "";
+  let yearStr = (yearDiff > 0) ? yearDiff + " years " : "";
+  let monthStr = (monthDiff > 0) ? monthDiff + " months " : "";
+  let dayStr = (dayDiff > 0) ? dayDiff + " days" : "";
 
   return yearStr + monthStr + dayStr;
 }
@@ -142,7 +142,7 @@ export function commandUsed(type: string, command: string) {
  */
 export async function shortenURL(url: string) {
   try {
-    var request = await axios.post("https://gotiny.cc/api", { input: url })
+    let request = await axios.post("https://gotiny.cc/api", { input: url })
     return await `https://gotiny.cc/${request.data[0]["code"]}`;
   } catch (error) {
     return null;
@@ -154,21 +154,21 @@ export async function shortenURL(url: string) {
  * @param {FormData} data 
  * @returns {string} Imgur link
  */
-var FormData = require("form-data");
+let FormData = require("form-data");
 export async function postToImgur(data: FormData) {
-  var myData = new FormData();
+  let myData = new FormData();
   myData.append("image", data);
 
-  var authConfig = {
+  let authConfig = {
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
       Authorization: `Bearer ${config.apiKeys.imgur}`
     }
   }
 
-  var response = await axios.post("https://api.imgur.com/3/image", myData, authConfig);
-  var res = await response.data;
-  var link = res["data"]["link"];
+  let response = await axios.post("https://api.imgur.com/3/image", myData, authConfig);
+  let res = await response.data;
+  let link = res["data"]["link"];
   link = link.substring(0, link.lastIndexOf("."))
 
   return link;
@@ -216,7 +216,7 @@ export function applyFont(message: string, font: any) {
 export const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 export async function updateOrCreateChatter(userstate: CommonUserstate) {
-  var query = await Chatter.findOne({ tid: userstate["user-id"] });
+  let query = await Chatter.findOne({ tid: userstate["user-id"] });
   if (!query) {
     await new Chatter({
       tid: userstate["user-id"],
@@ -230,10 +230,10 @@ export async function updateOrCreateChatter(userstate: CommonUserstate) {
 
 // minutes to hours and mins
 export function minsToHours(n: number) {
-  var num = n;
-  var hours = (num / 60);
-  var rhours = Math.floor(hours);
-  var minutes = (hours - rhours) * 60;
-  var rminutes = Math.round(minutes);
+  let num = n;
+  let hours = (num / 60);
+  let rhours = Math.floor(hours);
+  let minutes = (hours - rhours) * 60;
+  let rminutes = Math.round(minutes);
   return rhours + " hours and " + rminutes + " minutes";
 }

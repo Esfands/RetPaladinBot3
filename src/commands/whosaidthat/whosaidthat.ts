@@ -17,14 +17,14 @@ export async function checkRoundsNumber(rounds: number) {
 }
 
 export async function fetchWSTGameData() {
-  var storedGame = fs.readFileSync(PATH);
+  let storedGame = fs.readFileSync(PATH);
   let rawData = JSON.parse(storedGame.toString());
 
   return rawData;
 }
 
 export async function createWSTGame(gm: CommonUserstate["username"], rounds: number, client: Actions, channel: string) {
-  var storedGame = fs.readFileSync(PATH);
+  let storedGame = fs.readFileSync(PATH);
   let rawData = JSON.parse(storedGame.toString());
 
   // Check if game is already going
@@ -32,7 +32,7 @@ export async function createWSTGame(gm: CommonUserstate["username"], rounds: num
     return false;
   } else {
     // If not add game to data.
-    var gameData = { gm: gm, started: true, canJoin: true, rounds: { total: rounds, current: 1 }, quotes: [], contestants: [gm] };
+    let gameData = { gm: gm, started: true, canJoin: true, rounds: { total: rounds, current: 1 }, quotes: [], contestants: [gm] };
 
     rawData.push(gameData);
     fs.writeFileSync(PATH, JSON.stringify(rawData), "utf-8");
@@ -48,10 +48,10 @@ interface GameData {
 }
 
 export async function fetchRandomQuote(users: Array<string>) {
-  var gameData: GameData;
-  var randUser = users[Math.floor(Math.random() * users.length)];
+  let gameData: GameData;
+  let randUser = users[Math.floor(Math.random() * users.length)];
   const response = await axios.get(`https://logs.ivr.fi/channel/esfandtv/user/${randUser}/random?json`);
-  var messageObj = await response.data.messages[0];
+  let messageObj = await response.data.messages[0];
 
   // At least 5 words long
   if (messageObj["text"].trim().split(" ").length >= 5) {
@@ -59,7 +59,7 @@ export async function fetchRandomQuote(users: Array<string>) {
     if (messageObj["username"] === randUser) {
       // Avoid any very good! spam
       if (!messageObj["text"].includes("ＶＥＲＹ ＧＯＯＤ")) {
-        var regex = /\b(\w+\s*\w*)\s+\1\b/gmi;
+        let regex = /\b(\w+\s*\w*)\s+\1\b/gmi;
         if (regex.exec(messageObj["text"]) == null) {
           gameData = { canJoin: false, sender: messageObj["username"], message: messageObj["text"] };
           console.log("this message looks good", gameData);
@@ -71,7 +71,7 @@ export async function fetchRandomQuote(users: Array<string>) {
 }
 
 export async function joinWSTGame(player: CommonUserstate["username"]) {
-  var storedGame = fs.readFileSync(PATH);
+  let storedGame = fs.readFileSync(PATH);
   let rawData = JSON.parse(storedGame.toString());
 
   if (rawData[0]["canJoin"]) {
@@ -90,18 +90,18 @@ export async function joinWSTGame(player: CommonUserstate["username"]) {
 }
 
 export async function startWSTGame(gm: CommonUserstate["username"], client: Actions, channel: string) {
-  var storedGame = fs.readFileSync(PATH);
+  let storedGame = fs.readFileSync(PATH);
   let rawData = JSON.parse(storedGame.toString());
 
   if (rawData.length) {
     if (rawData[0]["gm"] === gm) {
       if (!rawData[0]["quotes"].length) {
         if (rawData[0]["contestants"].length !== 1) {
-          var quotes = [];
+          let quotes = [];
 
-          for (var i = 0; i < rawData[0]["rounds"]["total"]; i++) {
+          for (let i = 0; i < rawData[0]["rounds"]["total"]; i++) {
             while (true) {
-              var quote = await fetchRandomQuote(rawData[0]["contestants"]);
+              let quote = await fetchRandomQuote(rawData[0]["contestants"]);
               if (!quote) return;
               if (quote!["message"] !== "") {
                 if (quote!['sender'] == "") return;
@@ -124,23 +124,23 @@ export async function startWSTGame(gm: CommonUserstate["username"], client: Acti
 }
 
 export async function senderGuessed(user: CommonUserstate["username"], sender: string, rid: string) {
-  var wstData = fs.readFileSync(PATH, "utf-8");
+  let wstData = fs.readFileSync(PATH, "utf-8");
   let rawData = JSON.parse(wstData)
-  var response;
+  let response;
 
   rawData[0]["rounds"]["current"] = rawData[0]["rounds"]["current"] + 1;
   if (rawData[0]["rounds"]["current"] > rawData[0]["rounds"]["total"]) {
     response = [`${user} guessed "${sender}" correctly!`, `[WST? - ${rawData[0]["rounds"]["total"]}/${rawData[0]["rounds"]["total"]}] Game over! Thanks for playing ${rawData[0]["contestants"].join(", ")} peepoWave`];
     rawData = [];
-    var finalData = JSON.stringify(rawData);
+    let finalData = JSON.stringify(rawData);
     fs.writeFileSync(PATH, finalData, "utf-8");
   } else {
-    var roundData = JSON.stringify(rawData);
+    let roundData = JSON.stringify(rawData);
     fs.writeFileSync(PATH, roundData, "utf-8");
 
-    var newWstData = fs.readFileSync(PATH, "utf-8");
+    let newWstData = fs.readFileSync(PATH, "utf-8");
     let newData = JSON.parse(newWstData)
-    var quote = newData[0]["quotes"].filter((quote: any) => {
+    let quote = newData[0]["quotes"].filter((quote: any) => {
       return quote.id === newData[0]["rounds"]["current"];
     })
     response = [`${user} guessed "${sender}" correctly!`, `[WST? - ${newData[0]["rounds"]["current"]}/${newData[0]["rounds"]["total"]}] Guess who said: ${quote[0].message}`];
@@ -149,15 +149,15 @@ export async function senderGuessed(user: CommonUserstate["username"], sender: s
 }
 
 export async function stopWSTGame(userstate: CommonUserstate) {
-  var storedGame = fs.readFileSync(PATH);
+  let storedGame = fs.readFileSync(PATH);
   let rawData = JSON.parse(storedGame.toString());
 
-  var gm = userstate["username"];
+  let gm = userstate["username"];
 
   // If game exists, return owners name in a message
   if (rawData.length) {
     try {
-      var userBadges = Object.keys(userstate["badges"]!);
+      let userBadges = Object.keys(userstate["badges"]!);
       if (rawData[0]["gm"] === gm || userBadges.includes("broadcaster") || userBadges.includes("moderator")) {
         // Delete the game date
         rawData = [];

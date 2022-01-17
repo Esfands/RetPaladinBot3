@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
-export = {
+const dadjoke = {
   name: "dadjoke",
   aliases: [],
   permissions: [],
@@ -22,3 +22,5 @@ export = {
     });
   }
 }
+
+export = dadjoke;

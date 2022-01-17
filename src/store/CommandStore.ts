@@ -1,17 +1,17 @@
 import { readdirSync, statSync } from "fs";
 import { Command } from "../schemas/CommandSchema";
-import { CommandSchema, commandInt } from "../validation/CommandSchema";
+import { CommandSchema, CommandInt } from "../validation/CommandSchema";
 
 export class CommandStore {
   _directory: string;
-  _commands: Array<commandInt> = [];
+  _commands: Array<CommandInt> = [];
 
   constructor(directory: string) {
     this._directory = directory;
     this._loadAllCommands();
   }
 
-  _storeAllCommands(commands: Array<commandInt>) {
+  _storeAllCommands(commands: Array<CommandInt>) {
     commands.forEach(command => {
       Command.findOne({ name: command["name"] }, function (err: Error, obj: object) {
         if (err) throw err;
@@ -49,16 +49,16 @@ export class CommandStore {
   _loadAllCommands() {
     const files = _getAllFilesFromFolder(this._directory);
     files.forEach(file => {
-      var checkNonCommands = file.split("/");
-      var nonCmds = checkNonCommands[checkNonCommands.length - 1];
+      let checkNonCommands = file.split("/");
+      let nonCmds = checkNonCommands[checkNonCommands.length - 1];
       if (nonCmds === "index.js") {
         try {
-          const command = require(`${file}`);
+          const command: CommandInt = require(`${file}`);
           const validated = CommandSchema.validate(command);
-          var cmdDirString = file.substring(0, file.lastIndexOf("/") + 1);
-          var cmdArr = cmdDirString.split("/");
+          let cmdDirString = file.substring(0, file.lastIndexOf("/") + 1);
+          let cmdArr = cmdDirString.split("/");
 
-          var cmdName: string = cmdArr[4];
+          let cmdName: string = cmdArr[4];
           if (validated.error == null) {
             console.log(`Command ${cmdName} has been loaded.`);
             this._commands.push(command)
@@ -81,11 +81,11 @@ export class CommandStore {
   }
 }
 
-var _getAllFilesFromFolder = function (dir: string) {
-  var results: string[] = [];
+let _getAllFilesFromFolder = function (dir: string) {
+  let results: string[] = [];
   readdirSync(dir).forEach(function (file) {
     file = dir + '/' + file;
-    var stat = statSync(file);
+    let stat = statSync(file);
     if (stat && stat.isDirectory()) {
       results = results.concat(_getAllFilesFromFolder(file))
     } else results.push(file);

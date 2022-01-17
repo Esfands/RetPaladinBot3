@@ -4,9 +4,9 @@ import { StreamStat } from "../schemas/StreamStatsSchema";
 
 async function sendPingNotification(client: Actions, channel: string, type: string, toSend: string) {
   Notify.findOne({ type: type }, function (err: Error, res: INotify) {
-    var users = res["users"];
+    let users = res["users"];
     if (users.length) {
-      var toPing = splitUsers(users, toSend);
+      let toPing = splitUsers(users, toSend);
       toPing.forEach(function (element) {
         client.action(channel, `${element}`);
       })
@@ -20,9 +20,9 @@ export async function checkStreamStatus(client: Actions, channel: string) {
 
   streamStatsEmitter.on('change', change => {
     if (!change.updateDescription) return;
-    var changed = change.updateDescription.updatedFields;
-    var fieldUpdated = Object.keys(changed!);
-    var valueUpdated = Object.values(changed!);
+    let changed = change.updateDescription.updatedFields;
+    let fieldUpdated = Object.keys(changed!);
+    let valueUpdated = Object.values(changed!);
 
     console.log(changed);
     fieldUpdated.forEach((keys, index) => {
@@ -49,19 +49,19 @@ export async function checkStreamStatus(client: Actions, channel: string) {
 }
 
 function splitUsers(userArray: Array<string>, prefixMsg: string) {
-  var usersToPing = [];
+  let usersToPing = [];
 
-  for (var i = 0; i < userArray.length; i++) {
+  for (let i = 0; i < userArray.length; i++) {
     usersToPing.push(userArray[i]);
   }
 
   usersToPing = usersToPing.map(i => "@" + i);
 
   // Split the message up a few times if reaches the limit.
-  var arrStrings = splitter(usersToPing.join(" "), 400);
+  let arrStrings = splitter(usersToPing.join(" "), 400);
 
-  var resArr = [];
-  for (var i = 0; i < arrStrings.length; i++) {
+  let resArr = [];
+  for (let i = 0; i < arrStrings.length; i++) {
     //client.action(channel, `[LIVE PING] ${arrStrings[i]} DinkDonk`)
     arrStrings[i] = `${prefixMsg} ` + arrStrings[i];
     resArr.push(arrStrings[i]);
@@ -71,12 +71,12 @@ function splitUsers(userArray: Array<string>, prefixMsg: string) {
 }
 
 function splitter(str: string, l: number) {
-  var strs = [];
+  let strs = [];
   while (str.length > l) {
-    var pos = str.substring(0, l).lastIndexOf(' ');
+    let pos = str.substring(0, l).lastIndexOf(' ');
     pos = pos <= 0 ? l : pos;
     strs.push(str.substring(0, pos));
-    var i = str.indexOf(' ', pos) + 1;
+    let i = str.indexOf(' ', pos) + 1;
     if (i < pos || i > pos + l)
       i = pos;
     str = str.substring(i);

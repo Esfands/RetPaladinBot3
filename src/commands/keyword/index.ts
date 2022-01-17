@@ -1,6 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { CommandInt } from "../../validation/CommandSchema";
 import { createKeyword, editKeyword, getKeywordData, getKeywords, removeKeyword, toggleKeyword } from "./keyword";
-export = {
+const keyword: CommandInt = {
   name: 'keyword',
   aliases: ["kw"],
   permissions: ["trusted", "moderator"],
@@ -36,35 +37,37 @@ export = {
     if (command) {
       //=keyword create (con1: title) (con2: regex) (con3: cooldown) (con4: response/otf command)
       if (command === "create" || command === "add") {
-        var createdKeyword = await createKeyword(context);
+        let createdKeyword = await createKeyword(context);
         client.action(channel, `${user} ${createdKeyword}`);
 
       } else if (command === "remove" || command === "delete") {
         // =keyword remove/delete (con1: title) 
-        var removedKeyword = await removeKeyword(con1);
+        let removedKeyword = await removeKeyword(con1);
         client.action(channel, `@${user} ${removedKeyword}`);
 
       } else if (command === "edit" || command === "update") {
         // =keyword edit (con1: title) (con2: type(regex, cd, message)) (con3: whatever the input is from con2)
-        var editedKeyword = await editKeyword(con1, con2, context);
+        let editedKeyword = await editKeyword(con1, con2, context);
         client.action(channel, `@${user} ${editedKeyword}`);
 
       } else if (command === "toggle") {
         // =keyword toggle (con1: title)
-        var disabledKeyword = await toggleKeyword(context[1]);
+        let disabledKeyword = await toggleKeyword(context[1]);
         client.action(channel, `@${user} ${disabledKeyword}`);
 
       } else if (command === "check") {
         // =keyword check (con1: title)
-        var foundKeyword = await getKeywordData(context[1]);
+        let foundKeyword = await getKeywordData(context[1]);
         client.action(channel, `@${user} ${foundKeyword}`);
 
       } else if (command === "list") {
         // =keyword list
-        var keywordList = await getKeywords();
+        let keywordList = await getKeywords();
         client.action(channel, `@${user} current keywords: ${keywordList}`);
 
       } else client.action(channel, `@${user} "${command}" was not found try create/add/remove/check/list`);
     } else client.action(channel, `@${user} incorrect syntax: please check retpaladinbot.com/commands/keyword`);
   }
 }
+
+export = keyword;

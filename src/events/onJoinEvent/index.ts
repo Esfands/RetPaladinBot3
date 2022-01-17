@@ -11,10 +11,10 @@ export default async (client: Actions, channel: string, username: CommonUserstat
   await checkStreamStatus(client, channel);
 
   // Loop command jobs
-  var getJobs = await CronJob.find({});
+  let getJobs = await CronJob.find({});
   getJobs.forEach(async job => {
     if (job["disabled"]) return;
-    var res = (job["response"]["command"]) ? await checkIfCommand(job["response"]["response"]) : job["response"]["response"];
+    let res = (job["response"]["command"]) ? await checkIfCommand(job["response"]["response"]) : job["response"]["response"];
 
     LoopManager.add(job["title"], job["pattern"], async () => { client.action(channel, `${res}`) });
     LoopManager.start(job["title"]);

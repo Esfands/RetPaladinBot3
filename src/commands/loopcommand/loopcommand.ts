@@ -22,21 +22,21 @@ export async function checkIfCommand(response: string) {
 export async function createLoop(title: string, context: Array<string>, client: Actions, channel: string) {
   context.splice(0, 2);
 
-  var conString = context.join(" ");
-  var regTest = /"([^"]+)"/.exec(conString);
+  let conString = context.join(" ");
+  let regTest = /"([^"]+)"/.exec(conString);
   if (regTest) {
-    var foundPattern = regTest[1];
-    var response = conString.substring(conString.lastIndexOf('"') + 2);
+    let foundPattern = regTest[1];
+    let response = conString.substring(conString.lastIndexOf('"') + 2);
 
-    var isCommand;
+    let isCommand;
     if (response.startsWith(config.prefix)) {
       isCommand = { command: true, response: response };
     } else isCommand = { command: false, response: response };
 
-    var query = await CronJob.findOne({ title: title });
+    let query = await CronJob.findOne({ title: title });
     if (!query) {
       await new CronJob({ title: title, pattern: foundPattern, disabled: false, response: isCommand }).save();
-      var res = (isCommand["command"]) ? await checkIfCommand(isCommand["response"]) : isCommand["response"];
+      let res = (isCommand["command"]) ? await checkIfCommand(isCommand["response"]) : isCommand["response"];
       LoopManager.add(title, foundPattern, async () => { client.action(channel, `${res}`) });
       LoopManager.start(title);
       return `successfuly created "${title}"`
@@ -47,15 +47,15 @@ export async function createLoop(title: string, context: Array<string>, client: 
 }
 
 export async function listLoops() {
-  var list = LoopManager.listCrons();
+  let list = LoopManager.listCrons();
   list = list.replace(/[\{\}]+/g, '');
-  var listArr = list.split("\n").filter((n: string) => n);
-  var jobs: any[] = [];
+  let listArr = list.split("\n").filter((n: string) => n);
+  let jobs: any[] = [];
   listArr.forEach((job: string) => {
-    var splitJob = job.split("'")
-    var title = splitJob[1];
+    let splitJob = job.split("'")
+    let title = splitJob[1];
     splitJob.splice(0, 2);
-    var remaining = splitJob.toString();
+    let remaining = splitJob.toString();
     jobs.push(`${title}: ${remaining.substring(remaining.lastIndexOf(":") + 2).toLowerCase()}`);
   })
 
@@ -63,14 +63,14 @@ export async function listLoops() {
 }
 
 export async function checkLoop(title: string) {
-  var query = await CronJob.findOne({ title: title });
+  let query = await CronJob.findOne({ title: title });
   if (query) {
     return `found "${query["title"]}" - "${query["pattern"]}" response: ${query["response"]["response"]}`;
   } else return `couldn't find the loop "${title}"`;
 }
 
 export async function toggleLoop(title: string, client: Actions, channel: string) {
-  var query = await CronJob.findOne({ title: title });
+  let query = await CronJob.findOne({ title: title });
   if (query) {
     if (query.disabled == false) {
       await CronJob.updateOne({ title: title }, { disabled: true });
@@ -90,7 +90,7 @@ export async function toggleLoop(title: string, client: Actions, channel: string
 }
 
 export async function removeLoop(title: string) {
-  var query = await CronJob.findOne({ title: title });
+  let query = await CronJob.findOne({ title: title });
   if (query) {
     return await CronJob.deleteOne({ title: title }).then(function () {
       if (LoopManager.exists(title)) LoopManager.deleteJob(title);
@@ -102,9 +102,9 @@ export async function removeLoop(title: string) {
 }
 
 export async function updateLoop(context: Array<string>, client: Actions, channel: string) {
-  var title = context[1];
-  var todo = context[2];
-  var query = await CronJob.findOne({ title: title });
+  let title = context[1];
+  let todo = context[2];
+  let query = await CronJob.findOne({ title: title });
 
   if (query) {
     if (todo === "name") {
@@ -132,7 +132,7 @@ export async function updateLoop(context: Array<string>, client: Actions, channe
     } else if (todo === "response") {
       if (todo) {
         context.splice(0, 3);
-        var resObj = (context.join(" ").startsWith("!")) ? { response: { command: true, response: context.join(" ") } } : { response: { command: false, response: context.join(" ") } };
+        let resObj = (context.join(" ").startsWith("!")) ? { response: { command: true, response: context.join(" ") } } : { response: { command: false, response: context.join(" ") } };
         await CronJob.updateOne({ title: title }, { response: { command: false, response: resObj } });
         if (LoopManager.exists(title)) {
           LoopManager.update(title, query["pattern"], async () => { client.action(channel, `${resObj}`); });

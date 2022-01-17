@@ -7,7 +7,7 @@ const globalCD = new Map();
 const keywordCD = new Map();
 
 export async function addCooldown(user: string, commandName: string, cdTime: number) {
-  var res = null;
+  let res = null;
 
   if (!cooldowns.has(commandName)) {
     cooldowns.set(commandName, new Map());
@@ -33,7 +33,7 @@ export async function addCooldown(user: string, commandName: string, cdTime: num
 }
 
 export async function globalCooldown(commandName: string, cdTime: number) {
-  var res = true;
+  let res = true;
   const currentTime = Date.now();
   const cooldownAmount = (cdTime) * 1000;
 
@@ -57,7 +57,7 @@ export async function globalCooldown(commandName: string, cdTime: number) {
 }
 
 export function keyWordCooldown(keyword: string, cdTime: number) {
-  var res = true;
+  let res = true;
   const currentTime = Date.now();
   const cooldownAmount = (cdTime) * 1000;
 
@@ -82,19 +82,19 @@ export function keyWordCooldown(keyword: string, cdTime: number) {
 
 import isUserPermitted from "./isUserPermitted";
 export async function cooldownCanContinue(user: CommonUserstate, cmdName: string, cmdCooldown: number, globalCD: number) {
-  var canRun = true;
+  let canRun = true;
 
   // If they are a broadcaster/mod/trusted they don't get a cooldown
   if (isUserPermitted(user, ["broadcaster", "moderator"]) || config["permissions"]['trusted'].includes(user["username"])) return true;
   
-  var isOnGlobalCD = await globalCooldown(cmdName, globalCD);
+  let isOnGlobalCD = await globalCooldown(cmdName, globalCD);
   // Check if the global cooldown is enabled.
   if (isOnGlobalCD === false) {
     // if it is mark the command as can't be ran.
     canRun = false;
   } else {
     // Try to see if the user has a personal cooldown for the command.
-    var isOnCD = await addCooldown(user["username"], cmdName, cmdCooldown);
+    let isOnCD = await addCooldown(user["username"], cmdName, cmdCooldown);
     if (isOnCD === false) canRun = false;
   }
 

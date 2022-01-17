@@ -12,33 +12,34 @@ interface IResponse {
   message: string;
 }
 
-export var AllKeywords: Array<IKeyword> = [];
+export let AllKeywords: Array<IKeyword> = [];
 
 //=keyword create (con1: title) (con2: regex) (con3: cooldown) (con4: response/otf command)
 export async function createKeyword(context: Array<string>) {
   // grab current keywords to make sure the one being created doesn't already exist
-  var title = context[1].toLowerCase();
-  var joined = context.join(' ');
+  let title = context[1].toLowerCase();
+  let joined = context.join(' ');
+  let regex;
 
   const searchTitle = await Keyword.findOne({ title: title });
   if (!searchTitle) {
     // Find the regex between ""
-    var findRegex = /"([^"]+)"/;
-    var foundString = findRegex.exec(joined);
+    let findRegex = /"([^"]+)"/;
+    let foundString = findRegex.exec(joined);
     if (foundString) {
-      var regex = foundString[1];
+      regex = foundString[1];
     } else return `couldn't find the regular expression`;
 
     // Find cooldown after the last quote
-    var restOf = joined.substring(joined.lastIndexOf('"') + 2);
-    var cooldown = restOf.split(" ")[0];
+    let restOf = joined.substring(joined.lastIndexOf('"') + 2);
+    let cooldown = restOf.split(" ")[0];
 
     // Get the response. If it starts with prefix then it's an OTF response
-    var response = restOf.substr(cooldown.length + 1);
+    let response = restOf.substr(cooldown.length + 1);
 
     // Check if it's a command or not.
-    var otfCommands = await getOTFCommandNames()
-    var resObj: IResponse = { command: false, message: "" };
+    let otfCommands = await getOTFCommandNames()
+    let resObj: IResponse = { command: false, message: "" };
     if (response.startsWith(config.prefix)) {
       if (!otfCommands.includes(response.substring(1))) return `"${response.substring(1)}" is not a valid OTF command.`;
       resObj = { command: true, message: response };
@@ -51,8 +52,8 @@ export async function createKeyword(context: Array<string>) {
 }
 
 export async function getKeywords() {
-  var keywordTitles = await Keyword.find({}).select({ title: 1, _id: 0 });
-  var titleArray: Array<string> = [];
+  let keywordTitles = await Keyword.find({}).select({ title: 1, _id: 0 });
+  let titleArray: Array<string> = [];
   keywordTitles.forEach(titles => {
     titleArray.push(titles.title);
   });
@@ -60,7 +61,7 @@ export async function getKeywords() {
 }
 
 export async function getKeywordData(title: string) {
-  var searchTitle = await Keyword.findOne({ title: title });
+  let searchTitle = await Keyword.findOne({ title: title });
   if (searchTitle) {
     return `Options for ${title} - "${searchTitle["response"]["message"]}" ${searchTitle["regex"]} (CD: ${searchTitle["cooldown"]}secs, disabled: ${searchTitle["disabled"]})`
   } else return `couldn't find the keyword "${title}"`;
@@ -69,18 +70,18 @@ export async function getKeywordData(title: string) {
 // {prefix}keyword edit (con1: title) (con2: type(regex, cd, message)) (con3: whatever the input is from con2)
 export async function editKeyword(title: string, type: string, message: Array<string>) {
   if (!title) return `please specifiy a keyword.`;
-  var searchTitle = await Keyword.findOne({ title: title });
+  let searchTitle = await Keyword.findOne({ title: title });
   message.splice(0, 3);
 
   if (searchTitle) {
-    var typeRegex = /(cd|cooldown|regex|response|message)/gi;
-    var testType = typeRegex.exec(type);
+    let typeRegex = /(cd|cooldown|regex|response|message)/gi;
+    let testType = typeRegex.exec(type);
     if (!testType) return `"${type}" isn't an option, try cooldown/regex/message.`;
-    var finType = testType[1];
+    let finType = testType[1];
 
     if (finType === "cd" || finType === "cooldown") {
       if (Number(message)) {
-        var oldCD = searchTitle["cooldown"];
+        let oldCD = searchTitle["cooldown"];
         await Keyword.updateOne({ title: title }, { cooldown: message.join(" ") });
         await initializeKeywords();
         return `changed cooldown from ${oldCD} to ${message.join(" ")}`;
@@ -92,8 +93,8 @@ export async function editKeyword(title: string, type: string, message: Array<st
       return `changed regex of keyword "${title}" successfully!`;
 
     } else if (finType === "response" || finType === "message") {
-      var newMsg = message.join(" ");
-      var isCommand = (newMsg.startsWith(config.prefix)) ? { command: true, message: newMsg } : { command: false, message: newMsg };
+      let newMsg = message.join(" ");
+      let isCommand = (newMsg.startsWith(config.prefix)) ? { command: true, message: newMsg } : { command: false, message: newMsg };
       await Keyword.updateOne({ title: title }, { response: isCommand })
       await initializeKeywords();
       return `changed "${title}" response to: ${newMsg}`;
@@ -104,7 +105,7 @@ export async function editKeyword(title: string, type: string, message: Array<st
 }
 
 export async function removeKeyword(title: string) {
-  var searchTitle = await Keyword.findOne({ title: title });
+  let searchTitle = await Keyword.findOne({ title: title });
   if (searchTitle) {
     await Keyword.findOneAndRemove({ title: title });
     await initializeKeywords();
@@ -113,7 +114,7 @@ export async function removeKeyword(title: string) {
 }
 
 export async function toggleKeyword(title: string) {
-  var searchTitle = await Keyword.findOne({ title: title }).select({ disabled: 1, _id: 0 });
+  let searchTitle = await Keyword.findOne({ title: title }).select({ disabled: 1, _id: 0 });
   if (searchTitle) {
     if (searchTitle["disabled"]) {
       // enable
@@ -131,19 +132,19 @@ export async function toggleKeyword(title: string) {
 
 // Initialize keywords so it's stored in memory. There's probably a more efficient way to do this but I'm tired
 export async function initializeKeywords() {
-  var keywords: Array<IKeyword> = await Keyword.find({});
+  let keywords: Array<IKeyword> = await Keyword.find({});
   keywords.forEach(keyword => AllKeywords.push(keyword));
 }
 
 // Checks message for each regex.
 export async function checkMessageForRegex(message: string, user: CommonUserstate["display-name"] | string) {
   if (AllKeywords.length === 0) await initializeKeywords();
-  var toRes = { run: false, message: { command: false, response: "" } };
+  let toRes = { run: false, message: { command: false, response: "" } };
 
-  for (var i = 0; i < AllKeywords.length; i++) {
-    var parts = AllKeywords[i]["regex"].split("/");
-    var replaceDoubleSlash = parts[1].replace('\\\\', '\\');
-    var regex = new RegExp(replaceDoubleSlash, parts[2]);
+  for (let i = 0; i < AllKeywords.length; i++) {
+    let parts = AllKeywords[i]["regex"].split("/");
+    let replaceDoubleSlash = parts[1].replace('\\\\', '\\');
+    let regex = new RegExp(replaceDoubleSlash, parts[2]);
     if (regex.test(message)) {
       if (AllKeywords[i]["disabled"]) return toRes = { run: false, message: { command: false, response: "" } };
       if (!keyWordCooldown(AllKeywords[i]["title"], AllKeywords[i]["cooldown"])) return toRes = { run: false, message: { command: false, response: "" } };
@@ -154,12 +155,12 @@ export async function checkMessageForRegex(message: string, user: CommonUserstat
   if (toRes.run === true) {
     user = (user?.startsWith("@")) ? user : `@${user}`;
     if (toRes.message.command) {
-      var otfRes = await getOTFResponse(toRes.message.response.substring(1), user);
+      let otfRes = await getOTFResponse(toRes.message.response.substring(1), user);
       commandUsed('otf', toRes.message.response.substring(1));
       toRes = { run: true, message: { command: true, response: otfRes! } };
       return toRes;
     } else {
-      var newResponse = otfResponseEmote(toRes.message.response, user);
+      let newResponse = otfResponseEmote(toRes.message.response, user);
       toRes = { run: true, message: { command: false, response: newResponse } };
       return toRes;
     }

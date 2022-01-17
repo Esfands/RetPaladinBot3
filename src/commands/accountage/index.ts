@@ -1,7 +1,9 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { dateDiff } from "../../utils";
 import { getUser } from "../../utils/helix";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+
+const accountAge: CommandInt = {
   name: "accountage",
   aliases: [],
   permissions: [],
@@ -19,14 +21,14 @@ export = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
-    var tagged = (context[0]) ? context[0] : user; 
+    let tagged = (context[0]) ? context[0] : user; 
     if (!tagged) return client.action(channel, "Error: User was not found.");
     tagged = (tagged.startsWith("@")) ? tagged.substring(1) : tagged;
 
-    var accountInfo = await getUser(tagged);
+    let accountInfo = await getUser(tagged);
     try {
-      var foundDate = accountInfo["data"][0]["created_at"];
-      var elapsed = dateDiff(new Date(), new Date(foundDate));
+      let foundDate = accountInfo["data"][0]["created_at"];
+      let elapsed = dateDiff(new Date(), new Date(foundDate));
       if (tagged.toLowerCase() === userstate["displayname"]) {
         client.say(channel, `You created your account ${elapsed} ago`);
       } else {
@@ -37,3 +39,5 @@ export = {
     }
   }
 }
+
+export = accountAge;

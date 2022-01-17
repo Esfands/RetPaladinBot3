@@ -1,7 +1,8 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { StreamStat } from "../../schemas/StreamStatsSchema";
+import { CommandInt } from "../../validation/CommandSchema";
 
-export = {
+const title: CommandInt = {
   name: "title",
   aliases: [],
   permissions: [],
@@ -16,12 +17,14 @@ export = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
-    var tagged = (context[0]) ? context[0] : user; // Might need to change.
+    let tagged = (context[0]) ? context[0] : user; // Might need to change.
     tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
 
     // Grabs it from StreamStats so it works even if he's offline
-    var currentStatus = await StreamStat.find({}).select({ title: 1, _id: 0 });
-    var currentTitle = await currentStatus[0]["title"];
+    let currentStatus = await StreamStat.find({}).select({ title: 1, _id: 0 });
+    let currentTitle = await currentStatus[0]["title"];
     client.say(channel, `@${user} current title: ${currentTitle}`);
   }
 }
+
+export = title;

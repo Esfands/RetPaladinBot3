@@ -1,5 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const reload: CommandInt = {
   name: "reload",
   aliases: [],
   permissions: ["developer"],
@@ -15,3 +16,5 @@ export = {
 
   }
 }
+
+export = reload;

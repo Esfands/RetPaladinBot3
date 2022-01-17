@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const chucknorris: CommandInt = {
   name: "chucknorris",
   aliases: ["chuck", "norris"],
   permissions: [],
@@ -20,3 +21,5 @@ export = {
     client.action(channel, `@${userstate["display-name"]} ${body["value"]}`);
   }
 }
+
+export = chucknorris;

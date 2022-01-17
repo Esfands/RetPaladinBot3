@@ -1,6 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { Feedback } from "../../schemas/FeedbackSchema";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const feedback: CommandInt = {
   name: "feedback",
   aliases: ["suggest"],
   permissions: [],
@@ -17,25 +18,25 @@ export = {
   testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
-    var prefix = `[Feedback]`
-    var user = userstate["display-name"];
-    var username = userstate["username"];
-    var fbType = context[0];
-    var message = context.join(" ").substr(context.join(" ").indexOf(" ") + 1);
+    let prefix = `[Feedback]`
+    let user = userstate["display-name"];
+    let username = userstate["username"];
+    let fbType = context[0];
+    let message = context.join(" ").substr(context.join(" ").indexOf(" ") + 1);
 
     if (fbType) {
       fbType = fbType.toLowerCase();
     } else return client.action(channel, `${prefix} @${user} incorrect syntax: !feedback (feature/bug) (message)`);
 
     async function saveFeedback(username: CommonUserstate["username"], displayname: CommonUserstate["display-name"], message: string, type: string) {
-      var suggestions = await Feedback.find({});
+      let suggestions = await Feedback.find({});
       new Feedback({ username: username, "display-name": displayname, message: message, fid: suggestions.length, type: type, status: "pending" }).save();
       return `your feedback has been saved with ID: ${suggestions.length} and will eventually be processed.`;
     }
 
     async function checkFeedback(id: number) {
-      var searched = await Feedback.findOne({ fid: id });
-      var response;
+      let searched = await Feedback.findOne({ fid: id });
+      let response;
       if (searched) {
         response = `ID: ${id} (${searched["type"]}) is ${searched["status"]}: ${searched["message"]}`;
       } else {
@@ -47,19 +48,19 @@ export = {
     if (fbType) {
       if (fbType === "idea" || fbType === "feature" || fbType === "suggestion") {
         if (message) {
-          var savedFeedback = await saveFeedback(username, user, message, "feature");
+          let savedFeedback = await saveFeedback(username, user, message, "feature");
           client.action(channel, `${prefix} @${user} ${savedFeedback}`);
         } else client.action(channel, `${prefix} @${user} please provide a message to send.`);
 
       } else if (fbType === "bug" || fbType === "error") {
         if (message) {
-          var savedBugFeedback = await saveFeedback(username, user, message, "bug");
+          let savedBugFeedback = await saveFeedback(username, user, message, "bug");
           client.action(channel, `${prefix} @${user} ${savedBugFeedback}`);
         } else client.action(channel, `${prefix} @${user} please provide a message to send.`);
 
       } else if (fbType === "check" || fbType === "status") {
         if (message) {
-          var statusRes = await checkFeedback(parseInt(message));
+          let statusRes = await checkFeedback(parseInt(message));
           client.action(channel, `${prefix} @${user} ${statusRes}`);
         } else client.action(channel, `${prefix} @${user} please provide an ID to check.`);
       } else {
@@ -68,3 +69,5 @@ export = {
     } else client.action(channel, `${prefix} @${user} incorrect syntax: !feedback (feature/bug) (message)`);
   }
 }
+
+export = feedback;

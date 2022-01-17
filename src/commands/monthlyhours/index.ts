@@ -1,5 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { fetchAPI, minsToHours } from "../../utils";
+import { CommandInt } from "../../validation/CommandSchema";
 
 interface TwitchTrakcer {
   rank: number;
@@ -13,7 +14,7 @@ interface TwitchTrakcer {
   views_total: number;
 }
 
-export = {
+const monthlyhours: CommandInt = {
   name: "monthlyhours",
   aliases: [],
   permissions: [],
@@ -26,9 +27,11 @@ export = {
   testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
-    var monthlyData = fetchAPI("https://twitchtracker.com/api/channels/summary/esfandtv");
-    var raw: TwitchTrakcer = await monthlyData;
-    var monthlyMins: number = raw["minutes_streamed"];
+    let monthlyData = fetchAPI("https://twitchtracker.com/api/channels/summary/esfandtv");
+    let raw: TwitchTrakcer = await monthlyData;
+    let monthlyMins: number = raw["minutes_streamed"];
     client.action(channel, `@${userstate["display-name"]} Esfand has streamed ${minsToHours(monthlyMins)} since the 1st.`);
   }
 }
+
+export = monthlyhours;

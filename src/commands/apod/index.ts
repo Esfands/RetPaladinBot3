@@ -2,9 +2,10 @@ import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
 import { postToImgur } from "../../utils";
-var FormData = require("form-data");
+import { CommandInt } from "../../validation/CommandSchema";
+let FormData = require("form-data");
 
-export = {
+const apod: CommandInt = {
   name: "apod",
   aliases: ["astronomypictureoftheday"],
   permissions: [],
@@ -23,15 +24,17 @@ export = {
 
     //var data = { image: body["url"], title: body["title"], description: body["explanation"], name: `apod_${body["title"].split(" ").join("_")}`, type: 'png' }
 
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append(`image`, body["url"]);
     formData.append(`title`, body["title"]);
     formData.append(`description`, body["explanation"]);
     formData.append(`name`, `apod_${body["title"].split(" ").join("_")}`);
     formData.append(`type`, 'png')
 
-    var img = await postToImgur(formData);
+    let img = await postToImgur(formData);
 
     //client.action(channel, `@${userstate['display-name']} ${body["title"]}: ${img}`); */
   }
 }
+
+export = apod;

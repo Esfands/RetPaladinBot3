@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const song: CommandInt = {
   name: "song",
   aliases: [],
   permissions: [],
@@ -24,7 +25,9 @@ export = {
     });
 
     if (!data) return client.action(channel, `@${user} there was an issue fetching the current song!`);
-    var recentSong = await data.data.recenttracks.track[0];
+    let recentSong = await data.data.recenttracks.track[0];
     client.action(channel, `@${user} current song: ${recentSong["name"]} ${recentSong["artist"]["#text"]}`); */
   }
 }
+
+export = song;

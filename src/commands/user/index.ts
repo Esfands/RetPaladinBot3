@@ -1,7 +1,8 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { Chatter } from "../../schemas/ChatterSchema";
 import { getUser } from "../../utils/helix";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const user: CommandInt = {
   name: 'user',
   aliases: [],
   permissions: [],
@@ -38,7 +39,7 @@ export = {
 
       } else if (command === "color" || command === "colour") {
         if (userInfo) {
-          var query = await Chatter.findOne({ tid: userInfo["data"][0]["id"] });
+          let query = await Chatter.findOne({ tid: userInfo["data"][0]["id"] });
           if (query) {
             client.action(channel, `@${display} color for that user is: ${query["color"]}`);
           } else client.action(channel, `@${display} sorry I haven't seen that user yet Thinkge`);
@@ -47,3 +48,5 @@ export = {
     } else client.action(channel, `@${display} incorrect syntax: !user (id/color) (user)`);
   }
 }
+
+export = user;

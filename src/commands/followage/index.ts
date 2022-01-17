@@ -1,7 +1,8 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { dateDiff } from "../../utils";
 import { isFollowingUser } from "../../utils/helix";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const followage: CommandInt = {
   name: "followage",
   aliases: [],
   permissions: [],
@@ -16,18 +17,20 @@ export = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
-    var tagged = (context[0]) ? context[0] : user;
+    let tagged = (context[0]) ? context[0] : user;
     tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
 
     if (!tagged) return;
-    var following = await isFollowingUser("esfandtv", tagged.toLowerCase());
+    let following = await isFollowingUser("esfandtv", tagged.toLowerCase());
 
     if (following !== null) {
-      var foundDate = following["data"][0]["followed_at"];
-      var elapsed = dateDiff(new Date(), new Date(foundDate));
+      let foundDate = following["data"][0]["followed_at"];
+      let elapsed = dateDiff(new Date(), new Date(foundDate));
       if (tagged.toLowerCase() === userstate["username"]) {
-        client.action(channel, `You have been following for ${elapsed}`);
+        client.action(channel, `@${tagged}, you have been following for ${elapsed}`);
       } else client.say(channel, `${tagged} has been following for ${elapsed}`);
     } else client.say(channel, `@${user} ${tagged} doesn't follow the stream.`);
   }
 }
+
+export = followage;

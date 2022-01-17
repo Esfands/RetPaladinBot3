@@ -1,6 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { Notify } from "../../schemas/NotifySchema";
-export = {
+import { CommandInt } from "../../validation/CommandSchema";
+const notifyme: CommandInt = {
   name: "notifyme",
   aliases: [],
   permissions: [],
@@ -20,14 +21,14 @@ export = {
   testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
-    var user = userstate["display-name"];
-    var username = userstate["username"];
-    var option = context[0]
+    let user = userstate["display-name"];
+    let username = userstate["username"];
+    let option = context[0]
 
     if (option) {
       if (option === "live") {
         Notify.findOne({ type: "live" }, function (err: Error, res: any) {
-          var typeId = res["_id"].toString();
+          let typeId = res["_id"].toString();
 
           if (res["users"].includes(username)) {
             // Remove from the array.
@@ -53,7 +54,7 @@ export = {
         });
       } else if (option === "game") {
         Notify.findOne({ type: "game" }, function (err: Error, res: any) {
-          var typeId = res["_id"].toString();
+          let typeId = res["_id"].toString();
 
           if (res["users"].includes(username)) {
             // Remove from the array.
@@ -80,7 +81,7 @@ export = {
         });
       } else if (option === "title") {
         Notify.findOne({ type: "title" }, function (err: Error, res: any) {
-          var typeId = res["_id"].toString();
+          let typeId = res["_id"].toString();
 
           if (res["users"].includes(username)) {
             // Remove from the array.
@@ -111,3 +112,5 @@ export = {
     }
   }
 }
+
+export = notifyme;

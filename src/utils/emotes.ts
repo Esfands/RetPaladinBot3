@@ -5,28 +5,28 @@ import * as emoteFile from "../datasets/emotes.json";
 
 export function otfResponseEmote(response: string, toTag: string | null) {
   // ${user} 2017(?) Nissan Maxima $e{WICKED, PagMan}
-  var emoStr = "";
+  let emoStr = "";
 
   // Test if $e{} is found
   // Add a way to check if the $e{} is even in there.
 
-  var emoReg = /(?<=\$e{).+?(?=\})/g
+  let emoReg = /(?<=\$e{).+?(?=\})/g
   let emoMatches = emoReg.exec(response);
   if (!emoMatches) {
     emoStr = response;
   } else {
-    var emoArr = emoMatches[0].split(", ")
-    var emoInd = emoMatches.index - 3;
+    let emoArr = emoMatches[0].split(", ")
+    let emoInd = emoMatches.index - 3;
 
-    var bestEmote = getBestAvailableEmote(emoArr);
-    var emoteless = response.substr(0, emoInd);
+    let bestEmote = getBestAvailableEmote(emoArr);
+    let emoteless = response.substr(0, emoInd);
 
     emoStr = addStr(emoteless, emoInd, bestEmote);
   }
 
   // Test if ${user} is found
-  var targetReg = /\${user}/gm
-  var tarUser = targetReg.exec(emoStr);
+  let targetReg = /\${user}/gm
+  let tarUser = targetReg.exec(emoStr);
   if (!tarUser) {
     emoStr = emoStr;
   } else {
@@ -52,7 +52,7 @@ export function getBestAvailableEmote(array: Array<string>) {
   let emotes = JSON.parse(emoteJSON.toString());
 
   // Find any matched emotes
-  for (var i = 0; i < array.length; i++) {
+  for (let i = 0; i < array.length; i++) {
     if (!emotes.includes(array[i])) {
       // Remove any emotes from array that aren't in json
       let id = array.indexOf(array[i]);
@@ -64,13 +64,13 @@ export function getBestAvailableEmote(array: Array<string>) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-var emoteData: Array<string> = [];
+let emoteData: Array<string> = [];
 export async function getEmotes() {
-  var bttvData = await fetchAPI(`https://api.betterttv.net/3/cached/users/twitch/38746172`);
+  let bttvData = await fetchAPI(`https://api.betterttv.net/3/cached/users/twitch/38746172`);
 
-  var bttvGlobalData = await fetchAPI("https://api.betterttv.net/3/cached/emotes/global");
+  let bttvGlobalData = await fetchAPI("https://api.betterttv.net/3/cached/emotes/global");
 
-  var ffzData = await fetchAPI(`https://api.betterttv.net/3/cached/frankerfacez/users/twitch/38746172`);
+  let ffzData = await fetchAPI(`https://api.betterttv.net/3/cached/frankerfacez/users/twitch/38746172`);
 
   // Fetching channel and shared BTTV emotes
   if (bttvData) {

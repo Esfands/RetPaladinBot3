@@ -2,18 +2,17 @@ const joi = require('@hapi/joi');
 import { Actions, CommonUserstate } from "tmi.js";
 import { OPTIONAL_PERMISSIONS, VALID_PERMISSIONS } from "./PermissionTypes";
 
-export type commandInt = {
+export interface CommandInt {
   name: string;
-  aliases: [string];
-  permissions: [string];
+  aliases: string[];
+  permissions: string[];
   globalCooldown: number;
   cooldown: number;
   description: string;
-  dynamicDescription: [string];
+  dynamicDescription: string[];
   testing: boolean;
   offlineOnly: boolean;
-  count: number;
-  code: (client: Actions, channel: string, userstate: CommonUserstate, context: (string | number | boolean)[]) => void;
+  code: (client: Actions, channel: string, userstate: CommonUserstate, context: any[]) => void;
 }
 
 /**

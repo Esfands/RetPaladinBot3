@@ -1,8 +1,9 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import { shortenURL } from "../../utils";
+import { CommandInt } from "../../validation/CommandSchema";
 
-export = {
+const animal: CommandInt = {
   name: "animal",
   aliases: [],
   permissions: [],
@@ -36,12 +37,12 @@ export = {
       {name: "zoo", link: "https://zoo-animal-api.herokuapp.com/animals/rand"}
     ];
 
-    var chosenCategory = (context[0]) ? animals.find(animal => animal.name === context[0].toLowerCase()) : animals[Math.floor(Math.random() * animals.length)];
+    let chosenCategory = (context[0]) ? animals.find(animal => animal.name === context[0].toLowerCase()) : animals[Math.floor(Math.random() * animals.length)];
     if (!chosenCategory) return;
-    var dig = await axios.get(chosenCategory["link"]);
-    var data = await dig.data;
+    let dig = await axios.get(chosenCategory["link"]);
+    let data = await dig.data;
 
-    var toSend;
+    let toSend;
     switch (chosenCategory["name"]) {
       case "axolotl":
         toSend = data["url"];
@@ -79,3 +80,5 @@ export = {
     } 
   }
 }
+
+export = animal;
