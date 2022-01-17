@@ -207,7 +207,7 @@ export async function checkMessageBanPhrase(message: string) {
  * @returns string of the new message
  */
 export function applyFont(message: string, font: any) {
-  return message.split("").map(function(c) {
+  return message.split("").map(function (c) {
     if (typeof font[c] === "undefined") font[c] = " ";
     return font[c];
   }).join('');
@@ -218,7 +218,7 @@ export const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 export async function updateOrCreateChatter(userstate: CommonUserstate) {
   var query = await Chatter.findOne({ tid: userstate["user-id"] });
   if (!query) {
-    await new Chatter({ 
+    await new Chatter({
       tid: userstate["user-id"],
       username: userstate["username"],
       display_name: userstate["display-name"],
@@ -226,4 +226,14 @@ export async function updateOrCreateChatter(userstate: CommonUserstate) {
       badges: userstate["badges"]
     }).save();
   }
+}
+
+// minutes to hours and mins
+export function minsToHours(n: number) {
+  var num = n;
+  var hours = (num / 60);
+  var rhours = Math.floor(hours);
+  var minutes = (hours - rhours) * 60;
+  var rminutes = Math.round(minutes);
+  return rhours + " hours and " + rminutes + " minutes";
 }
