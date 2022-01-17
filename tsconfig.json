@@ -1,0 +1,16 @@
+{
+    "extends": "@tsconfig/recommended/tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "resolveJsonModule": true,
+        "target": "ES6"
+    },
+    "include": [
+        "src/**/*",
+        "src/datasets/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}

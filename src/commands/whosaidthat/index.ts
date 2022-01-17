@@ -1,0 +1,61 @@
+import { Actions, CommonUserstate } from "tmi.js";
+import { checkRoundsNumber, createWSTGame, startWSTGame, stopWSTGame } from "./whosaidthat";
+export = {
+  name: "whosaidthat",
+  aliases: ["wst"],
+  permissions: [],
+  globalCooldown: 10,
+  cooldown: 30,
+  description: "Guess who said what!",
+  dynamicDescription: [
+    "A random line will be chosen from all players entered. All players have to guess who said that line.",
+    "",
+    "Create a lobby and which allows users to join the game.",
+    "<code>!whosaidthat create (optional: # of rounds, default is 1)</code>",
+    "",
+    "Join the lobby created by the GM.",
+    "<code>!join</code>",
+    "",
+    "When the GM is ready to start the game do the command below.",
+    "<code>!whosaidthat start</code>",
+    "",
+    "Does the GM want to cut the game short?",
+    "<code>!whosaidthat stop</code>",
+  ],
+  testing: false,
+  offlineOnly: false,
+  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+    const gameMaster = userstate["display-name"];
+    const command = context[0];
+
+    console.log('hello?')
+
+    var gameData = {}
+    if (command) {
+      if (command === "create") {
+        // If they provide a number for a round set it to that otherwise the default is one
+        var gameRounds = (context[1]) ? await checkRoundsNumber(parseInt(context[1])) : await checkRoundsNumber(1); 
+        if (typeof gameRounds === "number") {
+          if (gameRounds <= 0) return client.action(channel, `[WST?] ${gameMaster} game can't be created with "${gameRounds}" rounds.`);
+          var createGame = await createWSTGame(userstate["username"], gameRounds, client, channel);
+          if (createGame) {
+            client.action(channel, `[WST? - ${gameRounds} rounds] A game has been created by ${gameMaster}! Type "!join" to join in and ${gameMaster} will type "!wst start" to begin the game.`);
+          } else return client.action(channel, `[WST?] ${gameMaster} a game has already started.`);
+        } else return client.action(channel, `[WST?] ${gameMaster} ${gameRounds}`)
+
+      } else if (command === "start") {
+        var startedGame = await startWSTGame(userstate["username"], client, channel);
+        client.action(channel, `[WST?] ${startedGame}`);
+
+      } else if (command === "stop") {
+        var gameStop = await stopWSTGame(userstate);
+        client.action(channel, `[WST?] @${gameMaster} ${gameStop}`);
+
+      } else if (command === "about") {
+        client.action(channel, `[WST?] "Who Said That?" is a game where a random message will be picked from group of players. Commands: https://www.retpaladinbot.com/commands/whosaidthat`);
+      }
+    } else {
+      client.action(channel, `[WST?] Incorrect syntax: visit here for more information - https://www.retpaladinbot.com/commands/whosaidthat`);
+    }
+  }
+}
