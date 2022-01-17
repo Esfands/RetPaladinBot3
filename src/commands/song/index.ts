@@ -13,8 +13,10 @@ export = {
   ],
   testing: false,
   offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => { 
-    const user = userstate["display-name"];
+  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+    return; // Disabled for now since esfand has to setup last.fm 
+    
+    /* const user = userstate["display-name"];
 
     const data = await axios({
       method: "GET",
@@ -23,6 +25,6 @@ export = {
 
     if (!data) return client.action(channel, `@${user} there was an issue fetching the current song!`);
     var recentSong = await data.data.recenttracks.track[0];
-    client.action(channel, `@${user} current song: ${recentSong["name"]} ${recentSong["artist"]["#text"]}`);
+    client.action(channel, `@${user} current song: ${recentSong["name"]} ${recentSong["artist"]["#text"]}`); */
   }
 }
