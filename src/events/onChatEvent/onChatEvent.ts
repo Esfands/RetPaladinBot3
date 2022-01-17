@@ -83,6 +83,7 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
 
       // Check for global/personal cooldowns.
       let shouldRun = await cooldownCanContinue(userstate, command.name, command.cooldown, command.globalCooldown);
+      if (shouldRun == false) return;
 
       if (isUserPermitted(userstate, command.permissions)) {
         await command.code(client, channel, userstate, context);
