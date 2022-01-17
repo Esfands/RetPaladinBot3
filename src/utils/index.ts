@@ -217,7 +217,6 @@ export const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 export async function updateOrCreateChatter(userstate: CommonUserstate) {
   var query = await Chatter.findOne({ tid: userstate["user-id"] });
-  console.log(userstate["badges"]);
   if (!query) {
     await new Chatter({ 
       tid: userstate["user-id"],
