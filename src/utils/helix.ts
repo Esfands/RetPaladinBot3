@@ -34,6 +34,12 @@ export async function getStreamData(username: string | number): Promise<any> {
   return await getStream(id["data"][0]["id"]); 
 }
 
+export async function getFollowers(username: string | number) {
+  var id = await getUser(username);
+  var query = await fetchHelixAPI("users/follows", `to_id=${id["data"][0]["id"]}&first=1`);
+  return query.total;
+}
+
 export async function isFollowingUser(streamer: string, user: string) {
   var streamerId = (streamer === "esfandtv") ? 38746172 : await getUserId(streamer); 
   try {
