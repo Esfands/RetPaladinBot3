@@ -7,7 +7,7 @@ const unbotFollowing: CommandInt = {
   permissions: [],
   globalCooldown: 10,
   cooldown: 30,
-  description: "",
+  description: "Check how many followers are bots.",
   dynamicDescription: [
     "<code></code>"
   ],
