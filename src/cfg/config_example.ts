@@ -30,7 +30,8 @@ export default {
           bearer: ""
       },
       deep_api: "",
-      last_fm: ""
+      last_fm: "",
+      riot: ""
   },
   permissions: {
       developers: [],
