@@ -43,7 +43,7 @@ function emoteStreakBroken(user: string, emoteStreak: EmoteStreak) {
 
   let triggers = Object.keys(streakOptions);
   triggers.forEach((trig, index) => {
-    if (isBetween(count, parseInt(triggers[index]), parseInt(triggers[index+1]))) response = streakOptions[triggers[index]];
+    if (isBetween(count, parseInt(triggers[index]), parseInt(triggers[index + 1]))) response = streakOptions[triggers[index]];
   });
 
   let emoteTag = RegExp("({emote})", 'gmi');
@@ -51,12 +51,13 @@ function emoteStreakBroken(user: string, emoteStreak: EmoteStreak) {
   let userTag = RegExp("({user})", 'gmi');
 
   // Clueless surely this this the best way to do this.
+  let newRes, newRes2, newRes3;
   if (emoteTag.test(response)) {
-    let newRes = response.replace(emoteTag, emote);
+    newRes = response.replace(emoteTag, emote);
     if (countTag.test(newRes)) {
-      let newRes2 = newRes.replace(countTag, count);
+      newRes2 = newRes.replace(countTag, count);
       if (userTag.test(newRes2)) {
-        let newRes3 = newRes2.replace(userTag, user);
+        newRes3 = newRes2.replace(userTag, user);
         return newRes3;
       } else return newRes2;
     } else return newRes;
