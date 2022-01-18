@@ -2,8 +2,8 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { getFollowers } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 const unbotFollowing: CommandInt = {
-  name: "",
-  aliases: [],
+  name: "unbotfollowing",
+  aliases: ["unbotf"],
   permissions: [],
   globalCooldown: 10,
   cooldown: 30,
