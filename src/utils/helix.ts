@@ -25,13 +25,30 @@ export async function getUserId(username: string) {
   return id["data"][0]["id"];
 }
 
+export async function get100Ids(usernames: string[]) {
+  for (let i = 0; i < usernames.length; i++) {
+    if (i != 0) {
+      usernames[i] = "&login=" + usernames[i];
+    } else usernames[i] = `login=${usernames[i]}`;
+  }
+
+  let usersIds = await fetchHelixAPI("users", usernames.join(""));
+
+  let toSend: object[] = [];
+  usersIds["data"].forEach((tid: any) => {
+    toSend.push({ name: tid["login"], tid: tid["id"] })
+  });
+  
+  return toSend;
+}
+
 export async function getStream(user: string | number) {
   return await fetchHelixAPI("streams", Number(user) ? `user_id=${user}` : `user_login=${user}`);
 }
 
 export async function getStreamData(username: string | number): Promise<any> {
   let id = await getUser(username);
-  return await getStream(id["data"][0]["id"]); 
+  return await getStream(id["data"][0]["id"]);
 }
 
 export async function getFollowers(username: string | number) {
@@ -41,7 +58,7 @@ export async function getFollowers(username: string | number) {
 }
 
 export async function isFollowingUser(streamer: string, user: string) {
-  let streamerId = (streamer === "esfandtv") ? 38746172 : await getUserId(streamer); 
+  let streamerId = (streamer === "esfandtv") ? 38746172 : await getUserId(streamer);
   let userId;
   try {
     userId = await getUserId(user);
@@ -60,7 +77,7 @@ export async function isFollowingUser(streamer: string, user: string) {
 export async function getUsersFollowers(username: string) {
   let id = await getUserId(username);
 
-   let response = await axios.get(`https://api.twitch.tv/helix/users/follows?from_id=${id}&first=100`, {
+  let response = await axios.get(`https://api.twitch.tv/helix/users/follows?from_id=${id}&first=100`, {
     method: "GET",
     headers: headers
   });
@@ -68,7 +85,7 @@ export async function getUsersFollowers(username: string) {
   let data = await response.data;
   let total = [];
   for (let i = 0; i < data.data.length; i++) {
-    let streamers = {streamer: data.data[i]["to_name"], date: data.data[i]["followed_at"]};
+    let streamers = { streamer: data.data[i]["to_name"], date: data.data[i]["followed_at"] };
     total.push(streamers);
   }
 
@@ -80,7 +97,7 @@ export async function getUsersFollowers(username: string) {
       method: "GET",
       headers: headers
     });
-    
+
     let datatwo = await response2.data;
     cursor = datatwo.pagination.cursor;
     pages.push(datatwo.data);
@@ -88,7 +105,7 @@ export async function getUsersFollowers(username: string) {
 
   for (let i = 0; i < pages.length; i++) {
     for (let j = 0; j < pages[i].length; j++) {
-      total.push({streamer: pages[i][j]["to_name"], date: pages[i][j]["followed_at"]});
+      total.push({ streamer: pages[i][j]["to_name"], date: pages[i][j]["followed_at"] });
     }
   }
   return total;

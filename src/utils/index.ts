@@ -223,6 +223,7 @@ export async function updateOrCreateChatter(userstate: CommonUserstate) {
       username: userstate["username"],
       display_name: userstate["display-name"],
       color: userstate["color"],
+      retfuel: 2,
       badges: userstate["badges"]
     }).save();
   }

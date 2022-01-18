@@ -5,6 +5,7 @@ export interface IChatter extends Document {
   username: string;
   display_name: string;
   color: string;
+  retfuel: number;
   badges: object;
 }
 
@@ -13,6 +14,7 @@ let ChatterSchema = new Schema({
   username: String,
   display_name: String,
   color: String,
+  retfuel: Number,
   badges: Object,
 })
 

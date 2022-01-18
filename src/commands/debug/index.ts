@@ -1,4 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { fetchChatters, giveAllChattersRetfuel } from "../../modules/retfuel";
 import { getEmotes } from "../../utils/emotes";
 import { getEventSubs } from "../../utils/EventSub";
 import { CommandInt } from "../../validation/CommandSchema";
@@ -31,6 +32,9 @@ const debug: CommandInt = {
     } else if (context[0] === "eventsub") {
       let eventSub = await getEventSubs();
       console.log(eventSub["data"]);
+    
+    } else if (context[0] === "points") {
+      //await giveAllChattersRetfuel();
     }
   }
 }

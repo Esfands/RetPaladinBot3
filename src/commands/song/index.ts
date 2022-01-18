@@ -15,9 +15,8 @@ const song: CommandInt = {
   testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
-    return; // Disabled for now since esfand has to setup last.fm 
-    
-    /* const user = userstate["display-name"];
+    return;
+/*     const user = userstate["display-name"];
 
     const data = await axios({
       method: "GET",
