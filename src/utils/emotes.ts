@@ -96,7 +96,12 @@ export async function getEmotes() {
     }
   }
 
-  
+  let sevenTVData = await fetchAPI("https://api.7tv.app/v2/users/esfandtv/emotes");
+  if (sevenTVData) {
+    for (let i = 0; i < sevenTVData.length; i++) {
+      emoteData.push(sevenTVData[i]["name"]);
+    }
+  }
 
   writeFileSync(path.join(__dirname, '../datasets/emotes.json'), JSON.stringify(emoteData));
 }
