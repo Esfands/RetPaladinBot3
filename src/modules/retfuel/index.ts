@@ -47,9 +47,6 @@ export async function giveAllChattersRetfuel() {
   let testUsers = [
     { name: 'mahcksimus', tid: '237509153' },
   ]
-  
-  Chatter.update({}, {$unset: {retfuel:1}} , {multi: true})
-    .then(res => console.log("DONE"));
 
   testUsers.forEach(async (user) => {
     let query = await Chatter.findOne({ tid: user["tid"] });
@@ -66,7 +63,7 @@ export async function giveAllChattersRetfuel() {
     } else {
       console.log('found');
       // TODO: Find if user is a sub or not with Twitch API, need Esfand's approval
-      Chatter.updateOne({ tid: user["tid"] }, { $inc: { retfuel: 2 } })
+      await Chatter.updateOne({ tid: user["tid"] }, { $inc: { retfuel: 2 } })
     }
   })
 
@@ -84,8 +81,11 @@ export async function giveAllChattersRetfuel() {
  * @param user User to give Retfuel to
  * @param amount How much Retfuel to give
  */
-export function giveRetfuel(user: Userstate["username"], amount: number) {
-
+export async function giveRetfuel(username: string, amount: number) {
+  var query = await Chatter.updateOne({ username: username }, { $inc: { retfuel: amount } });
+  if (query) {
+    return true;
+  } else return false;
 }
 
 /**
@@ -93,6 +93,21 @@ export function giveRetfuel(user: Userstate["username"], amount: number) {
  * @param user User to take Retfuel from
  * @param amount How much Retfuel to take
  */
-export function takeRetfuel(user: Userstate["username"], amount: number) {
+export async function takeRetfuel(username: string, amount: number) {
+  var query = await Chatter.updateOne({ username: username }, { $inc: { retfuel: -amount } });
+  if (query) {
+    return true;
+  } else return false;
+}
 
+/**
+ *  Set a users Retfuel
+ * @param user User to set Retfuel to
+ * @param amount How much Retfuel to set them to
+ */
+ export async function setRetfuel(username: string, amount: number) {
+  var query = await Chatter.updateOne({ username: username }, { retfuel: amount });
+  if (query) {
+    return true;
+  } else return false;
 }

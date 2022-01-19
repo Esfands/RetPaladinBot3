@@ -34,7 +34,10 @@ const debug: CommandInt = {
       console.log(eventSub["data"]);
     
     } else if (context[0] === "points") {
-      //await giveAllChattersRetfuel();
+      await giveAllChattersRetfuel();
+    
+    } else if (context[0] === "host") {
+      
     }
   }
 }

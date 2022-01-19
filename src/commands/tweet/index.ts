@@ -28,14 +28,16 @@ const tweet: CommandInt = {
     try {
       let queryUser = await axios(`https://api.twitter.com/2/users/by?usernames=${userSearch}`, { method: "GET", headers: headers });
       userData = await queryUser.data;
+      console.log(userData);
     } catch (error) {
       client.say(channel, `Couldn't find twitter user "${userSearch}"`);
       return;
     }
 
     // Get users recent tweets
+    let twitterId = (context[0]) ? userData["data"][0]["id"] : 385560056
     try {
-      let recentTweets = await axios(`https://api.twitter.com/2/users/${userData["data"][0]["id"]}/tweets`, { method: "GET", headers: headers });
+      let recentTweets = await axios(`https://api.twitter.com/2/users/${twitterId}/tweets`, { method: "GET", headers: headers });
       tweetsData = await recentTweets.data;
     } catch (error) {
       client.say(channel, `Couldn't find twitter user "${userSearch}"`);
@@ -47,16 +49,15 @@ const tweet: CommandInt = {
     let recentData = await recentTweet.data;
 
     let elapsed = timeDifference(new Date(), new Date(recentData["data"][0]["created_at"]), true);
-    let twitterLink = `https://twitter.com/${userSearch.toLowerCase()}/status/${recentData["data"][0]["id"]}`;
     let arrowRegex = new RegExp("-&gt;", "g");
 
     let tweetText = (arrowRegex.test(recentData["data"][0]["text"])) 
     ? recentData["data"][0]["text"].replace(arrowRegex, "->")
     : recentData["data"][0]["text"];
 
-    shortenURL(twitterLink).then((result) => {
-      client.say(channel, `(@${userSearch}) ${tweetText} | ${elapsed} ${result}`)
-    });
+    //shortenURL(twitterLink).then((result) => {
+      client.say(channel, `(@${userSearch}) ${tweetText} | ${elapsed}`)
+    //});
   }
 }
 
