@@ -24,7 +24,7 @@ const song: CommandInt = {
 
     if (!data) return client.action(channel, `@${user} there was an issue fetching the current song!`);
     let recentSong = await data.data.recenttracks.track[0];
-    client.action(channel, `@${user} current song: ${recentSong["name"]} ${recentSong["artist"]["#text"]}`);
+    client.action(channel, `@${user} current song: ${recentSong["name"]} - ${recentSong["artist"]["#text"]}`);
   }
 }
 
