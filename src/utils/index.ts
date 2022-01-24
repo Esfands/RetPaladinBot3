@@ -1,6 +1,7 @@
 import axios from "axios";
 import { CommonUserstate } from "tmi.js";
 import config from "../cfg/config";
+import moment from "moment";
 
 export function checkObjectTypes(object: object): string {
   let types: string[] = [];
@@ -36,9 +37,21 @@ export function colorLog(color: string, message: string, options: string): strin
 }
 
 export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean) {
-  let attemptOne = timeDifference(startDate, endDate, includeSeconds);
-  if (attemptOne) return attemptOne;
-  return dateDiff(startDate, endDate);
+  var a = moment(startDate);
+  var b = moment(endDate);
+
+  var years = a.diff(b, 'year');
+  b.add(years, 'years');
+
+  var months = a.diff(b, 'months');
+  b.add(months, 'months');
+
+  var days = a.diff(b, 'days');
+
+  let yearStr = (years > 0) ? years + " years " : "";
+  let monthStr = (months > 0) ? months + " months " : "";
+  let dayStr = (days > 0) ? days + " days" : "";
+  return yearStr + monthStr + dayStr;
 }
 
 export function secondsToHms(d: number): string {
