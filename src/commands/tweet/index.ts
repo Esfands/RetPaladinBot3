@@ -35,14 +35,17 @@ const tweet: CommandInt = {
 
     // Get users recent tweets
     try {
-      let recentTweets = await axios(`https://api.twitter.com/2/users/${userData["data"][0]["id"]}/tweets`, { method: "GET", headers: headers });
+      let recentTweets = await axios(`https://api.twitter.com/2/users/${userData["data"][0]["id"]}/tweets?&exclude=replies,retweets`, { method: "GET", headers: headers });
       tweetsData = await recentTweets.data;
+      console.log(recentTweets.data);
     } catch (error) {
+      console.log(error);
       client.say(channel, `Couldn't find twitter user "${userSearch}"`);
       return;
     }
 
     // Get the most recent tweet
+    console.log(tweetsData);
     let recentTweet = await axios(`https://api.twitter.com/2/tweets?ids=${tweetsData["meta"]["newest_id"]}&tweet.fields=created_at`, { method: "GET", headers: headers });
     let recentData = await recentTweet.data;
 
