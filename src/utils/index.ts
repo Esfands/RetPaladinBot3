@@ -1,9 +1,6 @@
 import axios from "axios";
 import { CommonUserstate } from "tmi.js";
 import config from "../cfg/config";
-import { Chatter } from "../schemas/ChatterSchema";
-import { Command } from "../schemas/CommandSchema";
-import { OTFCommand } from "../schemas/OTFSchema";
 
 export function checkObjectTypes(object: object): string {
   let types: string[] = [];
@@ -23,6 +20,7 @@ export function checkObjectTypes(object: object): string {
  * @param {enum} options [reset, bright, dim, underscore, blink, reverse, hidden]
  */
 import { colors } from "./data";
+import { findOne, findAndUpdate, insertRow } from "./maria";
 export function colorLog(color: string, message: string, options: string): string {
   let toSend;
   if (!message) toSend = "[WARNING] Please provide a message.";
@@ -35,6 +33,12 @@ export function colorLog(color: string, message: string, options: string): strin
     }
   } else toSend = '[WARNING] Please provide a color.';
   return toSend;
+}
+
+export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean) {
+  let attemptOne = timeDifference(startDate, endDate, includeSeconds);
+  if (attemptOne) return attemptOne;
+  return dateDiff(startDate, endDate);
 }
 
 export function secondsToHms(d: number): string {
@@ -121,17 +125,9 @@ export function addStr(str: string, index: number, stringToAdd: string) {
  */
 export function commandUsed(type: string, command: string) {
   if (type === "command") {
-    Command.findOneAndUpdate({ name: command }, { $inc: { count: 1 } }, { new: true }, function (err, response) {
-      if (err) {
-        console.log(err)
-      }
-    });
+    findAndUpdate(`SELECT * FROM commands WHERE Name='${command}'`, `UPDATE commands SET Count=Count+1 WHERE Name='${command}';`);
   } else if (type === "otf") {
-    OTFCommand.findOneAndUpdate({ name: command }, { $inc: { count: 1 } }, { new: true }, function (err, response) {
-      if (err) {
-        console.log(err)
-      }
-    });
+    findAndUpdate(`SELECT * FROM otf WHERE Name='${command}'`, `UPDATE otf SET Count=Count+1 WHERE Name='${command}';`);
   }
 }
 
@@ -142,8 +138,19 @@ export function commandUsed(type: string, command: string) {
  */
 export async function shortenURL(url: string) {
   try {
-    let request = await axios.post("https://gotiny.cc/api", { input: url })
-    return await `https://gotiny.cc/${request.data[0]["code"]}`;
+    let request = await axios({
+      url: "https://shrtlnk.dev/api/v2/link",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Api-Key": config.apiKeys.shrtlnk
+      },
+      data: {
+        url: url
+      }
+    });
+    return await request.data["shrtlnk"];
   } catch (error) {
     return null;
   }
@@ -216,16 +223,10 @@ export function applyFont(message: string, font: any) {
 export const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 export async function updateOrCreateChatter(userstate: CommonUserstate) {
-  let query = await Chatter.findOne({ tid: userstate["user-id"] });
+  let query = await findOne('chatters', `TID='${userstate["user-id"]}'`);
   if (!query) {
-    await new Chatter({
-      tid: userstate["user-id"],
-      username: userstate["username"],
-      display_name: userstate["display-name"],
-      color: userstate["color"],
-      retfuel: 2,
-      badges: userstate["badges"]
-    }).save();
+    let values = [userstate["user-id"], userstate["username"], userstate["display-name"], userstate["color"], 2, userstate["badges"]];
+    await insertRow(`INSERT INTO chatters (TID, Username, DisplayName, Color, RetFuel, Badges) VALUES (?, ?, ?, ?, ?, ?);`, values);
   }
 }
 

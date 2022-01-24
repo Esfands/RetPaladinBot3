@@ -1,72 +1,54 @@
 import { CommonUserstate } from "tmi.js";
-import { OTFCommand, IOTFCommand } from "../../schemas/OTFSchema";
+import { pool } from "../../main";
+import { IOTFCommand } from "../../schemas/types";
 import { otfResponseEmote } from "../../utils/emotes";
+import { findOne, findAndUpdate, findOrCreate, findColumn, updateOne, removeOne, insertRow } from "../../utils/maria";
 
 export async function createOTFCommand(name: string, response: string, creator: string | null) {
-  new OTFCommand({ name: name, response: response, creator: creator, count: 0, history: [{ "created": { name: creator, message: "Created the command", date: new Date() } }] }).save();
+  let query = `INSERT INTO otf (Name, Response, Creator, Count) VALUES (?, ?, ?, ?);`;
+  let values = [name, response, creator, 0];
+  await insertRow(query, values);
 }
 
 export async function getOTFCleanResponse(name: string) {
-  let found = await OTFCommand.findOne({ name: name }).select({ "response": 1, "_id": 0});
+  let found = await findOne('otf', `Name='${name}'`);
   if (found) {
-    return found.response;
+    return found["Response"];
   } else return null;
 }
 
 export async function removeOTFCommand(name: string) {
-  let searchCmd = await OTFCommand.findOne({ name: name });
+  let searchCmd = await findOne('otf', `Name='${name}'`);
   if (searchCmd) {
-    await OTFCommand.findOneAndRemove({ name: name });
+    await removeOne(`otf`, `Name='${name}'`);
     return `successfuly removed keyword "${name}"`;
   } else return `couldn't find the keyword "${name}" to remove`;
 }
 
-export async function editOTFCommand(cmd: string, message: string, editor: CommonUserstate["username"]) {
-  let cmdData = await OTFCommand.findOne({ name: cmd });
-  let cmdId = cmdData?._id.toString();
-  OTFCommand.updateOne(
-    { _id: cmdId },
-    { response: message, $push: { history: { "edit": { name: editor, message: message, date: new Date() } } } },
-    function(error: Error, success: string) {
-      if (error) {
-        console.warn(error);
-      } else {
-        console.log("Updated");
-      }
-    }
-  )
+export async function editOTFCommand(cmd: string, message: string) {
+  findAndUpdate(`SELECT * FROM otf WHERE Name='${cmd}';`, `UPDATE otf SET Response='${message}' WHERE Name='${cmd}';`);
 }
 
-export async function editOTFCommandName(oldName: string, newName: string, editor: CommonUserstate["username"]) {
-  let cmdData = await OTFCommand.findOne({ name: oldName });
-  let cmdId = cmdData?._id.toString();
-  OTFCommand.updateOne(
-    { _id: cmdId },
-    { name: newName, $push: { history: { "name-change": { name: editor, message: `Edited command name from "${oldName}" to "${newName}"`, date: new Date() } } } },
-    function (error: Error, success: string) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("updated")
-      }
-    }
-  )
+export async function editOTFCommandName(oldName: string, newName: string) {
+  let updated = await updateOne(`UPDATE otf SET Name='${newName}' WHERE Name='${oldName}';`);
+  if (updated.affectedRows == 0) return false;
 }
 
 export async function getOTFResponse(name: string, toUser: string | null) {
-  let response = await OTFCommand.findOne({ name: name });
-  
-  if (!response) return; 
-  return otfResponseEmote(response["response"].toString(), toUser)
+  let response = await findOne('otf', `Name='${name}'`);
+
+  return otfResponseEmote(response["Response"], toUser)
 }
 
 export async function getOTFCommandNames(): Promise<Array<string>> {
-  let otfNames:Array<string> = [];
-  let OTFData: Array<IOTFCommand> = await OTFCommand.find({}).select({ "name": 1, "_id": 0 })!;
+  let otfNames: Array<string> = [];
+  const rows = await findColumn('otf', 'Name');
 
-  OTFData.forEach(cmd => {
-    otfNames.push(cmd["name"]);
-  });
+  if (rows !== null) {
+    rows.forEach((cmd: any) => {
+      otfNames.push(cmd["Name"]);
+    });
+  }
 
   return otfNames;
 }

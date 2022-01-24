@@ -41,7 +41,7 @@ const command: CommandInt = {
 
     if (cmd) {
       if (cmdName) {
-        
+
         // check for a command response
         if (cmd === "check") {
           let cmdToSearch = (cmdName.charAt(0) === config.prefix) ? cmdName.substring(1) : cmdName;
@@ -57,15 +57,17 @@ const command: CommandInt = {
             if (matches.length) {
               if (execute === "name") {
                 let newResponse = context[3];
-                await editOTFCommandName(cmdName, newResponse, user);
-                client.action(channel, `@${user} command "${context[1]}" has been changed to "${newResponse}"`);
-              
+                var edited = await editOTFCommandName(cmdName, newResponse);
+                if (edited !== false) {
+                  client.action(channel, `@${user} command "${context[1]}" has been changed to "${newResponse}"`);
+                } else return client.action(channel, `@${user} command "${context[1]}" couldn't be found.`);
+
               } else if (execute === "message" || execute === "response") {
                 let newResponse = context.splice(3).join(" ");
-                await editOTFCommand(cmdName, newResponse, user);
+                await editOTFCommand(cmdName, newResponse);
                 client.action(channel, `@${user} sucessfully updated "${cmdName}" command.`);
               }
-            } 
+            }
           }
         } else if (cmd === "create" || cmd === "add") {
           if (execute) {
@@ -76,14 +78,14 @@ const command: CommandInt = {
               createOTFCommand(cmdName.toLowerCase(), createdResponse, user);
               client.action(channel, `${user} successfully created the command "${cmdName}".`);
             } else client.action(channel, `@${user} the command "${cmdName}" already exists.`);
-          }else client.action(channel, `@${user} please provide a response for the new command "${cmdName}".`);
+          } else client.action(channel, `@${user} please provide a response for the new command "${cmdName}".`);
 
         } else if (cmd === "list") {
           let otfCommands = await getOTFCommandNames();
           let message = `@${user} current commands: ${otfCommands.join(", ")}`;
           let toSend = (message.length > 450) ? `@${user} sorry, the list is too long to post here. Visit: https://www.retpaladinbot.com/commands` : message;
           client.action(channel, toSend);
-        
+
         } else if (cmd === "remove" || cmd === "delete") {
           let removedCommand = await removeOTFCommand(context[1]);
           client.action(channel, `@${user} ${removedCommand}`);

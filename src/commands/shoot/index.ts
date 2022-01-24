@@ -4,8 +4,8 @@ const shoot: CommandInt = {
   name: "shoot",
   aliases: [],
   permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
+  globalCooldown: 15,
+  cooldown: 60,
   description: "Timeout a specific user for a short period of time",
   dynamicDescription: [
     "<code>!shoot (user)</code>"

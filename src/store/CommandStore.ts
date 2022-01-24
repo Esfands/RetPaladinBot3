@@ -1,5 +1,5 @@
 import { readdirSync, statSync } from "fs";
-import { Command } from "../schemas/CommandSchema";
+import { findOne, findOrCreate, insertRow, updateOne } from "../utils/maria";
 import { CommandSchema, CommandInt } from "../validation/CommandSchema";
 
 export class CommandStore {
@@ -12,39 +12,23 @@ export class CommandStore {
   }
 
   _storeAllCommands(commands: Array<CommandInt>) {
-    commands.forEach(command => {
-      Command.findOne({ name: command["name"] }, function (err: Error, obj: object) {
-        if (err) throw err;
-        if (obj) {
-          Command.updateOne({ name: command["name"] }, {
-            name: command["name"],
-            aliases: command["aliases"],
-            permissions: command["permissions"],
-            globalCooldown: command["globalCooldown"],
-            cooldown: command["cooldown"],
-            description: command["description"],
-            dynamicDescription: command["dynamicDescription"],
-            testing: command["testing"],
-            offlineOnly: command["offlineOnly"],
-          });
-        } else {
-          new Command({
-            name: command["name"],
-            aliases: command["aliases"],
-            permissions: command["permissions"],
-            globalCooldown: command["globalCooldown"],
-            cooldown: command["cooldown"],
-            description: command["description"],
-            dynamicDescription: command["dynamicDescription"],
-            testing: command["testing"],
-            offlineOnly: command["offlineOnly"],
-            count: 0,
-          }).save();
-        }
-      });
-
+    commands.forEach(async (command) => {
+      let exists = await findOne(`commands`, `Name='${command.name}'`);
+      if (exists) {
+        await updateOne(`UPDATE commands SET Name='${command.name}', Aliases='${JSON.stringify(command.aliases)}', Permissions='${JSON.stringify(command.permissions)}', Description='${command.description}', DynamicDescription='${JSON.stringify(command.dynamicDescription)}', GlobalCooldown='${command.globalCooldown}', Cooldown='${command.cooldown}', Testing='${(command.testing) ? "true" : "false"}', OfflineOnly='${(command.offlineOnly) ? "true" : "false"}' WHERE Name='${command.name}';`);
+        //console.log('updated');
+      } else {
+        let queryStr = `INSERT INTO commands (Name, Aliases, Permissions, Description, DynamicDescription, GlobalCooldown, Cooldown, Testing, OfflineOnly, Count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+        let values = [command.name, JSON.stringify(command.aliases), JSON.stringify(command.permissions), command.description, JSON.stringify(command.dynamicDescription), command.globalCooldown, command.cooldown, (command.testing) ? "true" : "false", (command.offlineOnly) ? "true" : "false", 0];
+        await insertRow(queryStr, values);
+        //console.log('New command');
+      }
+      //findOrCreate("commands", `Name='${command.name}'`, queryStr, values);
     })
   }
+
+  //return conn.query(`INSERT INTO commands (Name, Aliases, Permissions, Description, DynamicDescription, GlobalCooldown, Cooldown, Testing, OfflineOnly) VALUES (${command.name}, ${command.aliases}, ${command.permissions}, ${command.description}, ${command.dynamicDescription}, ${command.globalCooldown}, ${command.cooldown}, ${command.testing}, ${command.offlineOnly})`)
+
 
   _loadAllCommands() {
     const files = _getAllFilesFromFolder(this._directory);

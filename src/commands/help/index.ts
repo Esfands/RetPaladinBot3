@@ -1,5 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { Command, ICommand } from "../../schemas/CommandSchema";
+import { ICommand } from "../../schemas/types";
+import { findOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const help: CommandInt = {
   name: "help",
@@ -18,12 +19,14 @@ const help: CommandInt = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let user = userstate["display-name"];
-    let commands: Array<ICommand> = await Command.find({ name: context[0] });
+    let commands = await findOne('commands', `Name='${context[0]}'`);
 
-    if (context[0]) {
+    console.log(commands);
+     if (context[0]) {
       if (commands) {
-        let aliases = (commands[0].aliases.length) ? commands[0].aliases.map((s: string) => "!" + s).join(", ") : "No aliases";
-        client.action(channel, `@${user} !${commands[0].name} (${aliases}): ${commands[0].description} - ${commands[0].cooldown}sec cooldown. https://www.retpaladinbot.com/commands/${commands[0].name}`);
+        let aliasParse = JSON.parse(commands["Aliases"]);
+        let aliases = (aliasParse.length) ? aliasParse.map((s: string) => "!" + s).join(", ") : "No aliases";
+        client.action(channel, `@${user} !${commands["Name"]} (${aliases}): ${commands["Description"]} - ${commands["Cooldown"]}sec cooldown. https://www.retpaladinbot.com/commands/${commands["Name"]}`);
       }
     } else client.action(channel, `@${user} Commands and more information are available here: https://www.retpaladinbot.com/commands`);
   }

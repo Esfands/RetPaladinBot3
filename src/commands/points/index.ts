@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { Chatter } from "../../schemas/ChatterSchema";
+import { findOne, findQuery } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const pointsCommand: CommandInt = {
   name: "points",
@@ -15,36 +15,23 @@ const pointsCommand: CommandInt = {
     "Check how many RetFuel another user has.",
     "<code>!points (user)"
   ],
-  testing: true,
+  testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let user = userstate["display-name"];
     let tagged = (context[0]) ? context[0] : user;
     tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
+    let toQuery = (tagged?.toLowerCase() === userstate["username"]) ? userstate["username"] : tagged?.toLowerCase();
 
-    let query = await Chatter.findOne({ username: tagged?.toLowerCase() });
+    let query = await findOne('chatters', `Username='${toQuery}'`);
     if (query) {
-      let leaderboard = await Chatter.find({ }).sort( { retfuel: -1 } );
-      let position = leaderboard.findIndex(elem => elem["username"] == tagged?.toLowerCase());
-      if (tagged?.toLowerCase() === userstate["username"]) return client.action(channel, `@${user} you have ${query["retfuel"]} RetFuel. Current rank: ${position+1}`);
+      let leaderboard = await findQuery(`SELECT t.TID, (SELECT COUNT(*) FROM chatters AS X WHERE t.RetFuel <= X.RetFuel) AS POSITION, t.Username, t.RetFuel FROM chatters AS t WHERE t.TID = '${userstate["user-id"]}';`);
+      let totalLeaderboard = await findQuery(`SELECT COUNT(*) FROM chatters;`);
+      if (!leaderboard) return;
+      if (tagged?.toLowerCase() === userstate["username"]) return client.action(channel, `@${user} you have ${query["RetFuel"]} RetFuel. Current rank: ${leaderboard["POSITION"]}/${Object.values(totalLeaderboard)}`);
       client.action(channel, `@${user} that user has ${query["retfuel"]} RetFuel.`);
     } else return client.action(channel, `@${user} I couldn't find the user "${tagged}"`)
   }
 }
 
 export = pointsCommand;
-
-/*
-
-FOR TOP POINTS
-
-    let leaderboards = await Chatter.find({ }).sort( { retfuel : -1, name: 1 } );
-    let topFive: string[] = [];
-    leaderboards.forEach((user, index) => {
-      topFive.push(`${index+1}. ${user["display_name"]}: ${user["retfuel"]}`);
-    });
-
-    console.log(topFive.join(" | ")); 
-
-
-*/

@@ -20,9 +20,9 @@ const uptime: CommandInt = {
     const user = userstate["display-name"];
     let tagged = (context[0]) ? context[0] : user; // Might need to change.
     tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
-
+    let streamData = await getStreamData("esfandtv");
+    console.log(streamData);
     try {
-      let streamData = await getStreamData("esfandtv");
       let startTime = await streamData["data"][0]["started_at"];
       if (typeof startTime === "undefined") return client.say(channel, `@${tagged} stream is offline currently Sadge`);
 

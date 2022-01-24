@@ -24,12 +24,14 @@ const rank: CommandInt = {
       url: `https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/tVcXlTGiJle6Bjpy3n53bIR3PqNt9ksrfrwdLpmYpmjlozk?api_key=${config.apiKeys.riot}`,
     });
 
-    let res = query.data[0];
-    let tier = res["tier"].toLowerCase();
-    let currentRank = `${tier.charAt(0).toUpperCase() + tier.slice(1)} ${res["rank"]}`;
-    let winLossRatio = (res["losses"]+res["wins"]) * 100;
-    let winLoss = `${res["wins"]}W ${res["losses"]}L %${winLossRatio.toString().slice(0, -2)} win ratio. OPGG: https://na.op.gg/summoner/userName=Esfand`;
-    client.action(channel, `@${tagged} current rank: ${currentRank} - ${winLoss}`);
+    query.data.forEach((res: any) => {
+      if (res["queueType"] === "RANKED_SOLO_5x5") {
+        let tier = res["tier"].toLowerCase();
+        let currentRank = `${tier.charAt(0).toUpperCase() + tier.slice(1)} ${res["rank"]}`;
+        let winLoss = `${res["leaguePoints"]}LP | ${res["wins"]}W ${res["losses"]}L  - OPGG: https://na.op.gg/summoner/userName=Esfand`;
+        client.action(channel, `@${tagged} current rank: ${currentRank} - ${winLoss}`);
+      }
+    });
   }
 }
 

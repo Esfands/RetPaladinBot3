@@ -1,5 +1,4 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { Chatter } from "../../schemas/ChatterSchema";
 import { CommandInt } from "../../validation/CommandSchema";
 const exampleCommand: CommandInt = {
   name: "top",
@@ -11,10 +10,12 @@ const exampleCommand: CommandInt = {
   dynamicDescription: [
     "<code>!top points</code>"
   ],
-  testing: true,
+  testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
-    let user = userstate["display-name"];
+
+    // TODO: Figure out how to sort top 5
+   /*  let user = userstate["display-name"];
     if (context[0]) {
       if (context[0] === "points") {
         let leaderboards = await Chatter.find({}).sort({ retfuel: -1, name: 1 }).limit(5);
@@ -25,7 +26,7 @@ const exampleCommand: CommandInt = {
 
         client.action(channel, `@${user} top 5: ${topFive.join(" | ")}`);
       }
-    } else return client.action(channel, `@${user} incorrect syntax: `)
+    } else return client.action(channel, `@${user} incorrect syntax: `) */
   }
 }
 

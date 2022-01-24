@@ -1,6 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { Chatter } from "../../schemas/ChatterSchema";
 import { getUser } from "../../utils/helix";
+import { findOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const user: CommandInt = {
   name: 'user',
@@ -39,9 +39,9 @@ const user: CommandInt = {
 
       } else if (command === "color" || command === "colour") {
         if (userInfo) {
-          let query = await Chatter.findOne({ tid: userInfo["data"][0]["id"] });
+          let query = await findOne('chatters', `TID='${userInfo["data"][0]["id"]}'`);
           if (query) {
-            client.action(channel, `@${display} color for that user is: ${query["color"]}`);
+            client.action(channel, `@${display} color for that user is: ${query["Color"]}`);
           } else client.action(channel, `@${display} sorry I haven't seen that user yet Thinkge`);
         } else client.action(channel, `@${display} sorry I couldn't find that Twitch account Thinkge`);
       }

@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { Feedback } from "../../schemas/FeedbackSchema";
+import { asyncInsertRow, findOne, findQuery, insertRow } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const feedback: CommandInt = {
   name: "feedback",
@@ -29,16 +29,20 @@ const feedback: CommandInt = {
     } else return client.action(channel, `${prefix} @${user} incorrect syntax: !feedback (feature/bug) (message)`);
 
     async function saveFeedback(username: CommonUserstate["username"], displayname: CommonUserstate["display-name"], message: string, type: string) {
-      let suggestions = await Feedback.find({});
-      new Feedback({ username: username, "display-name": displayname, message: message, fid: suggestions.length, type: type, status: "pending" }).save();
-      return `your feedback has been saved with ID: ${suggestions.length} and will eventually be processed.`;
+      let id = await asyncInsertRow(`INSERT INTO suggestions (Username, DisplayName, Message, Type, Status) VALUES (?, ?, ?, ?, ?);`, [username, displayname, message, type, "pending"])
+        .then(async (res) => {
+          return findQuery(`SELECT ID FROM suggestions WHERE Username='${username}' AND Message='${message}';`);
+        });
+
+        let newId: any = await id;
+      return `your feedback has been saved with ID: ${newId[0]["ID"]} and will eventually be processed.`;
     }
 
     async function checkFeedback(id: number) {
-      let searched = await Feedback.findOne({ fid: id });
+      let searched = await findOne('suggestions', `ID=${id}`);
       let response;
       if (searched) {
-        response = `ID: ${id} (${searched["type"]}) is ${searched["status"]}: ${searched["message"]}`;
+        response = `ID: ${id} (${searched["Type"]} is ${searched["Status"]}) ${searched["Message"]}`;
       } else {
         response = `could not find a suggestion with the ID ${id}`;
       }

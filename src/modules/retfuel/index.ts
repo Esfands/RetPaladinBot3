@@ -1,7 +1,7 @@
 import { Userstate } from "tmi.js";
-import { Chatter } from "../../schemas/ChatterSchema";
 import { fetchAPI } from "../../utils";
 import { get100Ids, getUserId } from "../../utils/helix";
+import { findOne, insertRow, updateOne } from "../../utils/maria";
 
 /*
 
@@ -49,21 +49,13 @@ export async function giveAllChattersRetfuel() {
   ]
 
   testUsers.forEach(async (user) => {
-    let query = await Chatter.findOne({ tid: user["tid"] });
+    let query = await findOne('chatters', `TID='${user["tid"]}'`);
     if (!query) {
-      console.log('not found');
-      new Chatter({ 
-        tid: user['tid'],
-        username: user["name"],
-        display_name: user["name"],
-        color: '#ffffff',
-        retfuel: 2,
-        badges: {}
-       }).save();
+      let values = [user['tid'], user['name'], user["name"], '#ffffff', 2, {}];
+      await insertRow(`INSERT INTO chatters (TID, Username, DisplayName, Color, RetFuel, Badges);`, values)
     } else {
-      console.log('found');
       // TODO: Find if user is a sub or not with Twitch API, need Esfand's approval
-      await Chatter.updateOne({ tid: user["tid"] }, { $inc: { retfuel: 2 } })
+      await updateOne(`UPDATE chatters SET RetFuel=RetFuel+2 WHERE TID='${user['tid']};'`);
     }
   })
 
@@ -82,7 +74,7 @@ export async function giveAllChattersRetfuel() {
  * @param amount How much Retfuel to give
  */
 export async function giveRetfuel(username: string, amount: number) {
-  var query = await Chatter.updateOne({ username: username }, { $inc: { retfuel: amount } });
+  var query = await updateOne(`UPDATE chatters SET RetFuel=RetFuel+${amount} WHERE Username='${username}';`);
   if (query) {
     return true;
   } else return false;
@@ -94,7 +86,7 @@ export async function giveRetfuel(username: string, amount: number) {
  * @param amount How much Retfuel to take
  */
 export async function takeRetfuel(username: string, amount: number) {
-  var query = await Chatter.updateOne({ username: username }, { $inc: { retfuel: -amount } });
+  var query = await updateOne(`UPDATE chatters SET RetFuel=RetFuel-${amount} WHERE Username='${username}';`);
   if (query) {
     return true;
   } else return false;
@@ -106,8 +98,7 @@ export async function takeRetfuel(username: string, amount: number) {
  * @param amount How much Retfuel to set them to
  */
  export async function setRetfuel(username: string, amount: number) {
-  var query = await Chatter.updateOne({ username: username }, { retfuel: amount });
-  if (query) {
-    return true;
-  } else return false;
+  console.log(username, amount);
+  let query = await updateOne(`UPDATE chatters SET RetFuel=${amount} WHERE Username='${username}'`);
+  console.log(query);
 }

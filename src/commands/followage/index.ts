@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { dateDiff } from "../../utils";
+import { calcDate } from "../../utils";
 import { isFollowingUser } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 const followage: CommandInt = {
@@ -25,7 +25,7 @@ const followage: CommandInt = {
 
     if (following !== null) {
       let foundDate = following["data"][0]["followed_at"];
-      let elapsed = dateDiff(new Date(), new Date(foundDate));
+      let elapsed = calcDate(new Date(), new Date(foundDate), true);
       if (tagged.toLowerCase() === userstate["username"]) {
         client.action(channel, `@${tagged}, you have been following for ${elapsed}`);
       } else client.say(channel, `${tagged} has been following for ${elapsed}`);

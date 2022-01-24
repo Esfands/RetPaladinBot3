@@ -1,7 +1,7 @@
 import { Actions } from "tmi.js";
 import config from "../../cfg/config";
-import { CronJob } from "../../schemas/CronSchema";
 import { LoopManager } from "../../utils/cron";
+import { findOne, insertRow, removeOne, updateOne } from "../../utils/maria";
 import { getOTFResponse } from "../command/OTFCommands";
 
 /* 
@@ -33,9 +33,10 @@ export async function createLoop(title: string, context: Array<string>, client: 
       isCommand = { command: true, response: response };
     } else isCommand = { command: false, response: response };
 
-    let query = await CronJob.findOne({ title: title });
+    //let query = await CronJob.findOne({ title: title });
+    let query = await findOne('loops', `Title='${title}'`);
     if (!query) {
-      await new CronJob({ title: title, pattern: foundPattern, disabled: false, response: isCommand }).save();
+      await insertRow(`INSERT INTO loops (Title, Pattern, Disabled, Response) VALUES (?, ?, ?, ?);`, [title, foundPattern, 'false', isCommand]);
       let res = (isCommand["command"]) ? await checkIfCommand(isCommand["response"]) : isCommand["response"];
       LoopManager.add(title, foundPattern, async () => { client.action(channel, `${res}`) });
       LoopManager.start(title);
@@ -63,26 +64,28 @@ export async function listLoops() {
 }
 
 export async function checkLoop(title: string) {
-  let query = await CronJob.findOne({ title: title });
+  let query = await findOne('loops', `Title='${title}'`);
   if (query) {
-    return `found "${query["title"]}" - "${query["pattern"]}" response: ${query["response"]["response"]}`;
+    let resObj = JSON.parse(query["Response"])
+    return `found "${query["Title"]}" - "${query["Pattern"]}" response: ${resObj["response"]}`;
   } else return `couldn't find the loop "${title}"`;
 }
 
 export async function toggleLoop(title: string, client: Actions, channel: string) {
-  let query = await CronJob.findOne({ title: title });
+  let query = await findOne('loops', `Title='${title}'`);
   if (query) {
-    if (query.disabled == false) {
-      await CronJob.updateOne({ title: title }, { disabled: true });
+    if (query["Disabled"] == 'false') {
+      await updateOne(`UPDATE loops SET Disabled='true' WHERE Title='${title}';`);
       if (LoopManager.exists(title)) LoopManager.stop(title);
       return `the loop "${title}" has been disabled`;
     } else {
-      await CronJob.updateOne({ title: title }, { disabled: false });
-      if (LoopManager.exists(query["title"])) {
-        LoopManager.start(query["title"]);
+      await updateOne(`UPDATE loops SET Disabled='false' WHERE Title='${title}';`);
+      if (LoopManager.exists(query["Title"])) {
+        LoopManager.start(query["Title"]);
       } else {
-        LoopManager.add(query["title"], query["pattern"], async () => { client.action(channel, `${await checkIfCommand(query!["response"]["response"])}`); });
-        LoopManager.start(query["title"]);
+        let resObj = JSON.parse(query["Response"]);
+        LoopManager.add(query["Title"], query["Pattern"], async () => { client.action(channel, `${await checkIfCommand(resObj["Response"])}`); });
+        LoopManager.start(query["Title"]);
       }
       return `the loop "${title}" has been enabled`;
     }
@@ -90,29 +93,27 @@ export async function toggleLoop(title: string, client: Actions, channel: string
 }
 
 export async function removeLoop(title: string) {
-  let query = await CronJob.findOne({ title: title });
+  let query = await findOne('loops', `Title='${title}'`);
   if (query) {
-    return await CronJob.deleteOne({ title: title }).then(function () {
-      if (LoopManager.exists(title)) LoopManager.deleteJob(title);
-      return `removed loop "${title}"`;
-    }).catch(function (error: Error) {
-      return `had an error while trying to delete "${title}"`;
-    });
+    await removeOne('loops', `Title='${title}'`);
+    LoopManager.deleteJob(title);
+    return `removed loop "${title}"`;
   } else return `could not find "${title}" to remove`;
 }
 
 export async function updateLoop(context: Array<string>, client: Actions, channel: string) {
   let title = context[1];
   let todo = context[2];
-  let query = await CronJob.findOne({ title: title });
+  let query = await findOne('loops', `Title='${title}'`);
 
   if (query) {
     if (todo === "name") {
       if (todo) {
-        await CronJob.updateOne({ title: title }, { title: context[3] });
+        await updateOne(`UPDATE loops SET Title='${title}' WHERE Title='${context[0]}'`);
         if (LoopManager.exists(title)) {
           LoopManager.deleteJob(title);
-          LoopManager.add(context[3], query["pattern"], async () => { client.action(channel, query!["response"]["response"]); });
+          let resObj = JSON.parse(query);
+          LoopManager.add(context[3], query["Pattern"], async () => { client.action(channel, resObj["Response"]); });
           LoopManager.start(context[3]);
         }
         return `changed name to "${context[3]}"`;
@@ -122,7 +123,7 @@ export async function updateLoop(context: Array<string>, client: Actions, channe
       if (todo) {
         context.splice(0, 3);
         console.log(context.join(" "));
-        await CronJob.updateOne({ title: title }, { pattern: context.join(" ") });
+        await updateOne(`UPDATE loops SET Pattern='${context.join(" ")}' WHERE Title='${title}'`);
         if (LoopManager.exists(title)) {
           LoopManager.update(title, context.join(" "));
           return `updated pattern for "${title}"`;
@@ -133,9 +134,9 @@ export async function updateLoop(context: Array<string>, client: Actions, channe
       if (todo) {
         context.splice(0, 3);
         let resObj = (context.join(" ").startsWith("!")) ? { response: { command: true, response: context.join(" ") } } : { response: { command: false, response: context.join(" ") } };
-        await CronJob.updateOne({ title: title }, { response: { command: false, response: resObj } });
+        await updateOne(`UPDATE loops SET Pattern='${context.join(" ")}' WHERE Title='${title}';`);
         if (LoopManager.exists(title)) {
-          LoopManager.update(title, query["pattern"], async () => { client.action(channel, `${resObj}`); });
+          LoopManager.update(title, query["Pattern"], async () => { client.action(channel, `${resObj}`); });
           return `updated response for "${title}"`;
         }
       } return `please provide a response`;

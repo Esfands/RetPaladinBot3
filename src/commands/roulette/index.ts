@@ -1,7 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { giveRetfuel, takeRetfuel } from "../../modules/retfuel";
-import { Chatter } from "../../schemas/ChatterSchema";
 import { getBestAvailableEmote } from "../../utils/emotes";
+import { findOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const rouletteCommand: CommandInt = {
   name: "roulette",
@@ -34,7 +34,7 @@ const rouletteCommand: CommandInt = {
       }
     }
 
-    let query = await Chatter.findOne({ username: userstate["username"] });
+    let query = await findOne('chatters', `Username='${userstate['username']}'`);
     if (query) {
       if (typeof bet == "number") {
         if (bet < 0) return client.action(channel, `@${user} you can't bet anything below 0.`);

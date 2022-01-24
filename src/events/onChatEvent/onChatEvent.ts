@@ -53,7 +53,8 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
 
   // Keyword detection
   let toReplyKeyword = await checkMessageForRegex(message, userstate["display-name"]);
-  if (toReplyKeyword?.run == true) client.action(channel, `${toReplyKeyword.message.response}`);
+  if (!toReplyKeyword) return console.log("UNDEFINED");
+  if (toReplyKeyword["run"]) client.action(channel, `${toReplyKeyword.message}`);
 
   if (message.startsWith(config.prefix)) {
     const context = message.slice(config.prefix.length).split(/ +/);
@@ -86,6 +87,7 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
       if (shouldRun == false) return;
 
       if (isUserPermitted(userstate, command.permissions)) {
+        commandUsed('command', command.name);
         await command.code(client, channel, userstate, context);
       } else
         await client.say(channel, `@${userstate["display-name"]} you don't have permission to use that command!`);
