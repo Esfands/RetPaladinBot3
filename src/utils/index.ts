@@ -40,18 +40,36 @@ export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean
   var a = moment(startDate);
   var b = moment(endDate);
 
-  var years = a.diff(b, 'year');
+  let years = a.diff(b, 'year');
   b.add(years, 'years');
 
-  var months = a.diff(b, 'months');
+  let months = a.diff(b, 'months');
   b.add(months, 'months');
 
-  var days = a.diff(b, 'days');
+  let days = a.diff(b, 'days');
+  b.add(days, 'days');
 
-  let yearStr = (years > 0) ? years + " years " : "";
-  let monthStr = (months > 0) ? months + " months " : "";
-  let dayStr = (days > 0) ? days + " days" : "";
-  return yearStr + monthStr + dayStr;
+  let hours = a.diff(b, 'hours');
+  b.add(hours, 'hours');
+
+  let minutes = a.diff(b, 'minutes');
+  b.add(minutes, 'minutes');
+
+  let seconds = a.diff(b, 'seconds');
+
+  console.log(years + ' years ' + months + ' months ' + days + ' days ' + hours + ' hours ' + minutes + ' minutes ' + seconds + ' seconds'); 
+  let yearStr = (years > 0) ? years + ' years ' : "";
+  let monthStr = (months > 0) ? months + ' months ' : "";
+  let dayStr = (days > 0) ? days + ' days ' : "";
+  let hourStr = (hours > 0) ? hours + " hours " : "";
+
+  let minStr = (minutes > 0) ? minutes + " minutes " : "";
+  let secStr = (seconds > 0) ? seconds + " seconds " : "";
+  if (dayStr === "") {
+    return hourStr + minStr + secStr;
+  }
+  return yearStr + monthStr + dayStr + hourStr;
+
 }
 
 export function secondsToHms(d: number): string {
@@ -63,68 +81,6 @@ export function secondsToHms(d: number): string {
   let mDisplay = m > 0 ? m + (m == 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
   let sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
   return hDisplay + mDisplay + sDisplay;
-}
-
-export function timeDifference(date1: Date, date2: Date, includeSeconds: boolean): string {
-  let difference = date1.getTime() - date2.getTime();
-
-  let daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
-  difference -= daysDifference * 1000 * 60 * 60 * 24
-
-  let hoursDifference = Math.floor(difference / 1000 / 60 / 60);
-  difference -= hoursDifference * 1000 * 60 * 60
-
-  let minutesDifference = Math.floor(difference / 1000 / 60);
-  difference -= minutesDifference * 1000 * 60
-
-  let secondsDifference = Math.floor(difference / 1000);
-
-  let daysStr = (daysDifference > 0) ? daysDifference + " days " : "";
-  let hourStr = (hoursDifference > 0) ? hoursDifference + " hours " : "";
-  let minuteStr = (minutesDifference > 0) ? minutesDifference + " mins " : "";
-  let secondStr = (secondsDifference > 0) ? secondsDifference + " secs" : "";
-
-  let toReturn = (includeSeconds) ? daysStr + hourStr + minuteStr + secondStr : daysStr + hourStr + minuteStr;
-  return toReturn;
-}
-
-export function dateDiff(startingDate: Date | string, endingDate: Date | string) {
-  let startDate = new Date(new Date(startingDate).toISOString().substr(0, 10));
-  if (!endingDate) {
-    endingDate = new Date().toISOString().substr(0, 10).toString();    // need date in YYYY-MM-DD format
-  }
-  let endDate = new Date(endingDate);
-  if (startDate > endDate) {
-    let swap = startDate;
-    startDate = endDate;
-    endDate = swap;
-  }
-  let startYear = startDate.getFullYear();
-  let february = (startYear % 4 === 0 && startYear % 100 !== 0) || startYear % 400 === 0 ? 29 : 28;
-  let daysInMonth = [31, february, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-  let yearDiff = endDate.getFullYear() - startYear;
-  let monthDiff = endDate.getMonth() - startDate.getMonth();
-  if (monthDiff < 0) {
-    yearDiff--;
-    monthDiff += 12;
-  }
-  let dayDiff = endDate.getDate() - startDate.getDate();
-  if (dayDiff < 0) {
-    if (monthDiff > 0) {
-      monthDiff--;
-    } else {
-      yearDiff--;
-      monthDiff = 11;
-    }
-    dayDiff += daysInMonth[startDate.getMonth()];
-  }
-
-  let yearStr = (yearDiff > 0) ? yearDiff + " years " : "";
-  let monthStr = (monthDiff > 0) ? monthDiff + " months " : "";
-  let dayStr = (dayDiff > 0) ? dayDiff + " days" : "";
-
-  return yearStr + monthStr + dayStr;
 }
 
 export function addStr(str: string, index: number, stringToAdd: string) {

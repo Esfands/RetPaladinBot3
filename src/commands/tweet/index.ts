@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
-import { calcDate, shortenURL, timeDifference } from "../../utils";
+import { calcDate, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const tweet: CommandInt = {
   name: "tweet",

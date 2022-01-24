@@ -2,6 +2,7 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { calcDate } from "../../utils";
 import { isFollowingUser } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
+import moment from "moment";
 const followage: CommandInt = {
   name: "followage",
   aliases: [],

@@ -1,6 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { calcDate } from "../../utils";
 import { getStreamData } from "../../utils/helix";
-import { timeDifference } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const uptime: CommandInt = {
@@ -21,12 +21,11 @@ const uptime: CommandInt = {
     let tagged = (context[0]) ? context[0] : user; // Might need to change.
     tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
     let streamData = await getStreamData("esfandtv");
-    console.log(streamData);
     try {
       let startTime = await streamData["data"][0]["started_at"];
       if (typeof startTime === "undefined") return client.say(channel, `@${tagged} stream is offline currently Sadge`);
 
-      let elapsed = timeDifference(new Date(), new Date(startTime), false);
+      let elapsed = calcDate(new Date(), new Date(startTime), false);
       client.say(channel, `@${tagged} Esfand has been streaming for ${elapsed}`)
     } catch (error) {
       client.say(channel, `@${tagged} stream is offline currently Sadge`);
