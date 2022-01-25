@@ -22,7 +22,7 @@ async function fetchAllEmotes() {
 const streakOptions: any = {
   5: "{count}x {emote} combo",
   10: "{user} ruined the {count}x {emote} combo PogU",
-  15: "{user} ruined the {count]x {emote} combo PepeHands",
+  15: "{user} ruined the {count}x {emote} combo PepeHands",
   20: "you don't ruin {count}x {emote} combos {user} DansGame",
   1000: "you don't ruin {count}x {emote} combos {user} DansGame"
 };
