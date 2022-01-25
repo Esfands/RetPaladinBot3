@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { fetchAPI } from "../../utils";
+import { fetchAPI, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const uredditCommand: CommandInt = {
   name: "ureddit",
@@ -27,9 +27,12 @@ const uredditCommand: CommandInt = {
     try {
       let req = await fetchAPI(url);
       let posts = req["data"]["children"];
-      console.log(posts);
-      //let randomPost = posts[Math.floor(Math.random()*posts.length)]
-      //console.log(randomPost);
+      let randomPost = posts[Math.floor(Math.random()*posts.length)]
+      // title, author, upvote_ratio, check for "over_18"
+      let postData = randomPost["data"];
+      console.log(["title"], randomPost["data"]["author"], randomPost["data"]["upvote_ratio"], randomPost["data"]["url"]);
+      let redditUrl = await shortenURL(`https://www.reddit.com${postData["permalink"]}`);
+      client.action(channel, `${postData["author"]}: ${postData["title"]} | ⬆ %${Math.floor((postData["upvote_ratio"]/1) * 100)} ${redditUrl}`);
     } catch (error) {
       return client.action(channel, `🚨 @${userstate["display-name"]} there was an error fetching Reddit API.`);
     }
