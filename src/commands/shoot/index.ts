@@ -20,7 +20,15 @@ const shoot: CommandInt = {
     if (!context[0]) return client.action(channel, `@${user} please target a user to shoot.`);
 
     function timeoutUser(userRan: CommonUserstate, target: any, message: string) {
-      if (target.toLowerCase() === userstate["username"]) return client.action(channel, `${user} shot themselves in the foot!`);
+      if (target.toLowerCase() === userstate["username"]) {
+        client.timeout(channel, userstate["username"], TIMEOUT_LENGTH, "!shoot command")
+        .then((data) => {
+          return client.action(channel, `${user} shot themselves in the foot!`);
+        })
+        .catch((err) => {
+          return;
+        })
+      } 
       client.timeout(channel, target, TIMEOUT_LENGTH, '!shoot command')
         .then((data) => {
           return client.action(channel, message);
