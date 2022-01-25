@@ -30,7 +30,14 @@ const monthlyhours: CommandInt = {
     let monthlyData = fetchAPI("https://twitchtracker.com/api/channels/summary/esfandtv");
     let raw: TwitchTrakcer = await monthlyData;
     let monthlyMins: number = raw["minutes_streamed"];
-    client.action(channel, `@${userstate["display-name"]} Esfand has streamed ${minsToHours(monthlyMins)} since the 1st.`);
+
+    let hours: number = (raw["minutes_streamed"] / 60);
+    let days = Math.round((Math.round(hours) / 24));
+
+    let msg = (days > 1) 
+    ? `@${userstate["display-name"]} Esfand has streamed ${days} days (${minsToHours(monthlyMins)}) since the 1st.`
+    : `@${userstate["display-name"]} Esfand has streamed ${minsToHours(monthlyMins)} since the 1st.`;
+    client.action(channel, msg);
   }
 }
 

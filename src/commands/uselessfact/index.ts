@@ -16,8 +16,11 @@ const uselessFact: CommandInt = {
   testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
-    const response = await fetchAPI("https://uselessfacts.jsph.pl/random.json?language=en");
-    client.action(channel, `@${userstate['display-name']} ${response["text"]}`);
+    const APIs = [{ name: "uselessfacts", link: "https://uselessfacts.jsph.pl/random.json?language=en" }, { name: "funfact", link: "https://ffa.aakhilv.me/json" }];
+    
+    let randomAPI = APIs[Math.floor(Math.random()*APIs.length)];
+    const response = await fetchAPI(randomAPI["link"]);
+    client.action(channel, `@${userstate["display-name"]} ${response["text"]}`);
   }
 }
 
