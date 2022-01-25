@@ -19,8 +19,9 @@ const shoot: CommandInt = {
     const user = userstate["display-name"];
     if (!context[0]) return client.action(channel, `@${user} please target a user to shoot.`);
 
-    function timeoutUser(user: CommonUserstate, message: string) {
-      client.timeout(channel, context[0], TIMEOUT_LENGTH, '!shoot command')
+    function timeoutUser(userRan: CommonUserstate, target: any, message: string) {
+      if (target.toLowerCase() === userstate["username"]) return client.action(channel, `${user} shot themselves in the foot!`);
+      client.timeout(channel, target, TIMEOUT_LENGTH, '!shoot command')
         .then((data) => {
           return client.action(channel, message);
         })
@@ -50,9 +51,9 @@ const shoot: CommandInt = {
     let chance = Math.random();
     let result = (chance < 0.3) ? false : true; // false = hurt self, true = shot user
     if (result) {
-      timeoutUser(userstate["username"], `${user} shot ${context[0]} dead! D:`)
+      timeoutUser(userstate["username"], context[0], `${user} shot ${context[0]} dead! D:`)
     } else {
-      timeoutUser(userstate["username"], `${user} shot themselves in the foot!`);
+      timeoutUser(userstate["username"], context[0], `${user} shot themselves in the foot!`);
     }
   }
 }
