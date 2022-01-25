@@ -16,7 +16,9 @@ const notifyme: CommandInt = {
     "<code>!notifyme title</code>",
     "",
     "Optin to recieve when Esfand changes game.",
-    "<code>!notifyme game</code>"
+    "<code>!notifyme game</code>",
+    "",
+    "To opt out of any of the notifcations, do the same command again to toggle it off."
   ],
   testing: false,
   offlineOnly: false,
