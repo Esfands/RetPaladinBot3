@@ -16,6 +16,8 @@ const song: CommandInt = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
+    let tagged = (context[0]) ? context[0] : user; // Might need to change.
+    tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
 
     const data = await axios({
       method: "GET",
@@ -24,7 +26,7 @@ const song: CommandInt = {
 
     if (!data) return client.action(channel, `@${user} there was an issue fetching the current song!`);
     let recentSong = await data.data.recenttracks.track[0];
-    client.action(channel, `@${user} current song: ${recentSong["name"]} - ${recentSong["artist"]["#text"]}`);
+    client.action(channel, `@${tagged} current song: ${recentSong["name"]} - ${recentSong["artist"]["#text"]}`);
   }
 }
 
