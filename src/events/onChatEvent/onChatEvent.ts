@@ -20,6 +20,11 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
   if (ignoredBots.includes(userstate["username"])) return;
   if (self) return;
 
+  // Keyword detection
+  let toReplyKeyword = await checkMessageForRegex(message, userstate["display-name"]);
+  if (!toReplyKeyword) return console.log("UNDEFINED");
+  if (toReplyKeyword["run"]) client.action(channel, `${toReplyKeyword.message}`);
+
   // Emote streak
   let comboMessage = await checkEmoteStreak(message, userstate["display-name"]);
   if (typeof comboMessage !== "undefined") {
@@ -50,11 +55,6 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
       }
     }
   }
-
-  // Keyword detection
-  let toReplyKeyword = await checkMessageForRegex(message, userstate["display-name"]);
-  if (!toReplyKeyword) return console.log("UNDEFINED");
-  if (toReplyKeyword["run"]) client.action(channel, `${toReplyKeyword.message}`);
 
   if (message.startsWith(config.prefix)) {
     const context = message.slice(config.prefix.length).split(/ +/);
