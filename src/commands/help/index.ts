@@ -21,7 +21,6 @@ const help: CommandInt = {
     let user = userstate["display-name"];
     let commands = await findOne('commands', `Name='${context[0]}'`);
 
-    console.log(commands);
      if (context[0]) {
       if (commands) {
         let aliasParse = JSON.parse(commands["Aliases"]);

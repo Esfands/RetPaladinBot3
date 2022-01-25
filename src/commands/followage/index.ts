@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { calcDate } from "../../utils";
+import { calcDate, getTarget } from "../../utils";
 import { isFollowingUser } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 import moment from "moment";
@@ -18,8 +18,7 @@ const followage: CommandInt = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
-    let tagged = (context[0]) ? context[0] : user;
-    tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
+    let tagged = getTarget(user, context[0]);
 
     if (!tagged) return;
     let following = await isFollowingUser("esfandtv", tagged.toLowerCase());

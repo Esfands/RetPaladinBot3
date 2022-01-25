@@ -1,7 +1,7 @@
 import axios from "axios";
-import { CommonUserstate } from "tmi.js";
+import { CommonUserstate, Userstate } from "tmi.js";
 import config from "../cfg/config";
-import moment from "moment";
+import moment, { min } from "moment";
 
 export function checkObjectTypes(object: object): string {
   let types: string[] = [];
@@ -57,7 +57,6 @@ export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean
 
   let seconds = a.diff(b, 'seconds');
 
-  console.log(years + ' years ' + months + ' months ' + days + ' days ' + hours + ' hours ' + minutes + ' minutes ' + seconds + ' seconds'); 
   let yearStr = (years > 0) ? years + ' years ' : "";
   let monthStr = (months > 0) ? months + ' months ' : "";
   let dayStr = (days > 0) ? days + ' days ' : "";
@@ -66,7 +65,9 @@ export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean
   let minStr = (minutes > 0) ? minutes + " minutes " : "";
   let secStr = (seconds > 0) ? seconds + " seconds " : "";
   if (dayStr === "") {
-    return hourStr + minStr + secStr;
+    if (includeSeconds) {
+      return hourStr + minStr + secStr;
+    } else return hourStr + minStr;
   }
   return yearStr + monthStr + dayStr + hourStr;
 
@@ -199,6 +200,23 @@ export async function updateOrCreateChatter(userstate: CommonUserstate) {
   }
 }
 
+/**
+ * Post data to Hastebin
+ * @param {string} message This will be posted to a Hastebin. 
+ * @returns URL of Hastebin created.
+ */
+export async function postHastebin(message: string) {
+
+  let response = await axios({
+    method: "POST",
+    url: "https://www.toptal.com/developers/hastebin/documents",
+    data: message
+  });
+
+  let url = await shortenURL(`https://www.toptal.com/developers/hastebin/${response.data["key"]}`);
+  return url;
+}
+
 // minutes to hours and mins
 export function minsToHours(n: number) {
   let num = n;
@@ -207,4 +225,10 @@ export function minsToHours(n: number) {
   let minutes = (hours - rhours) * 60;
   let rminutes = Math.round(minutes);
   return rhours + " hours and " + rminutes + " minutes";
+}
+
+export function getTarget(user: any, target: string) {
+  let tagged = (target) ? target : user;
+  tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
+  return tagged;
 }

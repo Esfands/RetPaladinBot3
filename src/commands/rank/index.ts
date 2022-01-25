@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
+import { getTarget } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const rank: CommandInt = {
   name: "rank",
@@ -16,8 +17,7 @@ const rank: CommandInt = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
-    let tagged = (context[0]) ? context[0] : user;
-    tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
+    let tagged = getTarget(user, context[0]);
 
     let query = await axios({
       method: "GET",

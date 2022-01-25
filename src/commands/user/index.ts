@@ -1,4 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { getTarget } from "../../utils";
 import { getUser } from "../../utils/helix";
 import { findOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
@@ -26,7 +27,7 @@ const user: CommandInt = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const command = context[0].toLowerCase();
-    const target = (context[1]) ? context[1].toLowerCase() : userstate["username"];
+    const target = getTarget(userstate["display-name"], context[1]);
     const display = userstate["display-name"];
 
     const userInfo = await getUser(target);

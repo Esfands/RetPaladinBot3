@@ -5,7 +5,7 @@ const quoteCommand: CommandInt = {
   name: "quote",
   aliases: ["randomquote"],
   permissions: [],
-  globalCooldown: 10,
+  globalCooldown: 5,
   cooldown: 30,
   description: "Fetch a random quote.",
   dynamicDescription: [

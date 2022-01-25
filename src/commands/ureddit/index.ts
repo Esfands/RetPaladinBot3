@@ -24,10 +24,16 @@ const uredditCommand: CommandInt = {
     url = url.concat(`sort=${chosenTrend}`);
     url = url.concat(`&t=${chosenDate}`);
 
-    let req = await fetchAPI(url);
-    let posts = req["data"]["children"];
-    //let randomPost = posts[Math.floor(Math.random()*posts.length)]
-    //console.log(randomPost);
+    try {
+      let req = await fetchAPI(url);
+      let posts = req["data"]["children"];
+      console.log(posts);
+      //let randomPost = posts[Math.floor(Math.random()*posts.length)]
+      //console.log(randomPost);
+    } catch (error) {
+      return client.action(channel, `🚨 @${userstate["display-name"]} there was an error fetching Reddit API.`);
+    }
+
   }
 }
 

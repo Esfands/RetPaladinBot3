@@ -1,4 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { getTarget } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const time: CommandInt = {
   name: "time",
@@ -15,8 +16,7 @@ const time: CommandInt = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
-    let tagged = (context[0]) ? context[0] : user;
-    tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
+    let tagged = getTarget(user, context[0]);
     let response = null;
 
     let date = new Date();

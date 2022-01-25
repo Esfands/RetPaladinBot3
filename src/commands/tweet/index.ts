@@ -58,7 +58,8 @@ const tweet: CommandInt = {
       ? recentData["data"][0]["text"].replace(arrowRegex, "->")
       : recentData["data"][0]["text"];
 
-    client.say(channel, `(@${userSearch}) ${tweetText} | ${elapsed}`)
+    let shortenedLink = await shortenURL(twitterLink);
+    client.say(channel, `(@${userSearch}) ${tweetText} | ${elapsed} - ${shortenedLink}`);
   }
 }
 
