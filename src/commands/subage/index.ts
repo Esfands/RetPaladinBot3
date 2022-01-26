@@ -4,7 +4,7 @@ import { fetchAPI, getTarget, calcDate } from "../../utils";
 
 const subageCommand: CommandInt = {
   name: "subage",
-  aliases: [],
+  aliases: ["sa"],
   permissions: [],
   globalCooldown: 10,
   cooldown: 30,
@@ -39,13 +39,14 @@ const subageCommand: CommandInt = {
 
     let toSend: string = "";
     let subcheck = await fetchAPI(`https://api.ivr.fi/twitch/subage/${target}/${targetChannel}`);
+    console.log(subcheck);
     if (subcheck["subscribed"] == false) {
       let oldSub = subcheck["cumulative"];
-
+      console.log(oldSub);
       if (oldSub["months"] === 0) {
-        return toSend = `${target} is not subbed to ${targetChannel} and never has been.`;
+        return client.action(channel, `${target} is not subbed to ${targetChannel} and never has been.`);
       } else {
-        return toSend = `${target} is not subbed to ${targetChannel} but has been previously for a total of ${oldSub["months"]} months. Sub ended ${calcDate(new Date(), new Date(oldSub["end"]), true)} ago.`;
+        return client.action(channel, `${target} is not subbed to ${targetChannel} but has been previously for a total of ${oldSub["months"]} months. Sub ended ${calcDate(new Date(), new Date(oldSub["end"]), true)} ago.`);
       }
     } else {
       let subData = subcheck["meta"];
