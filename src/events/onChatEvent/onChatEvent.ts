@@ -11,6 +11,7 @@ import { checkEmoteStreak } from "../../modules/emote-streak";
 import path from "path";
 import fs from "fs";
 import { fetchWSTGameData, joinWSTGame, senderGuessed } from "../../commands/whosaidthat/whosaidthat";
+import { checkForBot } from "../../modules/bot-detection";
 
 const commands = new CommandStore(process.cwd() + "/dist/commands/");
 
@@ -19,6 +20,9 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
   let ignoredBots = ["streamelements", "supibot"];
   if (ignoredBots.includes(userstate["username"])) return;
   if (self) return;
+
+  // Bot detection.
+  checkForBot(client, channel, userstate, message);
 
   // Keyword detection
   let toReplyKeyword = await checkMessageForRegex(message, userstate["display-name"]);
