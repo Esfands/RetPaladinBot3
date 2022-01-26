@@ -39,10 +39,8 @@ const subageCommand: CommandInt = {
 
     let toSend: string = "";
     let subcheck = await fetchAPI(`https://api.ivr.fi/twitch/subage/${target}/${targetChannel}`);
-    console.log(subcheck);
     if (subcheck["subscribed"] == false) {
       let oldSub = subcheck["cumulative"];
-      console.log(oldSub);
       if (oldSub["months"] === 0) {
         return client.action(channel, `${target} is not subbed to ${targetChannel} and never has been.`);
       } else {
