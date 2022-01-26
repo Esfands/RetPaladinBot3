@@ -20,7 +20,7 @@ export async function getOTFCleanResponse(name: string) {
 export async function removeOTFCommand(name: string) {
   let searchCmd = await findOne('otf', `Name='${name}'`);
   if (searchCmd) {
-    await removeOne(`otf`, `Name='${name}'`);
+    await removeOne(`otf`, `Name=?`, [name]);
     return `successfuly removed keyword "${name}"`;
   } else return `couldn't find the keyword "${name}" to remove`;
 }

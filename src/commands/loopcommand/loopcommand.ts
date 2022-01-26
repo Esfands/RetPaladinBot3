@@ -95,7 +95,7 @@ export async function toggleLoop(title: string, client: Actions, channel: string
 export async function removeLoop(title: string) {
   let query = await findOne('loops', `Title='${title}'`);
   if (query) {
-    await removeOne('loops', `Title='${title}'`);
+    await removeOne('loops', `Title=?`, [title]);
     LoopManager.deleteJob(title);
     return `removed loop "${title}"`;
   } else return `could not find "${title}" to remove`;

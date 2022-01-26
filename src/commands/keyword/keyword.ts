@@ -107,7 +107,7 @@ export async function editKeyword(title: string, type: string, message: Array<st
 export async function removeKeyword(title: string) {
   let searchTitle = await findOne('keywords', `Title='${title}'`);
   if (searchTitle) {
-    await removeOne('keywords', `Title='${title}'`);
+    await removeOne('keywords', `Title=?`, [title]);
     await initializeKeywords();
     return `successfuly removed keyword "${title}"`;
   } else return `couldn't find the keyword ${title} to remove`;

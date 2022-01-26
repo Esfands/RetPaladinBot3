@@ -87,12 +87,12 @@ export function findAndUpdate(findQuery: string, updateQuery: string) {
     });
 }
 
-export async function removeOne(table: string, toSearch: string) {
+export async function removeOne(table: string, toSearch: string, values: any[]) {
   let conn;
   let data;
   try {
     conn = await pool.getConnection();
-    let rows = await conn.query(`DELETE FROM ${table} WHERE ${toSearch};`);
+    let rows = await conn.query(`DELETE FROM ${table} WHERE ${toSearch};`, values);
     if (rows.length) {
       data = true;
     } else data = false;

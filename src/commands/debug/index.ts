@@ -1,5 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { fetchChatters, giveAllChattersRetfuel } from "../../modules/retfuel";
+import { storeEmotes } from "../../utils/emoteData";
 import { getEmotes } from "../../utils/emotes";
 import { getEventSubs } from "../../utils/EventSub";
 import { CommandInt } from "../../validation/CommandSchema";
@@ -35,7 +36,10 @@ const debug: CommandInt = {
     
     } else if (context[0] === "points") {
       await giveAllChattersRetfuel();
-    }
+    
+    } else if (context[0] === "te") {
+      await storeEmotes();
+    } 
   }
 }
 

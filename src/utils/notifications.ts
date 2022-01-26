@@ -28,12 +28,12 @@ export async function checkStreamStatus(client: Actions, channel: string) {
     fieldUpdated.forEach((keys, index) => {
       if (keys === "title") {
         // Changed title
-        sendPingNotification(client, channel, "title", `[NOTFIYME] EsfandTV has changed title to -> ${valueUpdated[index]}`);
+        sendPingNotification(client, channel, "title", `[NOTIFYME] EsfandTV has changed title to -> ${valueUpdated[index]}`);
 
       } else if (keys === "status") {
         if (valueUpdated[index] === "live") {
           // Went live
-          sendPingNotification(client, channel, "live", `[NOTFIYME] EsfandTV is now live! DinkDonk`);
+          sendPingNotification(client, channel, "live", `[NOTIFYME] EsfandTV is now live! DinkDonk`);
 
         } else if (valueUpdated[index] === "offline") {
           // Went offline
