@@ -52,11 +52,17 @@ const tweet: CommandInt = {
 
     let elapsed = calcDate(new Date(), new Date(recentData["data"][0]["created_at"]), true);
     let twitterLink = `https://twitter.com/${userSearch.toLowerCase()}/status/${recentData["data"][0]["id"]}`;
-    let arrowRegex = new RegExp("-&gt;", "g");
 
+    // Check for ->
+    let arrowRegex = new RegExp("-&gt;", "g");
     let tweetText = (arrowRegex.test(recentData["data"][0]["text"]))
       ? recentData["data"][0]["text"].replace(arrowRegex, "->")
       : recentData["data"][0]["text"];
+
+    // check for &
+    tweetText = (/&amp;/g.test(tweetText))
+    ? tweetText.replace(/&amp;/g, "&")
+    : tweetText;
 
     let shortenedLink = await shortenURL(twitterLink);
     client.say(channel, `(@${userSearch}) ${tweetText} | ${elapsed} - ${shortenedLink}`);

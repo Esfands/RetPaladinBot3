@@ -20,7 +20,7 @@ const subathon: CommandInt = {
 
     let currFollowers = await getFollowers("esfandtv");
     let goalFollowers = 1000000 - currFollowers;
-    let response = (goalFollowers >= 1000000) ? `Pause 👉 ${goalFollowers.toLocaleString()} followers away from an uncapped subathon.` : `Esfand's at ${currFollowers.toLocaleString('en-US')} followers, he'll start the subathon towards the end of this month FeelsLateMan`;
+    let response = (goalFollowers >= 1000000) ? `Pause 👉 ${goalFollowers.toLocaleString()} followers away from an uncapped subathon.` : `Esfand's at ${currFollowers.toLocaleString('en-US')} followers, he'll start the subathon mid-February FeelsLateMan`;
     client.action(channel, `@${tagged} ${response}`);
   }
 }
