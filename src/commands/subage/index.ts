@@ -37,7 +37,6 @@ const subageCommand: CommandInt = {
       targetChannel = targetChannel.substring(1);
     } else targetChannel = targetChannel;
 
-    let toSend: string = "";
     let subcheck = await fetchAPI(`https://api.ivr.fi/twitch/subage/${target}/${targetChannel}`);
     if (subcheck["subscribed"] == false) {
       let oldSub = subcheck["cumulative"];

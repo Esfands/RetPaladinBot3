@@ -12,6 +12,9 @@ import { findOne, insertRow, updateOne } from "../../utils/maria";
   = Giving Points from Rules =
   Using https://tmi.twitch.tv/group/user/esfandtv/chatters we can get all current chatters
 
+  = Game modes =
+  !gamble (amount) gamble given retfuel
+  !slots (amount) slots for retfuel.
 
 */
 

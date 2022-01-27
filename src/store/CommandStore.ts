@@ -15,7 +15,7 @@ export class CommandStore {
     commands.forEach(async (command) => {
       let exists = await findOne(`commands`, `Name='${command.name}'`);
       if (exists) {
-        await updateOne(`UPDATE commands SET Name='${command.name}', Aliases='${JSON.stringify(command.aliases)}', Permissions='${JSON.stringify(command.permissions)}', Description='${command.description}', DynamicDescription='${JSON.stringify(command.dynamicDescription)}', GlobalCooldown='${command.globalCooldown}', Cooldown='${command.cooldown}', Testing='${(command.testing) ? "true" : "false"}', OfflineOnly='${(command.offlineOnly) ? "true" : "false"}' WHERE Name='${command.name}';`);
+        await updateOne(`UPDATE commands SET Name='${command.name}', Aliases='${JSON.stringify(command.aliases)}', Permissions='${JSON.stringify(command.permissions)}', Description='${command.description}', DynamicDescription="${JSON.stringify(command.dynamicDescription)}", GlobalCooldown='${command.globalCooldown}', Cooldown='${command.cooldown}', Testing='${(command.testing) ? "true" : "false"}', OfflineOnly='${(command.offlineOnly) ? "true" : "false"}' WHERE Name='${command.name}';`);
         //console.log('updated');
       } else {
         let queryStr = `INSERT INTO commands (Name, Aliases, Permissions, Description, DynamicDescription, GlobalCooldown, Cooldown, Testing, OfflineOnly, Count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;

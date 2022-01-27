@@ -61,7 +61,7 @@ const shoot: CommandInt = {
     if (result) {
       timeoutUser(userstate["username"], context[0], `${user} shot ${context[0]} dead! D:`)
     } else {
-      timeoutUser(userstate["username"], context[0], `${user} shot themselves in the foot!`);
+      timeoutUser(userstate["username"], user, `${user} shot themselves in the foot!`);
     }
   }
 }
