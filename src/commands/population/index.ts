@@ -23,10 +23,11 @@ const populationCommand: CommandInt = {
       let factionData: any = { aliance: 0, horde: 0 }
 
       allData.forEach((faction: any) => {
+        let fData: any[] = faction["data"];
         if (faction["label"].toLowerCase() === "alliance") {
-          factionData["aliance"] = faction["data"].at(-1);
+          factionData["aliance"] = fData.at(-1);
         } else {
-          factionData["horde"] = faction["data"].at(-1);          
+          factionData["horde"] = fData.at(-1);          
         }
       });
 
@@ -36,7 +37,7 @@ const populationCommand: CommandInt = {
       client.say(channel, `@${userstate['display-name']} ${capitalizeFirstLetter(server)} population - Aliance: %${aliancePerc}/${factionData["aliance"].toLocaleString()} | Horde %${horderPerc}/${factionData["horde"].toLocaleString()}`);
     } catch (err) {
       console.log(err);
-      client.action(channel, `@${userstate["display-name"]} there was an error fetching data for "${capitalizeFirstLetter(server)}"`);
+      client.say(channel, `@${userstate["display-name"]} there was an error fetching data for "${capitalizeFirstLetter(server)}"`);
     }
     
   }
