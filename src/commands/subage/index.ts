@@ -40,7 +40,7 @@ const subageCommand: CommandInt = {
     let subcheck = await fetchAPI(`https://api.ivr.fi/twitch/subage/${target}/${targetChannel}`);
     if (subcheck["subscribed"] == false) {
       let oldSub = subcheck["cumulative"];
-      if (oldSub["months"] === 0) {
+      if (oldSub["months"] === 0 || typeof oldSub["months"] === "undefined") {
         return client.action(channel, `${target} is not subbed to ${targetChannel} and never has been.`);
       } else {
         return client.action(channel, `${target} is not subbed to ${targetChannel} but has been previously for a total of ${oldSub["months"]} months. Sub ended ${calcDate(new Date(), new Date(oldSub["end"]), true)} ago.`);

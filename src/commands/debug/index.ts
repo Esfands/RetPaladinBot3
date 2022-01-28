@@ -6,7 +6,7 @@ import { storeEmotes } from "../../utils/emoteData";
 import { getEmotes } from "../../utils/emotes";
 import { getEventSubs } from "../../utils/EventSub";
 import { getChannelEmotes } from "../../utils/helix";
-import { updateOne } from "../../utils/maria";
+import { find, findOne, insertRow, updateOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const debug: CommandInt = {
@@ -37,10 +37,10 @@ const debug: CommandInt = {
     } else if (context[0] === "eventsub") {
       let eventSub = await getEventSubs();
       console.log(eventSub["data"]);
-    
+
     } else if (context[0] === "points") {
       await giveAllChattersRetfuel();
-    
+
     } else if (context[0] === "te") {
       await storeEmotes();
 
@@ -59,9 +59,22 @@ const debug: CommandInt = {
           return;
         }
       });
-    
+
     } else if (context[0] === "subemotes") {
-      await getChannelEmotes(context[1]);
+      let currentEmotes = await getChannelEmotes(context[1]);
+      let emoteData = currentEmotes["data"];
+      emoteData.forEach(async (emote: any) => {
+        let found = await findOne('subemotes', `ID='${emote["id"]}'`);
+        let isAnimated = (emote["format"].includes("animated")) ? true : false;
+        let URL = (isAnimated) ? `https://static-cdn.jtvnw.net/emoticons/v2/${emote["id"]}/animated/light/3.0` : emote["images"]["url_4x"];
+        console.log(URL);
+        if (found) {
+          await updateOne(`UPDATE subemotes SET Channel='${context[1].toLowerCase()}' Name='${emote["name"]}', Tier='${emote["tier"]}', EmoteType='${emote["emote_type"]}', URL='${URL}' WHERE ID='${emote["id"]}' AND Channel='${context[1].toLowerCase()}'`);
+        } else {
+          await insertRow(`INSERT INTO subemotes (Channel, Name, ID, Tier, EmoteType, URL) VALUES (?, ?, ?, ?, ?, ?)`, [context[1].toLowerCase(), emote["name"], emote["id"], emote["tier"], emote["emote_type"], URL]);
+        }
+        //console.log(emote["name"], emote["id"], emote["tier"], emote["emote_type"], emote["images"]["url_4x"]);
+      });
     }
   }
 }
