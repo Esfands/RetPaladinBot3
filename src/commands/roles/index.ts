@@ -19,9 +19,9 @@ const roles: CommandInt = {
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let target = getTarget(userstate["display-name"], context[0]);
-    let link = `https://twitchdatabase.com/roles/${target.substring(1)}`;
+    let link = `https://twitchdatabase.com/roles/${target}`;
 
-    let response = (userstate["username"] === target.substring(1)) ? `here are your roles: ${link}` : `here are ${target}'s roles: ${link}`;
+    let response = (userstate["username"] === target) ? `here are your roles: ${link}` : `here are ${target}'s roles: ${link}`;
     client.action(channel, `@${userstate["display-name"]} ${response}`);
   }
 }

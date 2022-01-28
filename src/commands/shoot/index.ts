@@ -23,7 +23,7 @@ const shoot: CommandInt = {
       if (target.toLowerCase() === userstate["username"]) {
         client.timeout(channel, userstate["username"], TIMEOUT_LENGTH, "!shoot command")
         .then((data) => {
-          return client.action(channel, `${user} shot themselves in the foot!`);
+          //return client.action(channel, `${user} shot themselves in the foot!`);
         })
         .catch((err) => {
           return;
