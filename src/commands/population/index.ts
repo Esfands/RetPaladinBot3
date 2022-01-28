@@ -25,9 +25,9 @@ const populationCommand: CommandInt = {
       allData.forEach((faction: any) => {
         let fData: any[] = faction["data"];
         if (faction["label"].toLowerCase() === "alliance") {
-          factionData["aliance"] = fData.at(-1);
+          factionData["aliance"] = fData.pop();
         } else {
-          factionData["horde"] = fData.at(-1);          
+          factionData["horde"] = fData.pop();          
         }
       });
 
