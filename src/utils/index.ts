@@ -232,3 +232,7 @@ export function getTarget(user: any, target: string) {
   tagged = (tagged?.startsWith("@")) ? tagged.substring(1) : tagged;
   return tagged;
 }
+
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}

@@ -110,3 +110,9 @@ export async function getUsersFollowers(username: string) {
   }
   return total;
 }
+
+export async function getChannelEmotes(username: string) {
+  let userId = await getUserId(username);
+  let emotes = await axios({ method: "get", url: `https://api.twitch.tv/helix/chat/emotes?broadcaster_id=${userId}`, headers: headers });
+  return emotes.data;
+}

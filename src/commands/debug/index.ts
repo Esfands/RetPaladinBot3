@@ -5,6 +5,7 @@ import { fetchChatters, giveAllChattersRetfuel } from "../../modules/retfuel";
 import { storeEmotes } from "../../utils/emoteData";
 import { getEmotes } from "../../utils/emotes";
 import { getEventSubs } from "../../utils/EventSub";
+import { getChannelEmotes } from "../../utils/helix";
 import { updateOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 
@@ -58,6 +59,9 @@ const debug: CommandInt = {
           return;
         }
       });
+    
+    } else if (context[0] === "subemotes") {
+      await getChannelEmotes(context[1]);
     }
   }
 }
