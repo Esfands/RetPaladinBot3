@@ -109,18 +109,18 @@ export function commandUsed(type: string, command: string) {
 export async function shortenURL(url: string) {
   try {
     let request = await axios({
-      url: "https://shrtlnk.dev/api/v2/link",
+      url: "https://l.mahcks.com/api/url/shorten",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Api-Key": config.apiKeys.shrtlnk
+        "API-Key": config.apiKeys.lmahcks
       },
       data: {
-        url: url
+        longUrl: url
       }
     });
-    return await request.data["shrtlnk"];
+    return await request.data["shortUrl"];
   } catch (error) {
     return null;
   }
