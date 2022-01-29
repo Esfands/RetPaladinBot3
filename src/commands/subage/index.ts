@@ -37,7 +37,7 @@ const subageCommand: CommandInt = {
       targetChannel = targetChannel.substring(1);
     } else targetChannel = targetChannel;
 
-    let subcheck = await fetchAPI(`https://api.ivr.fi/twitch/subage/${target}/${targetChannel}`);
+    let subcheck = await fetchAPI(`https://api.ivr.fi/twitch/subage/${target.toLowerCase()}/${targetChannel.toLowerCase()}`);
     if (subcheck["subscribed"] == false) {
       let oldSub = subcheck["cumulative"];
       if (oldSub["months"] === 0 || typeof oldSub["months"] === "undefined") {

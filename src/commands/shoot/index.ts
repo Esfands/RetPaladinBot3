@@ -26,7 +26,9 @@ const shoot: CommandInt = {
           //return client.action(channel, `${user} shot themselves in the foot!`);
         })
         .catch((err) => {
-          return;
+          if (err === "bad_timeout_mod" || err === "bad_timeout_broadcaster") {
+            return client.action(channel, `${user} missed their target!`);
+          } else return;
         })
       } 
       client.timeout(channel, target, TIMEOUT_LENGTH, '!shoot command')

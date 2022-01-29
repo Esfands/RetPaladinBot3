@@ -1,19 +1,19 @@
 import config from "../../cfg/config";
-import { CommandStore } from "../../store/CommandStore";
-import isUserPermitted from "../../utils/isUserPermitted";
 import { Actions, CommonUserstate } from "tmi.js";
-import { getOTFCommandNames, getOTFResponse } from "../../commands/command/OTFCommands";
-import { cooldownCanContinue } from "../../utils/cooldowns";
-import { checkMessageBanPhrase, commandUsed, delay, updateOrCreateChatter } from "../../utils";
-import { checkMessageForRegex } from "../../commands/keyword/keyword";
-import { StreamStat } from "../../schemas/StreamStatsSchema";
+import { delay, updateOrCreateChatter } from "../../utils";
+import { initializeKeywords } from "../../commands/keyword/keyword";
 import { checkEmoteStreak } from "../../modules/emote-streak";
-import path from "path";
-import fs from "fs";
-import { fetchWSTGameData, joinWSTGame, senderGuessed } from "../../commands/whosaidthat/whosaidthat";
+import { fetchWSTGameData, senderGuessed } from "../../commands/whosaidthat/whosaidthat";
 import { checkForBot } from "../../modules/bot-detection";
+import runCommand from "../../modules/run-command";
+import { IKeyword } from "../../schemas/types";
+import { keyWordCooldown } from "../../utils/cooldowns";
+import { otfResponseEmote } from "../../utils/emotes";
 
-const commands = new CommandStore(process.cwd() + "/dist/commands/");
+export let AllKeywords: Array<IKeyword> = [];
+(async () => {
+  if (AllKeywords.length === 0) await initializeKeywords();
+})();
 
 export default async (client: Actions, channel: string, userstate: CommonUserstate, message: string, self: string) => {
 
@@ -25,9 +25,32 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
   checkForBot(client, channel, userstate, message);
 
   // Keyword detection
-  let toReplyKeyword = await checkMessageForRegex(message, userstate["display-name"]);
-  if (!toReplyKeyword) return console.log("UNDEFINED");
-  if (toReplyKeyword["run"]) client.action(channel, `${toReplyKeyword.message}`);
+  let keyMsg;
+  for (let i = 0; i < AllKeywords.length; i++) {
+    let parts = AllKeywords[i]["Regex"].split("/");
+    let regex = new RegExp(parts[1], parts[2]);
+    if (regex.test(message)) {
+      let isDisabled = (AllKeywords[i]["Disabled"] === "false") ? false : true;
+      if (isDisabled) return keyMsg = "";
+      if (!keyWordCooldown(AllKeywords[i]["Title"], AllKeywords[i]["Cooldown"])) return keyMsg = "";
+      keyMsg = AllKeywords[i]["Message"];
+    }
+  }
+
+  if (keyMsg) {
+    if (keyMsg.startsWith(config.prefix)) {
+      return runCommand(client, channel, userstate, keyMsg);
+    } else {
+      let userN = (userstate["display-name"]?.startsWith("@")) ? userstate["display-name"] : `@${userstate["display-name"]}`;
+      let response = otfResponseEmote(keyMsg, userN);
+      if (response.startsWith("/")) {
+        if (response.substring(0, 3) === "/me") {
+          let newRes = response.replace(/(\/me\s)/, "");
+          client.action(channel, `${newRes}`);
+        } else client.say(channel, `${response}`);
+      } else client.say(channel, `${response}`);
+    }
+  }
 
   // Emote streak
   let comboMessage = await checkEmoteStreak(message, userstate["display-name"]);
@@ -38,7 +61,6 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
   // check if "who said that?" game is going
   let isGameGoing = await fetchWSTGameData();
   if (isGameGoing.length) {
-    console.log('game is going')
     if (!isGameGoing[0]["canJoin"]) {
       // check if message sender is in game.
       let contestants = isGameGoing[0]["contestants"];
@@ -61,92 +83,7 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
   }
 
   if (message.startsWith(config.prefix)) {
-    const context = message.slice(config.prefix.length).split(/ +/);
-
-    // Remove invis character that 7tv uses to avoid spam
-    if (context.includes("󠀀")) { let sevenInd = context.indexOf("󠀀"); context.splice(sevenInd, 1); };
-    if (context[0] === "") { context.splice(0, 1) };
-
-    const commandName = context?.shift()?.toLowerCase();
-    const command = commands.getCommand(commandName);
-
-    // Check for banned phrases
-    let checkMessage = await checkMessageBanPhrase(message);
-    if (checkMessage["banned"]) return;
-
-    if (command !== null) {
-      if (!command) return;
-
-      // Check if command has testing enabled, if it does then it can only be used in testing channels
-      if (command.testing && !config["testing-channels"].includes(channel.substring(1))) return;
-
-      // Check if command is offline only. If stream status is live, don't run command.
-      if (command.offlineOnly) {
-        let currentStatus = await StreamStat.find({}).select({ status: 1, _id: 0 });
-        if (currentStatus[0]["status"] === "live") return
-      }
-
-      // Check for global/personal cooldowns.
-      let shouldRun = await cooldownCanContinue(userstate, command.name, command.cooldown, command.globalCooldown);
-      if (shouldRun == false) return;
-
-      if (isUserPermitted(userstate, command.permissions)) {
-        commandUsed('command', command.name);
-        await command.code(client, channel, userstate, context);
-      } else
-        await client.say(channel, `@${userstate["display-name"]} you don't have permission to use that command!`);
-    } else {
-      let otfNames = await getOTFCommandNames();
-      if (!commandName) return;
-      let matches = otfNames.filter(s => s.includes(commandName));
-
-      if (matches.includes(commandName)) {
-        if (matches.length) {
-          let toTag;
-          let tagged = context[0];
-          let user = userstate["display-name"];
-
-          // Cooldown for the OTF commands
-          let shouldRun = await cooldownCanContinue(userstate, commandName, 30, 0);
-          if (shouldRun === false) return;
-
-          // Check for special character that 7tv uses.
-          if (tagged === "󠀀") {
-            toTag = `@${user}`;
-          } else {
-            if (tagged) {
-              if (tagged.startsWith("@")) {
-                toTag = tagged
-              } else {
-                toTag = `@${tagged}`;
-              }
-            } else {
-              toTag = `@${user}`;
-            }
-          }
-
-          let response = await getOTFResponse(matches[0], toTag);
-          if (!response) return;
-          commandUsed("otf", commandName);
-          if (response.startsWith("/")) {
-            if (response.substring(0, 3) === "/me") {
-              let newRes = response.replace(/(\/me\s)/, "");
-              client.action(channel, `${newRes}`);
-            } else client.say(channel, `${response}`);
-          } else client.say(channel, `${response}`);
-        } else return;
-
-      } else if (commandName == "join") {
-        // Who Said That? game
-        let gameData = fs.readFileSync(path.join(__dirname, "../../datasets/whosaidthat.json"))
-        let rawData = JSON.parse(gameData.toString());
-
-        if (rawData.length) {
-          let gameJoin = await joinWSTGame(userstate["username"]);
-          client.action(channel, `@${userstate["username"]} ${gameJoin}`);
-        }
-      } else return;
-    }
+    runCommand(client, channel, userstate, message);
   }
 
   // Save/update chatter in Mongo

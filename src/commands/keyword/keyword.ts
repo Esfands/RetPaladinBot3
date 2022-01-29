@@ -1,19 +1,13 @@
-import {CommonUserstate } from "tmi.js";
-
-import { commandUsed } from "../../utils";
-import { keyWordCooldown } from "../../utils/cooldowns";
-import { getOTFCommandNames, getOTFResponse } from "../command/OTFCommands";
+import { getOTFCommandNames } from "../command/OTFCommands";
 import config from "../../cfg/config";
-import { otfResponseEmote } from "../../utils/emotes";
-import { find, findColumn, findOne, findQuery, insertRow, removeOne, updateOne } from "../../utils/maria";
+import { findColumn, findOne, findQuery, insertRow, removeOne, updateOne } from "../../utils/maria";
 import { IKeyword } from "../../schemas/types";
+import { AllKeywords } from "../../events/onChatEvent/onChatEvent";
 
 interface IResponse {
   command: boolean;
   message: string;
 }
-
-export let AllKeywords: Array<IKeyword> = [];
 
 //=keyword create (con1: title) (con2: regex) (con3: cooldown) (con4: response/otf command)
 export async function createKeyword(context: Array<string>) {
@@ -133,39 +127,7 @@ export async function toggleKeyword(title: string) {
 
 // Initialize keywords so it's stored in memory. There's probably a more efficient way to do this but I'm tired
 export async function initializeKeywords() {
-  console.log("initialize keywords");
   let keywords: IKeyword[] = [];
   keywords = await findQuery(`SELECT * FROM keywords`);
   keywords.forEach(keyword => AllKeywords.push(keyword));
-}
-
-// Checks message for each regex.
-export async function checkMessageForRegex(message: string, user: CommonUserstate["display-name"] | string) {
-  if (AllKeywords.length === 0) await initializeKeywords();
-  let toRes = { run: false, message: "" };
-
-  for (let i = 0; i < AllKeywords.length; i++) {
-    let parts = AllKeywords[i]["Regex"].split("/");
-    let regex = new RegExp(parts[1], parts[2]);
-    if (regex.test(message)) {
-      let isDisabled = (AllKeywords[i]["Disabled"] === "false") ? false: true;
-      if (isDisabled) return toRes = { run: false, message: "" };
-      if (!keyWordCooldown(AllKeywords[i]["Title"], AllKeywords[i]["Cooldown"])) return toRes = { run: false, message: "" };
-      toRes = { run: true, message: AllKeywords[i]["Message"] };
-    }
-  }
-
-  if (toRes.run === true) {
-    user = (user?.startsWith("@")) ? user : `@${user}`;
-    if (toRes.message.startsWith(config.prefix)) {
-      let otfRes = await getOTFResponse(toRes.message.substring(1), user);
-      commandUsed('otf', toRes.message.substring(1));
-      return toRes = { run: true, message: otfRes! };
-    } else {
-      let newResponse = otfResponseEmote(toRes.message, user);
-      return toRes = { run: true, message: newResponse};
-    }
-  } else toRes = { run: false, message: "" };
-
-  return toRes;
 }

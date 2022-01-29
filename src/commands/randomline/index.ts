@@ -37,11 +37,12 @@ const randomLineCommand: CommandInt = {
       .then((response: any) => {
         client.say(channel, `(${response.data["time"]}) ${response.data["user"]}: ${response.data["message"]}`);
       }).catch((error: any) => {
-        if (error.response.data.error.toLowerCase() === "invalid channelname") {
+        let errorMsg = error.response.data.error.toLowerCase();
+        if (errorMsg === "invalid channelname") {
           client.say(channel, `@${user} sorry couldn't find the channel "${target}"`);
-        } else if (error.response.data.error.toLowerCase() === "invalid username") {
+        } else if (errorMsg === "invalid username") {
           client.say(channel, `@${user} sorry couldn't find the user "${target}"`);
-        } else if (error.response.data.error.toLowerCase() === "not found") {
+        } else if (errorMsg === "not found") {
           client.say(channel, `@${user} sorry that user hasn't chatted in "${targetChannel}"`);
         } else {
           client.say(channel, `@${user} sorry there's an API error. Please contact Mahcksimus FeelsDankMan`);
