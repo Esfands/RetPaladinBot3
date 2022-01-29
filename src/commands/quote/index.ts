@@ -2,8 +2,8 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { fetchAPI } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const quoteCommand: CommandInt = {
-  name: "quote",
-  aliases: ["randomquote"],
+  name: "randomquote",
+  aliases: ["randquote", "rquote"],
   permissions: [],
   globalCooldown: 5,
   cooldown: 30,
