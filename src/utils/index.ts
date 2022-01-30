@@ -57,13 +57,30 @@ export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean
 
   let seconds = a.diff(b, 'seconds');
 
-  let yearStr = (years > 0) ? years + ' years ' : "";
-  let monthStr = (months > 0) ? months + ' months ' : "";
-  let dayStr = (days > 0) ? days + ' days ' : "";
-  let hourStr = (hours > 0) ? hours + " hours " : "";
+  let yearStr = (years > 0) 
+  ? (years == 1) ? years + ' year ' : years + ' years ' 
+  : "";
 
-  let minStr = (minutes > 0) ? minutes + " minutes " : "";
-  let secStr = (seconds > 0) ? seconds + " seconds " : "";
+  let monthStr = (months > 0) 
+  ? (months == 1) ? months + ' month ' : months + ' months ' 
+  : "";
+
+  let dayStr = (days > 0) 
+  ? (days == 1) ? days + ' day ' : days + ' days ' 
+  : "";
+  
+  let hourStr = (hours > 0) 
+  ? (hours == 1) ? hours + ' hour ' : hours + " hours " 
+  : "";
+
+  let minStr = (minutes > 0) 
+  ? (minutes == 1) ? minutes + " minute " : minutes + " minutes " 
+  : "";
+  
+  let secStr = (seconds > 0) 
+  ? (seconds == 1) ? seconds + " second " : seconds + " seconds " 
+  : "";
+
   if (dayStr === "") {
     if (includeSeconds) {
       return hourStr + minStr + secStr;

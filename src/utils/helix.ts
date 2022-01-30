@@ -1,4 +1,5 @@
 import axios from "axios";
+import { fetchAPI } from ".";
 import config from "../cfg/config";
 
 function getHelixURL(endpoint: string, query: object | string) {
@@ -115,4 +116,13 @@ export async function getChannelEmotes(username: string) {
   let userId = await getUserId(username);
   let emotes = await axios({ method: "get", url: `https://api.twitch.tv/helix/chat/emotes?broadcaster_id=${userId}`, headers: headers });
   return emotes.data;
+}
+
+export async function getAllChatters(channel: string) {
+  let chatters: string[] = [];
+
+  let chatData = await fetchAPI(`https://tmi.twitch.tv/group/user/${channel}/chatters`);
+  let cd = chatData["chatters"];
+  chatters.push(...cd["broadcaster"], ...cd["moderators"], ...cd["staff"], ...cd["admins"], ...cd["global_mods"], ...cd["viewers"]);
+  return chatters;
 }

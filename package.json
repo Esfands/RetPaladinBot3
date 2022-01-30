@@ -1,6 +1,6 @@
 {
   "name": "retpaladinbot",
-  "version": "1.0.0",
+  "version": "3.4.3",
   "description": "Twitch bot for EsfandTV",
   "main": "src/main.ts",
   "scripts": {
