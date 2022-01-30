@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { fetchAPI, getTarget } from "../../utils";
+import { ErrorType, fetchAPI, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const colorCommand: CommandInt = {
@@ -24,7 +24,13 @@ const colorCommand: CommandInt = {
     target = (target.startsWith("@")) ? target.substring(1) : target;
 
     try {
-      let color = await fetchAPI(`https://api.ivr.fi/twitch/resolve/${target}`);
+      let color;
+      try {
+        color = await fetchAPI(`https://api.ivr.fi/twitch/resolve/${target}`);
+      } catch (error) {
+        await logError(user!, ErrorType.API, `Error fetching api.ivr.fi/twitch/resolve/${target}. API might be down.`, new Date());
+        return client.action(channel, `@${user}, FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
+      }
 
       let msg: string = "";
       if (target.toLowerCase() === userstate["username"]) {
@@ -32,7 +38,10 @@ const colorCommand: CommandInt = {
       } else msg = `@${user} that users color is: ${color["chatColor"]}`;
 
       client.action(channel, msg);
-    } catch (err) { return client.action(channel, `@${user} FeelsDankMan sorry, couldn't find the username "${target}"`); }
+    } catch (err) { 
+      await logError(user!, ErrorType.COMMAND, `Error finding the user name ${target}`, new Date());
+      return client.action(channel, `@${user} FeelsDankMan sorry, couldn't find the username "${target}"`); 
+    }
   }
 }
 

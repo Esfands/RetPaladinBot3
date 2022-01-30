@@ -1,8 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { checkIfCommand } from "../../commands/loopcommand/loopcommand";
-import { Chatter } from "../../schemas/ChatterSchema";
 import { LoopManager } from "../../utils/cron";
-import { find, findQuery, insertRow } from "../../utils/maria";
+import { findQuery } from "../../utils/maria";
 import { checkStreamStatus } from "../../utils/notifications";
 
 export default async (client: Actions, channel: string, username: CommonUserstate, self: boolean) => {

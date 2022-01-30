@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { calcDate, fetchAPI, getTarget } from "../../utils";
+import { calcDate, ErrorType, fetchAPI, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const modcheckCommand: CommandInt = {
@@ -30,7 +30,14 @@ const modcheckCommand: CommandInt = {
       targetChannel = targetChannel.substring(1);
     } else targetChannel = targetChannel;
 
-    let modCheck = await fetchAPI(`https://api.ivr.fi/twitch/modsvips/${targetChannel}`);
+    let modCheck;
+    try {
+      modCheck = await fetchAPI(`https://api.ivr.fi/twitch/modsvips/${targetChannel}`);
+    } catch (error) {
+      await logError(user!, ErrorType.API, `Error fetching API for !modcheck - https://api.ivr.fi/twitch/modsvips/${targetChannel}`, new Date());
+      return client.action(channel, `@${user} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
+    }
+
     let isMod = modCheck["mods"];
     let modRes = "";
 

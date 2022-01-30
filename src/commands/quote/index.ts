@@ -28,12 +28,15 @@ const quoteCommand: CommandInt = {
     if (randomAPI["name"] === 'kanye') {
       let req = await fetchAPI(randomAPI["link"]);
       return client.action(channel, `${req.quote} - Kanye West`);
+      
     } else if (randomAPI["name"] === "affirmations") {
       let req = await fetchAPI(randomAPI["link"]);
       return client.action(channel, `${req["affirmation"]}`);
+
     } else if (randomAPI["name"] === "quotegarden") {
       let req = await fetchAPI(randomAPI["link"]);
       return client.action(channel, `${req["data"][0]["quoteText"]} - ${req["data"][0]["quoteAuthor"]}`);
+
     } else if (randomAPI["name"] === "anime") {
       let req = await fetchAPI(randomAPI["link"]);
       return client.action(channel, `${req["quote"]} - ${req["character"]} (${req["anime"]})`);

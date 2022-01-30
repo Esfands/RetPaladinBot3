@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
-import { shortenURL } from "../../utils";
+import { ErrorType, logError, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const animal: CommandInt = {
@@ -39,8 +39,15 @@ const animal: CommandInt = {
 
     let chosenCategory = (context[0]) ? animals.find(animal => animal.name === context[0].toLowerCase()) : animals[Math.floor(Math.random() * animals.length)];
     if (!chosenCategory) return;
-    let dig = await axios.get(chosenCategory["link"]);
-    let data = await dig.data;
+
+    let data: any;
+    try {
+      let dig = await axios.get(chosenCategory["link"]);
+      data = await dig.data;
+    } catch (error) {
+      await logError(user!, ErrorType.API, `animal command - Error fetching ${chosenCategory["link"]}`, new Date());
+      return client.action(channel, `@${user} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
+    }
 
     let toSend;
     switch (chosenCategory["name"]) {

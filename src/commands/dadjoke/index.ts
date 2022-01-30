@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
+import { ErrorType, logError } from "../../utils";
 const dadjoke = {
   name: "dadjoke",
   aliases: [],
@@ -17,8 +18,9 @@ const dadjoke = {
     .then(res => {
       client.action(channel, `@${userstate["display-name"]} ${res["data"]["joke"]}`);
     })  
-    .catch(err => {
-      client.action(channel, `@${userstate["display-name"]} sorry I had trouble fetching a joke.`);
+    .catch(async (err) => {
+      await logError(userstate["display-name"]!, ErrorType.API, `Error fetching dadjokes from https://icanhazdadjoke.com/`, new Date());
+      client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     });
   }
 }

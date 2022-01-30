@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { fetchAPI, minsToHours } from "../../utils";
+import { ErrorType, fetchAPI, logError, minsToHours } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 interface TwitchTrakcer {
@@ -27,7 +27,15 @@ const monthlyhours: CommandInt = {
   testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
-    let monthlyData = fetchAPI("https://twitchtracker.com/api/channels/summary/esfandtv");
+    let monthlyData;
+
+    try {
+      monthlyData = fetchAPI("https://twitchtracker.com/api/channels/summary/esfandtv");
+    } catch (error) {
+      logError(userstate["display-name"]!, ErrorType.API, `Error fetching API for !monthlyhours - https://twitchtracker.com/api/channels/summary/esfandtv`, new Date());
+      return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`)
+    }
+
     let raw: TwitchTrakcer = await monthlyData;
     let monthlyMins: number = raw["minutes_streamed"];
 

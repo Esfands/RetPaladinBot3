@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
+import { ErrorType, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const bored: CommandInt = {
   name: "bored",
@@ -15,8 +16,16 @@ const bored: CommandInt = {
   testing: false,
   offlineOnly: false,
   code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
-    const response = await axios.get("http://www.boredapi.com/api/activity/");
-    const body = await response.data;
+    let body: any;
+    
+    try {
+      const response = await axios.get("http://www.boredapi.com/api/activity/");
+      body = response.data;
+    } catch (error) {
+      await logError(userstate["display-name"]!, ErrorType.API, `bored command - error fetching http://www.boredapi.com/api/activity/`, new Date());
+      return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
+    }
+
     client.action(channel, `@${userstate["display-name"]} ${body["activity"]}`);
   }
 }

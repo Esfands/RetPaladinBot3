@@ -1,6 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { CommandInt } from "../../validation/CommandSchema";
-import { fetchAPI, getTarget, calcDate } from "../../utils";
+import { fetchAPI, getTarget, calcDate, logError, ErrorType } from "../../utils";
 
 const subageCommand: CommandInt = {
   name: "subage",
@@ -37,7 +37,15 @@ const subageCommand: CommandInt = {
       targetChannel = targetChannel.substring(1);
     } else targetChannel = targetChannel;
 
-    let subcheck = await fetchAPI(`https://api.ivr.fi/twitch/subage/${target.toLowerCase()}/${targetChannel.toLowerCase()}`);
+    let subcheck;
+    
+    try {
+      subcheck = await fetchAPI(`https://api.ivr.fi/twitch/subage/${target.toLowerCase()}/${targetChannel.toLowerCase()}`);
+    } catch (error) {
+      await logError(user!, ErrorType.API, `Error fetching API for !subage - https://api.ivr.fi/twitch/subage/${target.toLowerCase()}/${targetChannel.toLowerCase()}`, new Date());
+      return client.action(channel, `@${user} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
+    }
+
     if (subcheck["subscribed"] == false) {
       let oldSub = subcheck["cumulative"];
       if (oldSub["months"] === 0 || typeof oldSub["months"] === "undefined") {

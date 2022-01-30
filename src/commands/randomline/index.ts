@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
-import { fetchAPI, getTarget } from "../../utils";
+import { ErrorType, fetchAPI, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const randomLineCommand: CommandInt = {
@@ -45,7 +45,8 @@ const randomLineCommand: CommandInt = {
         } else if (errorMsg === "not found") {
           client.say(channel, `@${user} sorry that user hasn't chatted in "${targetChannel}"`);
         } else {
-          client.say(channel, `@${user} sorry there's an API error. Please contact Mahcksimus FeelsDankMan`);
+          logError(user!, ErrorType.API, `Error fetching API for !rq - https://api.ivr.fi/logs/rq/${targetChannel}/${target}`, new Date());
+          client.say(channel, `@${user} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
         }
       });
   }

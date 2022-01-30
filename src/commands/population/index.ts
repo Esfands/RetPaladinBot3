@@ -1,6 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { CommandInt } from "../../validation/CommandSchema";
-import { fetchAPI, capitalizeFirstLetter } from "../../utils/index";
+import { fetchAPI, capitalizeFirstLetter, logError, ErrorType } from "../../utils/index";
 
 const populationCommand: CommandInt = {
   name: "population",
@@ -18,7 +18,15 @@ const populationCommand: CommandInt = {
 
     let server = context[0];
     try {
-      let res = await fetchAPI(`https://ironforge.pro/api/server/tbc/${server}`);
+      let res;
+      
+      try {
+        res = await fetchAPI(`https://ironforge.pro/api/server/tbc/${server}`);
+      } catch (error) {
+        await logError(userstate["display-name"]!, ErrorType.API, `Error fetching API for !population - https://ironforge.pro/api/server/tbc/${server}`, new Date());
+        return client.action(channel, `${userstate['display-name']} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
+      }
+
       let allData = res["charts"]["all"]["datasets"];
       let factionData: any = { aliance: 0, horde: 0 }
 

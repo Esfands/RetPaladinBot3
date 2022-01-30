@@ -57,29 +57,29 @@ export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean
 
   let seconds = a.diff(b, 'seconds');
 
-  let yearStr = (years > 0) 
-  ? (years == 1) ? years + ' year ' : years + ' years ' 
-  : "";
+  let yearStr = (years > 0)
+    ? (years == 1) ? years + ' year ' : years + ' years '
+    : "";
 
-  let monthStr = (months > 0) 
-  ? (months == 1) ? months + ' month ' : months + ' months ' 
-  : "";
+  let monthStr = (months > 0)
+    ? (months == 1) ? months + ' month ' : months + ' months '
+    : "";
 
-  let dayStr = (days > 0) 
-  ? (days == 1) ? days + ' day ' : days + ' days ' 
-  : "";
-  
-  let hourStr = (hours > 0) 
-  ? (hours == 1) ? hours + ' hour ' : hours + " hours " 
-  : "";
+  let dayStr = (days > 0)
+    ? (days == 1) ? days + ' day ' : days + ' days '
+    : "";
 
-  let minStr = (minutes > 0) 
-  ? (minutes == 1) ? minutes + " minute " : minutes + " minutes " 
-  : "";
-  
-  let secStr = (seconds > 0) 
-  ? (seconds == 1) ? seconds + " second " : seconds + " seconds " 
-  : "";
+  let hourStr = (hours > 0)
+    ? (hours == 1) ? hours + ' hour ' : hours + " hours "
+    : "";
+
+  let minStr = (minutes > 0)
+    ? (minutes == 1) ? minutes + " minute " : minutes + " minutes "
+    : "";
+
+  let secStr = (seconds > 0)
+    ? (seconds == 1) ? seconds + " second " : seconds + " seconds "
+    : "";
 
   if (dayStr === "") {
     if (includeSeconds) {
@@ -252,4 +252,22 @@ export function getTarget(user: any, target: string) {
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+// Logging errors
+export enum ErrorType {
+  COMMAND = "COMMAND",
+  API = "API",
+  OTHER = "OTHER"
+}
+
+interface ErrorLog {
+  User: string;
+  Type: ErrorType;
+  Description: string;
+  Timestamp: Date | string;
+}
+
+export async function logError(User: string, Type: ErrorType, Description: string, Timestamp: string | Date) {
+  await insertRow(`INSERT INTO errors (User, Type, Description, Timestamp) VALUES (?, ?, ?, ?)`, [User, Type, Description, Timestamp]);
 }

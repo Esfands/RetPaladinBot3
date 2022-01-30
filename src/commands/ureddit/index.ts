@@ -30,7 +30,6 @@ const uredditCommand: CommandInt = {
       let randomPost = posts[Math.floor(Math.random()*posts.length)]
       // title, author, upvote_ratio, check for "over_18"
       let postData = randomPost["data"];
-      console.log(["title"], randomPost["data"]["author"], randomPost["data"]["upvote_ratio"], randomPost["data"]["url"]);
       let redditUrl = await shortenURL(`https://www.reddit.com${postData["permalink"]}`);
       client.action(channel, `${postData["author"]}: ${postData["title"]} | ⬆ %${Math.floor((postData["upvote_ratio"]/1) * 100)} ${redditUrl}`);
     } catch (error) {

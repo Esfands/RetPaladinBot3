@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { shortenURL } from "../../utils";
+import { ErrorType, logError, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const shortenurl: CommandInt = {
   name: "shortenurl",
@@ -22,7 +22,10 @@ const shortenurl: CommandInt = {
       .then(res => {
         if (typeof res != null) {
           client.action(channel, `@${user} your shortened link: ${res}`);
-        } else client.action(channel, `@${user} there was an issue shortening your link.`);
+        } else {
+          logError(user!, ErrorType.API, `Error fetching API for !shortenurl - l.mahcks.com`, new Date());
+          client.action(channel, `@${user} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
+        }
       })
   }
 }

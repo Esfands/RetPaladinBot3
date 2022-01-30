@@ -1,4 +1,4 @@
-import { model, Schema, Model, Document } from 'mongoose';
+import { model, Schema, Model, Document } from "mongoose";
 
 export interface IStreamStats extends Document {
   type: string;
@@ -6,6 +6,8 @@ export interface IStreamStats extends Document {
   title: string;
   category: string;
   hosting: string;
+  changedGamesAt: Date | string;
+  wentOfflineAt: Date | string;
 }
 
 let StreamStatsSchema = new Schema({
@@ -13,7 +15,12 @@ let StreamStatsSchema = new Schema({
   status: String,
   title: String,
   category: String,
-  hosting: String
-})
+  hosting: String,
+  changedGamesAt: String,
+  wentOfflineAt: String,
+});
 
-export const StreamStat: Model<IStreamStats | null> = model(`streamstats`, StreamStatsSchema);
+export const StreamStat: Model<IStreamStats> = model(
+  `streamstats`,
+  StreamStatsSchema
+);
