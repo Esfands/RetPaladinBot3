@@ -4,22 +4,23 @@ import { ErrorType, fetchAPI, getTarget, logError, shortenURL } from "../../util
 import { CommandInt } from "../../validation/CommandSchema";
 
 const pfpCommand: CommandInt = {
-  name: "pfp",
-  aliases: ["profilepic", "avatar"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get a user's profile picture.",
-  dynamicDescription: [
+  Name: "pfp",
+  Aliases: ["profilepic", "avatar"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get a user's profile picture.",
+  DynamicDescription: [
     "Get your own profile picture.",
     "<code>!pfp</code>",
     "",
     "Get another user's profile picture.",
     "<code>!pfp (user)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let target = getTarget(user, context[0]);
 

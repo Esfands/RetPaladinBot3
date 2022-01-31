@@ -3,22 +3,23 @@ import { ErrorType, fetchAPI, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const followCountCommand: CommandInt = {
-  name: "followcount",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Check how many followers a channel has, by default it's EsfandTV.",
-  dynamicDescription: [
+  Name: "followcount",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Check how many followers a channel has, by default it's EsfandTV.",
+  DynamicDescription: [
     "Check how many followers Esfand has.",
     "<code>!followcount</code>",
     "",
     "Check how many followers a channel has,",
     "<code>!followcount (user)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
 
     let targetChannel = context[0];

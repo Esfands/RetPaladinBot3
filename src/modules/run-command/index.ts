@@ -32,21 +32,21 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
     if (!command) return;
 
     // Check if command has testing enabled, if it does then it can only be used in testing channels
-    if (command.testing && !config["testing-channels"].includes(channel.substring(1))) return;
+    if (command.Testing && !config["testing-channels"].includes(channel.substring(1))) return;
 
     // Check if command is offline only. If stream status is live, don't run command.
-    if (command.offlineOnly) {
+    if (command.OfflineOnly) {
       let currentStatus = await StreamStat.find({}).select({ status: 1, _id: 0 });
       if (currentStatus[0]["status"] === "live") return
     }
 
     // Check for global/personal cooldowns.
-    let shouldRun = await cooldownCanContinue(userstate, command.name, command.cooldown, command.globalCooldown);
+    let shouldRun = await cooldownCanContinue(userstate, command.Name, command.Cooldown, command.GlobalCooldown);
     if (shouldRun == false) return;
 
-    if (isUserPermitted(userstate, command.permissions)) {
-      commandUsed('command', command.name);
-      return await command.code(client, channel, userstate, context);
+    if (isUserPermitted(userstate, command.Permissions)) {
+      commandUsed('command', command.Name);
+      return await command.Code(client, channel, userstate, context);
     } else
       return await client.say(channel, `@${userstate["display-name"]} you don't have permission to use that command!`);
   } else {

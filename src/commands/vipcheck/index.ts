@@ -3,18 +3,19 @@ import { calcDate, ErrorType, fetchAPI, getTarget, logError } from "../../utils"
 import { CommandInt } from "../../validation/CommandSchema";
 
 const vipCheckCommand: CommandInt = {
-  name: "vipcheck",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Check if a user is a VIP in a certain channel. Defaults to Esfand's channel.",
-  dynamicDescription: [
+  Name: "vipcheck",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Check if a user is a VIP in a certain channel. Defaults to Esfand's channel.",
+  DynamicDescription: [
     "<code>!vipcheck (user) (channel)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let target = getTarget(user, context[0]);
     target = (target.startsWith("@")) ? target.substring(1) : target;

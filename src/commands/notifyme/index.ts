@@ -2,13 +2,13 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { Notify } from "../../schemas/NotifySchema";
 import { CommandInt } from "../../validation/CommandSchema";
 const notifyme: CommandInt = {
-  name: "notifyme",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get tagged in chat when the channel goes live, title, or changes game.",
-  dynamicDescription: [
+  Name: "notifyme",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get tagged in chat when the channel goes live, title, or changes game.",
+  DynamicDescription: [
     "Optin to recieve a going live notification in chat.",
     "<code>!notifyme live</code>",
     "",
@@ -20,9 +20,10 @@ const notifyme: CommandInt = {
     "",
     "To opt out of any of the notifcations, do the same command again to toggle it off."
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let user = userstate["display-name"];
     let username = userstate["username"];
     let option = context[0]

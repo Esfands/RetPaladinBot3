@@ -3,22 +3,23 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const numbers: CommandInt = {
-  name: "numbers",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Bring meaning to your metrics and stories to your dates with interesting number facts.",
-  dynamicDescription: [
+  Name: "numbers",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Bring meaning to your metrics and stories to your dates with interesting number facts.",
+  DynamicDescription: [
     "Types: trivia, math, date, year.",
     "<code>!numbers (type) (number)</code>",
     "",
     "Date format: month/day.",
     "<code>!numbers date 2/29</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const type = context[0];
     const numSearch = context[1];
 

@@ -15,18 +15,19 @@ interface TwitchTrakcer {
 }
 
 const monthlyhours: CommandInt = {
-  name: "monthlyhours",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Check how many hours Esfand streamed this month.",
-  dynamicDescription: [
+  Name: "monthlyhours",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Check how many hours Esfand streamed this month.",
+  DynamicDescription: [
     "<code>!monthlyhours</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let monthlyData;
 
     try {

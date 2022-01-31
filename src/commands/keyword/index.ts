@@ -1,14 +1,14 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { CommandInt } from "../../validation/CommandSchema";
+import { CommandInt, CommandPermissions } from "../../validation/CommandSchema";
 import { createKeyword, editKeyword, getKeywordData, getKeywords, removeKeyword, toggleKeyword } from "./keyword";
 const keyword: CommandInt = {
-  name: 'keyword',
-  aliases: ["kw"],
-  permissions: ["trusted", "moderator"],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Keyword detection for chat using RegEx.",
-  dynamicDescription: [
+  Name: 'keyword',
+  Aliases: ["kw"],
+  Permissions: [CommandPermissions.TRUSTED, CommandPermissions.MODERATOR],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Keyword detection for chat using RegEx.",
+  DynamicDescription: [
     'Create a keyword',
     '<code>!keyword create (title) "(regex)" (cooldown) (response/otf command)</code>',
     "",
@@ -24,9 +24,10 @@ const keyword: CommandInt = {
     'List all of the keywords',
     '<code>!keyword list</code>'
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: true,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     const command = context[0].toLowerCase();
     const con1 = context[1];

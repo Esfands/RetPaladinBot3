@@ -13,13 +13,13 @@ export class CommandStore {
 
   _storeAllCommands(commands: Array<CommandInt>) {
     commands.forEach(async (command) => {
-      let exists = await findOne(`commands`, `Name='${command.name}'`);
+      let exists = await findOne(`commands`, `Name='${command.Name}'`);
       if (exists) {
-        await updateOne(`UPDATE commands SET Name='${command.name}', Aliases='${JSON.stringify(command.aliases)}', Permissions='${JSON.stringify(command.permissions)}', Description='${command.description}', DynamicDescription="${JSON.stringify(command.dynamicDescription)}", GlobalCooldown='${command.globalCooldown}', Cooldown='${command.cooldown}', Testing='${(command.testing) ? "true" : "false"}', OfflineOnly='${(command.offlineOnly) ? "true" : "false"}' WHERE Name='${command.name}';`);
+        await updateOne(`UPDATE commands SET Name='${command.Name}', Aliases='${JSON.stringify(command.Aliases)}', Permissions='${JSON.stringify(command.Permissions)}', Description='${command.Description}', DynamicDescription="${JSON.stringify(command.DynamicDescription)}", GlobalCooldown='${command.GlobalCooldown}', Cooldown='${command.Cooldown}', Testing='${(command.Testing) ? "true" : "false"}', OfflineOnly='${(command.OfflineOnly) ? "true" : "false"}', OnlineOnly='${(command.OnlineOnly) ? "true" : "false"}' WHERE Name='${command.Name}';`);
         //console.log('updated');
       } else {
         let queryStr = `INSERT INTO commands (Name, Aliases, Permissions, Description, DynamicDescription, GlobalCooldown, Cooldown, Testing, OfflineOnly, Count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-        let values = [command.name, JSON.stringify(command.aliases), JSON.stringify(command.permissions), command.description, JSON.stringify(command.dynamicDescription), command.globalCooldown, command.cooldown, (command.testing) ? "true" : "false", (command.offlineOnly) ? "true" : "false", 0];
+        let values = [command.Name, JSON.stringify(command.Aliases), JSON.stringify(command.Permissions), command.Description, JSON.stringify(command.DynamicDescription), command.GlobalCooldown, command.Cooldown, (command.Testing) ? "true" : "false", (command.OfflineOnly) ? "true" : "false", (command.OnlineOnly) ? "true" : "false", 0];
         await insertRow(queryStr, values);
         //console.log('New command');
       }
@@ -59,7 +59,7 @@ export class CommandStore {
 
   getCommand(commandName: (string | undefined)) {
     if (!commandName) return;
-    let found = this._commands.find(cmd => cmd.name === commandName) || this._commands.find(cmd => cmd.aliases.includes(commandName));
+    let found = this._commands.find(cmd => cmd.Name === commandName) || this._commands.find(cmd => cmd.Aliases.includes(commandName));
     if (!found) return null;
     return found;
   }

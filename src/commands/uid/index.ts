@@ -4,22 +4,23 @@ import { getUserId } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const uidCommand: CommandInt = {
-  name: "uid",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "This command gives you the user-id of a yourself or a specified user.",
-  dynamicDescription: [
+  Name: "uid",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "This command gives you the user-id of a yourself or a specified user.",
+  DynamicDescription: [
     "Get your own ID.",
     "<code>!uid</code>",
     "",
     "Get another users ID",
     "<code>!uid (user)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let target = getTarget(user, context[0]);
     target = (target.startsWith("@")) ? target.substring(1) : target;

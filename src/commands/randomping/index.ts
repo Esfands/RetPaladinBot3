@@ -4,20 +4,21 @@ import { getAllChatters } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const randomPingCommand: CommandInt = {
-  name: "randomping",
-  aliases: ["rping", "randping"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Ping a few random chatters.",
-  dynamicDescription: [
+  Name: "randomping",
+  Aliases: ["rping", "randping"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Ping a few random chatters.",
+  DynamicDescription: [
     "<code>!randomping</code>",
     "<code>!rping</code>",
     "<code>!randping</code>"
   ],
-  testing: false,
-  offlineOnly: true,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: true,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let USERS_TO_PING: number = 5;
     let allChatters: string[] = await getAllChatters("esfandtv");
     let randChatters: string[] = [];

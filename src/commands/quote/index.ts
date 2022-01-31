@@ -1,20 +1,22 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { fetchAPI } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
+
 const quoteCommand: CommandInt = {
-  name: "uquote",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 5,
-  cooldown: 30,
-  description: "Fetch a random quote.",
-  dynamicDescription: [
+  Name: "uquote",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 5,
+  Cooldown: 30,
+  Description: "Fetch a random quote.",
+  DynamicDescription: [
     "Fetch a random quote",
     "<code>!quote</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const quoteAPIs = [
       { name: "kanye", link: 'https://api.kanye.rest/' },
       { name: "affirmations", link: "https://www.affirmations.dev/" },

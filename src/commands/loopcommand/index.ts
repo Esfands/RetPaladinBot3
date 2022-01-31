@@ -1,14 +1,14 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { CommandInt } from "../../validation/CommandSchema";
+import { CommandInt, CommandPermissions } from "../../validation/CommandSchema";
 import { checkLoop, createLoop, listLoops, removeLoop, toggleLoop, updateLoop } from "./loopcommand";
 const loopcommand: CommandInt = {
-  name: "loopcommand",
-  aliases: ["loopcmd"],
-  permissions: ["trusted"],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Create/edit/remove loop commands",
-  dynamicDescription: [
+  Name: "loopcommand",
+  Aliases: ["loopcmd"],
+  Permissions: [CommandPermissions.MODERATOR, CommandPermissions.TRUSTED],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Create/edit/remove loop commands",
+  DynamicDescription: [
     "Creating a loop.",
     "<code>!loopcommand (create/add) (title) (pattern) (response)</code>",
     "",
@@ -27,9 +27,10 @@ const loopcommand: CommandInt = {
     "Toggle on/off a specific loop.",
     "<code>!loopcommand toggle (title)</code>",
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const command = context[0];
     const display = userstate["display-name"];
 

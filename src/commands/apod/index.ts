@@ -6,18 +6,19 @@ import { CommandInt } from "../../validation/CommandSchema";
 let FormData = require("form-data");
 
 const apod: CommandInt = {
-  name: "apod",
-  aliases: ["astronomypictureoftheday"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get the Astronomy Picture of the Day.",
-  dynamicDescription: [
+  Name: "apod",
+  Aliases: ["astronomypictureoftheday"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get the Astronomy Picture of the Day.",
+  DynamicDescription: [
     "<code>!apod</code>",
   ],
-  testing: true,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: true,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const response = await axios.get(`https://api.nasa.gov/planetary/apod?api_key=${config.apiKeys.nasa}`);
     const body = await response.data;
     console.log(body["url"]);

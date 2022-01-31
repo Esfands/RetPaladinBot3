@@ -3,19 +3,20 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { ErrorType, logError, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const cat: CommandInt = {
-  name: 'cat',
-  aliases: ['kitty'],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get a random image of a kitty.",
-  dynamicDescription: [
+  Name: 'cat',
+  Aliases: ['kitty'],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get a random image of a kitty.",
+  DynamicDescription: [
     "<code>!cat</code>",
     "<code>!kitty</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let body;
     
     try {

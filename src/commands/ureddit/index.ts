@@ -2,18 +2,19 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { fetchAPI, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const uredditCommand: CommandInt = {
-  name: "ureddit",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Grabs a random post from EsfandTV's subreddit",
-  dynamicDescription: [
+  Name: "ureddit",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Grabs a random post from EsfandTV's subreddit",
+  DynamicDescription: [
     "<code>!ureddit</code>"
   ],
-  testing: true,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: true,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const date = ["month", "year", "day", "week", "today"];
     const trending = ["top", "hot"];
 

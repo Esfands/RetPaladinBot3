@@ -1,16 +1,16 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
-import { CommandInt } from "../../validation/CommandSchema";
+import { CommandInt, CommandPermissions } from "../../validation/CommandSchema";
 import { createOTFCommand, getOTFCommandNames, getOTFCleanResponse, editOTFCommand, removeOTFCommand, editOTFCommandName } from "./OTFCommands";
 
 const command: CommandInt = {
-  name: "command",
-  aliases: ["cmd"],
-  permissions: ["developer", "admin", "moderator", "trusted"],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Create/edit/remove commands",
-  dynamicDescription: [
+  Name: "command",
+  Aliases: ["cmd"],
+  Permissions: [CommandPermissions.DEVELOPER, CommandPermissions.ADMIN, CommandPermissions.MODERATOR, CommandPermissions.TRUSTED],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Create/edit/remove commands",
+  DynamicDescription: [
     "Create a command with a name and message.",
     "<code>!command create (name) (response)</code>",
 
@@ -30,9 +30,10 @@ const command: CommandInt = {
     "Check the response of a command.",
     "<code>!command check (name)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = (userstate["display-name"]) ? userstate["display-name"] : "An admin";
     if (!context[0]) return client.action(channel, `@${user} incorrect syntax: visit here for more help https://www.retpaladinbot.com/commands/command`);
     let cmd = context[0].toLowerCase();

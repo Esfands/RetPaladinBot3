@@ -3,22 +3,23 @@ import { calcDate, getTarget, postHastebin } from "../../utils";
 import { getUsersFollowers } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 const followingCommand: CommandInt = {
-  name: "following",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Check who a user is following.",
-  dynamicDescription: [
+  Name: "following",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Check who a user is following.",
+  DynamicDescription: [
     "Check your own followers.",
     "<code>!following</code>",
     "",
     "Check another users following.",
     "<code>!following (user)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
 
     let toTarget = getTarget(userstate["display-name"], context[0]);
 

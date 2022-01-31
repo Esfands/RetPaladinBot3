@@ -10,18 +10,19 @@ import { find, findOne, insertRow, updateOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const debug: CommandInt = {
-  name: "debug",
-  aliases: ["developer"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Debugger for the bot.",
-  dynamicDescription: [
+  Name: "debug",
+  Aliases: ["developer"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Debugger for the bot.",
+  DynamicDescription: [
     "<code></code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     if (context[0] === "emotes") {
       await getEmotes();
       client.action(channel, `@${userstate["display-name"]} emotes have been updated!`);

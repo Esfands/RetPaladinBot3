@@ -3,21 +3,22 @@ import { ICommand } from "../../schemas/types";
 import { findOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const help: CommandInt = {
-  name: "help",
-  aliases: ["about", "commands"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get the URL for the documentation site.",
-  dynamicDescription: [
+  Name: "help",
+  Aliases: ["about", "commands"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get the URL for the documentation site.",
+  DynamicDescription: [
     "<code>!help</code>",
     "<code>!help (command name)</code>",
     "<code>!about</code>",
     "<code>!commands</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let user = userstate["display-name"];
     let commands = await findOne('commands', `Name='${context[0]}'`);
 

@@ -4,22 +4,23 @@ import { CommandInt } from "../../validation/CommandSchema";
 import { calcDate, ErrorType, getTarget, logError } from "../../utils";
 
 const accountAge: CommandInt = {
-  name: "accountage",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get your Twitch account age.",
-  dynamicDescription: [
+  Name: "accountage",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get your Twitch account age.",
+  DynamicDescription: [
     "Check your own account age.",
     "<code>!accountage</code>",
     "",
     "Check another users account age.",
     "<code>!accountage (user)</code>",
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let tagged = getTarget(user, context[0])
 

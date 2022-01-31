@@ -1,21 +1,22 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { CommandInt } from "../../validation/CommandSchema";
+import { CommandInt, CommandPermissions } from "../../validation/CommandSchema";
 
 const share: CommandInt = {
-  name: "share",
-  aliases: ["broadcast"],
-  permissions: ["broadcaster", "moderator"],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Share a message or link a certain number of times.",
-  dynamicDescription: [
+  Name: "share",
+  Aliases: ["broadcast"],
+  Permissions: [CommandPermissions.MODERATOR],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Share a message or link a certain number of times.",
+  DynamicDescription: [
     "Count is the number of times the message will be sent.",
     "Delay is optional, default is 1/2 a second.",
     "<code>!share (count) (delay) (message)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     // $share (how many times to spam) (delay in seconds (optional)) (message)
     let shareCount = parseInt(context[0], 10);
     let defaultTO = 300;

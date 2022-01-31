@@ -2,13 +2,13 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { CommandInt } from "../../validation/CommandSchema";
 import { checkRoundsNumber, createWSTGame, startWSTGame, stopWSTGame } from "./whosaidthat";
 const whosaidthat: CommandInt = {
-  name: "whosaidthat",
-  aliases: ["wst"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Guess who said what!",
-  dynamicDescription: [
+  Name: "whosaidthat",
+  Aliases: ["wst"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Guess who said what!",
+  DynamicDescription: [
     "A random line will be chosen from all players entered. All players have to guess who said that line.",
     "",
     "Create a lobby and which allows users to join the game.",
@@ -23,9 +23,10 @@ const whosaidthat: CommandInt = {
     "Does the GM want to cut the game short?",
     "<code>!whosaidthat stop</code>",
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const gameMaster = userstate["display-name"];
     const command = context[0];
 

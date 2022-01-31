@@ -4,22 +4,23 @@ import { ErrorType, logError, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const animal: CommandInt = {
-  name: "animal",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get a random image of an animal.",
-  dynamicDescription: [
+  Name: "animal",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get a random image of an animal.",
+  DynamicDescription: [
     "Get a random animal photo",
     "<code>!animal</code>",
     "",
     "Optional: Add the animal to get a specific animal picture.",
     "<code>!animal (optional: axolotl/duck/fox/cat/dog/zoo)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     console.log();
     const user = userstate["display-name"];
 

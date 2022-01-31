@@ -3,18 +3,19 @@ import { ErrorType, fetchAPI, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const chattersCommand: CommandInt = {
-  name: "chatters",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Check how many offline chatters are Esfand's channel.",
-  dynamicDescription: [
+  Name: "chatters",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Check how many offline chatters are Esfand's channel.",
+  DynamicDescription: [
     "<code>!chatters</code>"
   ],
-  testing: false,
-  offlineOnly: true,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: true,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let target = getTarget(user, context[0]);
 

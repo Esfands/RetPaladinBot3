@@ -4,18 +4,19 @@ import config from "../../cfg/config";
 import { getTarget } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const rank: CommandInt = {
-  name: "rank",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get Esfand's League of Legends rank and more information.",
-  dynamicDescription: [
+  Name: "rank",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get Esfand's League of Legends rank and more information.",
+  DynamicDescription: [
     "<code>!rank</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let tagged = getTarget(user, context[0]);
 

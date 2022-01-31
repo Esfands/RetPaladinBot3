@@ -4,22 +4,23 @@ import config from "../../cfg/config";
 import { calcDate, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const tweet: CommandInt = {
-  name: "tweet",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get a users most recent tweet.",
-  dynamicDescription: [
+  Name: "tweet",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get a users most recent tweet.",
+  DynamicDescription: [
     "Shows Esfand's most recent tweet",
     "<code>!tweet</code>",
     "",
     "Find another users tweet.",
     "<code>!tweet (user)</code>",
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let userSearch = (context[0]) ? context[0] : "EsfandTV";
     let userData;
     let tweetsData;

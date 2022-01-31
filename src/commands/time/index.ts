@@ -2,19 +2,20 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { getTarget } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const time: CommandInt = {
-  name: "time",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get Esfands local time.",
-  dynamicDescription: [
+  Name: "time",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get Esfands local time.",
+  DynamicDescription: [
     "<code>!timezone</code>",
     "<code>!time @user</code>",
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let tagged = getTarget(user, context[0]);
     let response = null;

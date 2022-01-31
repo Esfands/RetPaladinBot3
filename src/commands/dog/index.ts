@@ -2,20 +2,22 @@ import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import { ErrorType, logError, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
+
 const dog: CommandInt = {
-  name: 'dog',
-  aliases: ['doggo'],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Brighten up your day with a doggo!",
-  dynamicDescription: [
+  Name: 'dog',
+  Aliases: ['doggo'],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Brighten up your day with a doggo!",
+  DynamicDescription: [
     "<code>!dog</code>",
     "<code>!doggo</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate['display-name'];
     let body;
     try {

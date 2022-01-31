@@ -1,23 +1,25 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { ErrorType, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
+
 const roles: CommandInt = {
-  name: "roles",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Check a users roles courtesy of www.twitchdatabase.com",
-  dynamicDescription: [
+  Name: "roles",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Check a users roles courtesy of www.twitchdatabase.com",
+  DynamicDescription: [
     "Check your own roles.",
     "<code>!roles</code>",
     "",
     "Check another users roles.",
     "<code>!roles (user)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let target = getTarget(userstate["display-name"], context[0]);
 
     let link;

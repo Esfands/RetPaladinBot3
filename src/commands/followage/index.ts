@@ -4,19 +4,20 @@ import { isFollowingUser } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 import moment from "moment";
 const followage: CommandInt = {
-  name: "followage",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Check how long you or someone else has been following the stream.",
-  dynamicDescription: [
+  Name: "followage",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Check how long you or someone else has been following the stream.",
+  DynamicDescription: [
     "<code>!followage</code>",
     "<code>!followage @user</code>",
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let tagged = getTarget(user, context[0]);
 

@@ -3,13 +3,13 @@ import { applyFont } from "../../utils";
 import { bold, fancy, fancyBold, outline } from "../../utils/data";
 import { CommandInt } from "../../validation/CommandSchema";
 const font: CommandInt = {
-  name: "font",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Change the font of any text.",
-  dynamicDescription: [
+  Name: "font",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Change the font of any text.",
+  DynamicDescription: [
     "Cahnge the font of a message.",
     "<code>!font (fancy, fancybold, outline) (message)</code>",
     "",
@@ -26,9 +26,10 @@ const font: CommandInt = {
     "bold",
     "𝘁𝗵𝗲 𝗾𝘂𝗶𝗰𝗸 𝗯𝗿𝗼𝘄𝗻 𝗳𝗼𝘅 𝗷𝘂𝗺𝗽𝘀 𝗼𝘃𝗲𝗿 𝘁𝗵𝗲 𝗹𝗮𝘇𝘆 𝗱𝗼𝗴"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let askedFont = context[0].toLowerCase();
 
     function getTranslated() {

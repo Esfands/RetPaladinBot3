@@ -4,19 +4,20 @@ import config from "../../cfg/config";
 import { shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const textoimage: CommandInt = {
-  name: "texttoimage",
-  aliases: ["tti"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Send the bot text, it'll output a strange image.",
-  dynamicDescription: [
+  Name: "texttoimage",
+  Aliases: ["tti"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Send the bot text, it'll output a strange image.",
+  DynamicDescription: [
     "<code>!textoimage (optional: message)</code>",
     "<code>!tti<code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const message = context.join(" ");
     const user = userstate["display-name"];
 

@@ -1,23 +1,25 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { asyncInsertRow, findOne, findQuery, insertRow } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
+
 const feedback: CommandInt = {
-  name: "feedback",
-  aliases: ["suggest"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Send feedback or a suggestion for the bot or website.",
-  dynamicDescription: [
+  Name: "feedback",
+  Aliases: ["suggest"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Send feedback or a suggestion for the bot or website.",
+  DynamicDescription: [
     "Create feedback.",
     "<code>!feedback ((idea/feature/suggestion)/(bug/error)) (message)</code>",
     "",
     "Check the status of a suggestion.",
     "<code>!feedback (check/status) (ID)"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let prefix = `[Feedback]`
     let user = userstate["display-name"];
     let username = userstate["username"];

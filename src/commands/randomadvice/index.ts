@@ -2,19 +2,21 @@ import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import { ErrorType, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
+
 const advice: CommandInt = {
-  name: 'advice',
-  aliases: ["randomadvice"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get some random advice that may or may not help in anyway.",
-  dynamicDescription: [
+  Name: 'advice',
+  Aliases: ["randomadvice"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get some random advice that may or may not help in anyway.",
+  DynamicDescription: [
     "<code>!randomadvice</code>",
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let body;
 
     try {

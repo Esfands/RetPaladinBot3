@@ -3,22 +3,23 @@ import { ErrorType, fetchAPI, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const colorCommand: CommandInt = {
-  name: "color",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "This command gives you the color of a specific users username color.",
-  dynamicDescription: [
+  Name: "color",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "This command gives you the color of a specific users username color.",
+  DynamicDescription: [
     "Get your own color.",
     "<code>!color</code>",
     "",
     "Get another users color",
     "<code>!color (user)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let target = getTarget(user, context[0]);
     target = (target.startsWith("@")) ? target.substring(1) : target;

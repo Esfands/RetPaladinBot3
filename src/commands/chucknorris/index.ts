@@ -3,20 +3,21 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { ErrorType, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const chucknorris: CommandInt = {
-  name: "chucknorris",
-  aliases: ["chuck", "norris"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Chuck Norris made this BTW.",
-  dynamicDescription: [
+  Name: "chucknorris",
+  Aliases: ["chuck", "norris"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Chuck Norris made this BTW.",
+  DynamicDescription: [
     "<code>!chucknorris</code>",
     "<code>!chuck</code>",
     "<code>!norris</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let body;
 
     try {

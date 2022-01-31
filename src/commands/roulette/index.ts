@@ -4,18 +4,19 @@ import { getBestAvailableEmote } from "../../utils/emotes";
 import { findOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const rouletteCommand: CommandInt = {
-  name: "roulette",
-  aliases: ["gamble"],
-  permissions: [],
-  globalCooldown: 5,
-  cooldown: 60,
-  description: "Gamble your RetFuel away.",
-  dynamicDescription: [
+  Name: "roulette",
+  Aliases: ["gamble"],
+  Permissions: [],
+  GlobalCooldown: 5,
+  Cooldown: 60,
+  Description: "Gamble your RetFuel away.",
+  DynamicDescription: [
     "<code>!roulette (amount)</code>"
   ],
-  testing: true,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: true,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let res = (Math.random() < 0.5) ? true : false;
     let bet = Number(context[0]) ? parseInt(context[0]) : context[0];
     let user = userstate["display-name"];

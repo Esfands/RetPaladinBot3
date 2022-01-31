@@ -3,13 +3,13 @@ import { CommandInt } from "../../validation/CommandSchema";
 import { fetchAPI, getTarget, calcDate, logError, ErrorType } from "../../utils";
 
 const subageCommand: CommandInt = {
-  name: "subage",
-  aliases: ["sa"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Check the time a given user has subbed to a given channel along with other information. (By default targets Esfand's channel)",
-  dynamicDescription: [
+  Name: "subage",
+  Aliases: ["sa"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Check the time a given user has subbed to a given channel along with other information. (By default targets Esfand's channel)",
+  DynamicDescription: [
     "If no channel is given it will default to EsfandTV",
     "",
     "Check your subage to EsfandTV.",
@@ -24,9 +24,10 @@ const subageCommand: CommandInt = {
     "Check another users subage to a channel.",
     "<code>!subage (user) (streamer)</code>",
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let target = getTarget(user, context[0]);
     target = (target.startsWith("@")) ? target.substring(1) : target;

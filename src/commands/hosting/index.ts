@@ -3,19 +3,20 @@ import { StreamStat } from "../../schemas/StreamStatsSchema";
 import { findOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const hostingCommand: CommandInt = {
-  name: "host",
-  aliases: ["hosting"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Check what streamer is being hosted.",
-  dynamicDescription: [
+  Name: "host",
+  Aliases: ["hosting"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Check what streamer is being hosted.",
+  DynamicDescription: [
     "<code>!host</code>",
     "<code>!hosting</code>"
   ],
-  testing: false,
-  offlineOnly: true,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: true,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     var streamStats = await StreamStat.findOne({ type: "esfandtv" });
     if (!streamStats) return client.action(channel, `@${userstate["display-name"]} had issue finding who Esfand is currently hosting.`);
     if (streamStats["hosting"]) {

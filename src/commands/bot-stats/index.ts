@@ -5,18 +5,19 @@ import { execSync } from "child_process";
 import { findQuery } from "../../utils/maria";
 
 const botStatsCommand: CommandInt = {
-  name: "botstats",
-  aliases: ["botstatus"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Gives some stats about this bot.",
-  dynamicDescription: [
+  Name: "botstats",
+  Aliases: ["botstatus"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Gives some stats about this bot.",
+  DynamicDescription: [
     "<code>!botstats</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     const target = getTarget(user, context[0]);
 

@@ -1,18 +1,19 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { CommandInt } from "../../validation/CommandSchema";
+import { CommandInt, CommandPermissions } from "../../validation/CommandSchema";
 const reload: CommandInt = {
-  name: "reload",
-  aliases: [],
-  permissions: ["developer"],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "",
-  dynamicDescription: [
+  Name: "reload",
+  Aliases: [],
+  Permissions: [CommandPermissions.ADMIN],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "",
+  DynamicDescription: [
     "<code></code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
 
   }
 }

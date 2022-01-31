@@ -3,19 +3,20 @@ import { CommandInt } from "../../validation/CommandSchema";
 
 const TIMEOUT_LENGTH = 5;
 const shoot: CommandInt = {
-  name: "shoot",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 15,
-  cooldown: 60,
-  description: "Timeout a specific user for a short period of time",
-  dynamicDescription: [
+  Name: "shoot",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 15,
+  Cooldown: 60,
+  Description: "Timeout a specific user for a short period of time",
+  DynamicDescription: [
     `Time out a user for ${TIMEOUT_LENGTH} seconds.`,
     "<code>!shoot (user)</code>"
   ],
-  testing: false,
-  offlineOnly: true,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: true,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     if (!context[0]) return client.action(channel, `@${user} please target a user to shoot.`);
 

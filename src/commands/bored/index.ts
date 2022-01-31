@@ -3,19 +3,20 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { ErrorType, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const bored: CommandInt = {
-  name: "bored",
-  aliases: ["touchgrass"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-	description: "Bored? This will give you something to do.",
-	dynamicDescription: [
+  Name: "bored",
+  Aliases: ["touchgrass"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+	Description: "Bored? This will give you something to do.",
+	DynamicDescription: [
 		"<code>!bored</code>",
 		"<code>!touchgrass</code>"
 	],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let body: any;
     
     try {

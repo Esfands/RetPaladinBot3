@@ -18,18 +18,19 @@ function hasConsecutive(arr: any[], amount: number) {
 }
 
 const slotsCommand: CommandInt = {
-  name: "slots",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Slots to roll for RetFuel",
-  dynamicDescription: [
+  Name: "slots",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Slots to roll for RetFuel",
+  DynamicDescription: [
     "<code></code>"
   ],
-  testing: true,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: true,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const slotIcons = ["🍒", "🍓", "🍋", "🍊", "🍇", "🍉"];
     let selected: string[] = [];
 

@@ -4,13 +4,13 @@ import { ErrorType, fetchAPI, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const randomLineCommand: CommandInt = {
-  name: "randomquote",
-  aliases: ["rq"],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get a random quote from a user in any chat! By default it's Esfand's.",
-  dynamicDescription: [
+  Name: "randomquote",
+  Aliases: ["rq"],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get a random quote from a user in any chat! By default it's Esfand's.",
+  DynamicDescription: [
     "Get a random quote from yourself from Esfand's chat.",
     "<code>!rq</code>",
     "",
@@ -20,9 +20,10 @@ const randomLineCommand: CommandInt = {
     "Fetch a quote from yourself or another user in a different chat.",
     "<code>!rq (user) (streamer)"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let target = getTarget(user, context[0]);
     target = (target.startsWith("@")) ? target.substring(1) : target;

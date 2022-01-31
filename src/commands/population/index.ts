@@ -3,18 +3,19 @@ import { CommandInt } from "../../validation/CommandSchema";
 import { fetchAPI, capitalizeFirstLetter, logError, ErrorType } from "../../utils/index";
 
 const populationCommand: CommandInt = {
-  name: "population",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Check the population of a particular WoW TBC server.",
-  dynamicDescription: [
+  Name: "population",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Check the population of a particular WoW TBC server.",
+  DynamicDescription: [
     "<code></code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
 
     let server = context[0];
     try {

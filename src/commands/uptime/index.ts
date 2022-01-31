@@ -4,19 +4,20 @@ import { getStreamData } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const uptime: CommandInt = {
-  name: "uptime",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "Get the uptime of the current stream.",
-  dynamicDescription: [
+  Name: "uptime",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "Get the uptime of the current stream.",
+  DynamicDescription: [
     "<code>!uptime</code>",
     "<code>!uptime @user</code>",
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let tagged = getTarget(user, context[0]);
     

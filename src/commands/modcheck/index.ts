@@ -3,22 +3,23 @@ import { calcDate, ErrorType, fetchAPI, getTarget, logError } from "../../utils"
 import { CommandInt } from "../../validation/CommandSchema";
 
 const modcheckCommand: CommandInt = {
-  name: "modcheck",
-  aliases: [],
-  permissions: [],
-  globalCooldown: 10,
-  cooldown: 30,
-  description: "This command tells you if a user is a mod in a given channel, and for how long. It defaults to EsfandTV.",
-  dynamicDescription: [
+  Name: "modcheck",
+  Aliases: [],
+  Permissions: [],
+  GlobalCooldown: 10,
+  Cooldown: 30,
+  Description: "This command tells you if a user is a mod in a given channel, and for how long. It defaults to EsfandTV.",
+  DynamicDescription: [
     "Check if a user is moderator in Esfand's chat.",
     "<code>!modcheck (user)</code>",
     "",
     "Check if a user is moderator in another channel.",
     "<code>!modcheck (user) (channel)</code>"
   ],
-  testing: false,
-  offlineOnly: false,
-  code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+  Testing: false,
+  OfflineOnly: false,
+  OnlineOnly: false,
+  Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
     let target = getTarget(user, context[0]);
     target = (target.startsWith("@")) ? target.substring(1) : target;
