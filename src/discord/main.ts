@@ -5,15 +5,15 @@ export const bot = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]
 });
 
+const channel: TextChannel = bot.channels.cache.get('938722986226229308') as TextChannel;
 export function sendMessageLogDiscord(userstate: CommonUserstate, message: string) {
-	let twitchBadges = Object.keys(userstate["badges"]!);
+	if (!userstate["badges"]) return channel.send(`${userstate["display-name"]}: ${message}`);
+	let twitchBadges = Object.keys(userstate["badges"]);
 	let badges: any[] = [];
-	const channel: TextChannel = bot.channels.cache.get('938722986226229308') as TextChannel;
 	
 	if (!twitchBadges) {
-		channel.send(`<:esfandtv:938735935015776277> ${userstate["display-name"]}: ${message}`);
+		channel.send(`${userstate["display-name"]}: ${message}`);
 	} else {
-		if (!userstate["badges"]) return channel.send(`<:esfandtv:938735935015776277> ${userstate["display-name"]}: ${message}`);
 		if (twitchBadges.includes("broadcaster")) badges.push("<:broadcaster:938733735757639733>");
 		if (twitchBadges.includes("moderator")) badges.push("<:mod:938739649864667146>");
 		if (twitchBadges.includes("vip")) badges.push("<:vip:938739649793372230>");
@@ -31,6 +31,6 @@ export function sendMessageLogDiscord(userstate: CommonUserstate, message: strin
 		if (twitchBadges.includes("glitchcon2020")) badges.push("<:glitchcon:938731596947812393>");
 		if (twitchBadges.includes("prime")) badges.push("<:prime:938731597115576350>");
 		if (twitchBadges.includes("turbo")) badges.push("<:turbo:938731597161705483>");
-		channel.send(`<:esfandtv:938735935015776277> ${badges.join(" ")} **${userstate["display-name"]}**: ${message}`);
+		channel.send(`${badges.join(" ")} **${userstate["display-name"]}**: ${message}`);
 	}
 }
