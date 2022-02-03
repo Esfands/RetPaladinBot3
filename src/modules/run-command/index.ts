@@ -63,7 +63,23 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
         let shouldRun = await cooldownCanContinue(userstate, commandName, 30, 0);
         if (shouldRun === false) return;
 
-        let response = await getOTFResponse(matches[0], tagged);
+        // Check for special character that 7tv uses.
+        let toTag: string = "";
+        if (tagged === "󠀀") {
+          toTag = `@${user}`;
+        } else {
+          if (tagged) {
+            if (tagged.startsWith("@")) {
+              toTag = tagged
+            } else {
+              toTag = `@${tagged}`;
+            }
+          } else {
+            toTag = `@${user}`;
+          }
+        }
+
+        let response = await getOTFResponse(matches[0], toTag);
         if (!response) return;
         commandUsed("otf", commandName);
         if (response.startsWith("/")) {

@@ -65,10 +65,11 @@ const shoot: CommandInt = {
     if (result) {
       let uid = await getUserId(context[0] = (context[0].startsWith("@") ? context[0].substring(1) : context[0]));
       let alreadyTimedout = await checkUserTimeout(uid);
-      if (alreadyTimedout) {
+      console.log(alreadyTimedout);
+/*       if (!alreadyTimedout) { */
         timeoutUser(userstate["username"], context[0], `${user} shot ${context[0]} dead! D:`);
         context[0] = (context[0].startsWith("@")) ? context[0].substring(1) : context[0];
-      } else return client.action(channel, `@${user} that user is already dead TriSad`);
+/*       } else return client.action(channel, `@${user} that user is already dead TriSad`); */
     } else {
       timeoutUser(userstate["username"], user, `${user} shot themselves in the foot!`);
     }

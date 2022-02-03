@@ -2,15 +2,15 @@ import { Client, GuildEmoji, Intents, TextChannel } from "discord.js";
 import { CommonUserstate } from "tmi.js";
 
 export const bot = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]
 });
 
-const channel: TextChannel = bot.channels.cache.get('938722986226229308') as TextChannel;
 export function sendMessageLogDiscord(userstate: CommonUserstate, message: string) {
+	const channel: TextChannel = bot.channels.cache.get('938722986226229308') as TextChannel;
 	if (!userstate["badges"]) return channel.send(`${userstate["display-name"]}: ${message}`);
 	let twitchBadges = Object.keys(userstate["badges"]);
 	let badges: any[] = [];
-	
+
 	if (!twitchBadges) {
 		channel.send(`${userstate["display-name"]}: ${message}`);
 	} else {
