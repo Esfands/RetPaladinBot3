@@ -76,6 +76,22 @@ const debug: CommandInt = {
         }
         //console.log(emote["name"], emote["id"], emote["tier"], emote["emote_type"], emote["images"]["url_4x"]);
       });
+
+    } else if (context[0] === 'subachatters') {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+      function generateString(length: number) {
+        let result = ' ';
+        const charactersLength = characters.length;
+        for (let i = 0; i < length; i++) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        return result;
+      }
+      for (let i = 0; i < 500; i++) {
+        await insertRow(`INSERT INTO subathonstats (ID, Username, MessageCount, GiftedSubs, BitsDonated) VALUES (?, ?, ?, ?, ?)`, [Math.floor(Math.random() * 1000000000), generateString(15), Math.floor(Math.random() * 90000) + 10000, Math.floor(Math.random() * 90000) + 10000, Math.floor(Math.random() * 90000) + 10000]);
+      }
     }
   }
 }

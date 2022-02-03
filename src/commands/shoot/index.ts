@@ -1,4 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { checkUserTimeout, getUser, getUserId } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const TIMEOUT_LENGTH = 5;
@@ -23,15 +24,15 @@ const shoot: CommandInt = {
     function timeoutUser(userRan: CommonUserstate, target: any, message: string) {
       if (target.toLowerCase() === userstate["username"]) {
         client.timeout(channel, userstate["username"], TIMEOUT_LENGTH, "!shoot command")
-        .then((data) => {
-          //return client.action(channel, `${user} shot themselves in the foot!`);
-        })
-        .catch((err) => {
-          if (err === "bad_timeout_mod" || err === "bad_timeout_broadcaster") {
-            return client.action(channel, `${user} missed their target!`);
-          } else return;
-        })
-      } 
+          .then((data) => {
+            //return client.action(channel, `${user} shot themselves in the foot!`);
+          })
+          .catch((err) => {
+            if (err === "bad_timeout_mod" || err === "bad_timeout_broadcaster") {
+              return client.action(channel, `${user} missed their target!`);
+            } else return;
+          })
+      }
       client.timeout(channel, target, TIMEOUT_LENGTH, '!shoot command')
         .then((data) => {
           return client.action(channel, message);
@@ -62,7 +63,12 @@ const shoot: CommandInt = {
     let chance = Math.random();
     let result = (chance < 0.3) ? false : true; // false = hurt self, true = shot user
     if (result) {
-      timeoutUser(userstate["username"], context[0], `${user} shot ${context[0]} dead! D:`)
+      let uid = await getUserId(context[0] = (context[0].startsWith("@") ? context[0].substring(1) : context[0]));
+      let alreadyTimedout = await checkUserTimeout(uid);
+      if (alreadyTimedout) {
+        timeoutUser(userstate["username"], context[0], `${user} shot ${context[0]} dead! D:`);
+        context[0] = (context[0].startsWith("@")) ? context[0].substring(1) : context[0];
+      } else return client.action(channel, `@${user} that user is already dead TriSad`);
     } else {
       timeoutUser(userstate["username"], user, `${user} shot themselves in the foot!`);
     }

@@ -1,6 +1,9 @@
 import axios from "axios";
+import { CommonUserstate } from "tmi.js";
 import { fetchAPI } from ".";
 import config from "../cfg/config";
+import { pool } from "../main";
+import { findOne, findQuery, removeOne } from "./maria";
 
 function getHelixURL(endpoint: string, query: object | string) {
   return `https://api.twitch.tv/helix/${endpoint}?${query}`
@@ -39,7 +42,7 @@ export async function get100Ids(usernames: string[]) {
   usersIds["data"].forEach((tid: any) => {
     toSend.push({ name: tid["login"], tid: tid["id"] })
   });
-  
+
   return toSend;
 }
 
@@ -125,4 +128,25 @@ export async function getAllChatters(channel: string) {
   let cd = chatData["chatters"];
   chatters.push(...cd["broadcaster"], ...cd["moderators"], ...cd["staff"], ...cd["admins"], ...cd["global_mods"], ...cd["viewers"]);
   return chatters;
+}
+
+export async function checkUserTimeout(userid: CommonUserstate["user-id"]) {
+  let found = await findOne('timeouts', `ID='${userid}'`);
+  if (found) {
+    if (found["ExpiresAt"] < new Date()) {
+      let conn;
+      try {
+        conn = await pool.getConnection();
+        await conn.query(`DELETE FROM timeouts WHERE ID='${userid}';`);
+        return true;
+      } catch (err) {
+        throw err;
+      } finally {
+        if (conn) conn.end()
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
 }

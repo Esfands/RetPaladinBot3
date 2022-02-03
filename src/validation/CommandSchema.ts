@@ -36,7 +36,6 @@ export const CommandSchema = joi.object({
   Description: joi.string(),
   DynamicDescription: joi.array(),
   Testing: joi.boolean(),
-  // Check if the user a developer, 
   OfflineOnly: joi.boolean(),
   OnlineOnly: joi.boolean(),
   Code: joi.function().required()

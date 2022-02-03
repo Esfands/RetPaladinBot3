@@ -25,7 +25,7 @@ mongoose.connect(config.mongoUri, {
 	console.log(`[SQL] Error connecting to MongoDB ${err}`);
 })
 
-// Transition to MariaDB
+// MariaDB
 import mariadb from "mariadb";
 export const pool = mariadb.createPool({
 	host: config.MariaDB.host,
@@ -33,6 +33,16 @@ export const pool = mariadb.createPool({
 	password: config.MariaDB.password,
 	database: config.MariaDB.database,
 	connectionLimit: config.MariaDB.connectionLimit
+});
+
+/* Discord JS */
+import { bot } from "./discord/main";
+bot.on("ready", () => {
+	console.log("[DISCORD] Discord bot is ready.");
+})
+
+bot.login(config.discord.token).then(() => {
+	bot.user?.setPresence({ activities: [{ name: "Esfand's Twitch and Discord", type: "WATCHING" }], status: "online" });
 });
 
 import { CommonUserstate } from "tmi.js";
@@ -48,6 +58,9 @@ import onSubMysteryGiftEvent from "./events/onSubMysteryGiftEvent";
 import onGiftPaidUpgradeEvent from "./events/onGiftPaidUpgradeEvent";
 import onAnonGiftPaidUpgradeEvent from "./events/onAnonGiftPaidUpgradeEvent";
 import onHostingEvent from "./events/onHostingEvent";
+import onCheerEvent from "./events/onCheerEvent";
+import onTimeoutEvent from "./events/onTimeoutEvent";
+import { TextChannel } from "discord.js";
 
 // TODO: Clean up the disaster that is sub events
 client.on("sub", async (channel: any, username: any, method: any, message: any, userstate: any) => await onSubEvent(client, channel, username, method, message, userstate));
@@ -56,3 +69,5 @@ client.on("submysterygift", async (channel: any, username: any, numbOfSubs: any,
 client.on("giftpaidupgrade", async (channel: any, username: any, sender: any, userstate: any) => await onGiftPaidUpgradeEvent(client, channel, username, sender, userstate));
 client.on("anongiftpaidupgrade", async (channel: any, username: any, userstate: any) => await onAnonGiftPaidUpgradeEvent(client, channel, username, userstate));
 client.on("hosting", async (channel: any, target: string, viewers: number) => await onHostingEvent(client, channel, target, viewers));
+client.on("cheer", async (channel: any, userstate: any, message: any) => await onCheerEvent(client, channel, userstate, message));
+client.on("timeout", async (channel: any, username: any, reason: any, duration: any, userstate: any) => await onTimeoutEvent(client, channel, username, reason, duration, userstate));
