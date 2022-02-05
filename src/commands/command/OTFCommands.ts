@@ -21,12 +21,12 @@ export async function removeOTFCommand(name: string) {
   let searchCmd = await findOne('otf', `Name='${name}'`);
   if (searchCmd) {
     await removeOne(`otf`, `Name=?`, [name]);
-    return `successfuly removed keyword "${name}"`;
-  } else return `couldn't find the keyword "${name}" to remove`;
+    return `successfuly removed command "${name}"`;
+  } else return `couldn't find the command "${name}" to remove`;
 }
 
 export async function editOTFCommand(cmd: string, message: string) {
-  findAndUpdate(`SELECT * FROM otf WHERE Name='${cmd}';`, `UPDATE otf SET Response='${message}' WHERE Name='${cmd}';`);
+  findAndUpdate(`SELECT * FROM otf WHERE Name='${cmd}';`, `UPffDATE otf SET Response='${message}' WHERE Name='${cmd}';`);
 }
 
 export async function editOTFCommandName(oldName: string, newName: string) {

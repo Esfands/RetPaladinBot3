@@ -74,6 +74,7 @@ const command: CommandInt = {
           if (execute) {
             let otfCommands = await getOTFCommandNames();
             let matches = otfCommands.filter(s => s.includes(cmdName));
+            console.log('test', matches);
             if (!matches.length) {
               let createdResponse = context.splice(2).join(" ");
               createOTFCommand(cmdName.toLowerCase(), createdResponse, user);
