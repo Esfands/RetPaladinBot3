@@ -3,7 +3,7 @@ import { CommonUserstate } from "tmi.js";
 import { fetchAPI } from ".";
 import config from "../cfg/config";
 import { pool } from "../main";
-import { findOne, findQuery, removeOne } from "./maria";
+import { findOne, findQuery, removeOne, updateOne } from "./maria";
 
 function getHelixURL(endpoint: string, query: object | string) {
   return `https://api.twitch.tv/helix/${endpoint}?${query}`
@@ -149,4 +149,32 @@ export async function checkUserTimeout(userid: CommonUserstate["user-id"]) {
       return false;
     }
   }
+}
+
+export async function refreshEsfandToken() {
+  let query = await findOne('tokens', `Username='esfandtv'`);
+  let refresh = query["RefreshToken"];
+
+  let link = `https://id.twitch.tv/oauth2/token?grant_type=refresh_token&refresh_token=${refresh}&client_id=${config.helixOptions.clientId}&client_secret=${config.helixOptions.clientSecret}`
+  let post = await axios({
+    method: "POST",
+    url: link
+  });
+
+  await updateOne(`UPDATE tokens SET AccessToken='${post.data["access_token"]}', RefreshToken='${post.data["refresh_token"]}' WHERE Username='esfandtv'`);
+}
+
+export async function getEsfandSubs() {
+  let query = await findOne('tokens', `Username='esfandtv'`);
+  let request = await axios({
+    method: "GET",
+    url: "https://api.twitch.tv/helix/subscriptions?broadcaster_id=38746172",
+    headers: {
+      "Authorization": "Bearer " + query["AccessToken"],
+      "Client-Id": config.helixOptions.clientId
+    }
+  });
+
+  let data = request.data;
+  console.log(data);
 }

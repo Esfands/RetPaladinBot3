@@ -6,7 +6,7 @@ import { fetchChatters, giveAllChattersRetfuel } from "../../modules/retfuel";
 import { storeEmotes } from "../../utils/emoteData";
 import { getEmotes } from "../../utils/emotes";
 import { getEventSubs } from "../../utils/EventSub";
-import { getChannelEmotes } from "../../utils/helix";
+import { getChannelEmotes, getEsfandSubs, refreshEsfandToken } from "../../utils/helix";
 import { find, findOne, insertRow, updateOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 
@@ -95,6 +95,11 @@ const debug: CommandInt = {
       }
     } else if (context[0] === "reddit") {
       getLatestVideo();
+    
+    } else if (context[0] === "rtoken") {
+      await refreshEsfandToken();
+    } else if (context[0] === 'subs') {
+      await getEsfandSubs();
     }
   }
 }

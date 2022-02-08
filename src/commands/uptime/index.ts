@@ -30,7 +30,9 @@ const uptime: CommandInt = {
       let elapsed = calcDate(new Date(), new Date(startTime), false);
       client.say(channel, `@${tagged} Esfand has been streaming for ${elapsed}`)
     } catch (error) {
-      client.say(channel, `@${tagged} stream is offline currently Sadge`);
+      let stat = await StreamStat.findOne({ type: "esfandtv" });
+      let elapsed = calcDate(new Date(), new Date(stat!["wentOfflineAt"]), false);
+      client.say(channel, `@${tagged} stream is offline and has been for ${elapsed} Sadeg`);
     }
   }
 }
