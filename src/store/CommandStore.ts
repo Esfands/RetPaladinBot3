@@ -18,7 +18,7 @@ export class CommandStore {
         await updateOne(`UPDATE commands SET Name='${command.Name}', Aliases='${JSON.stringify(command.Aliases)}', Permissions='${JSON.stringify(command.Permissions)}', Description='${command.Description}', DynamicDescription="${JSON.stringify(command.DynamicDescription)}", GlobalCooldown='${command.GlobalCooldown}', Cooldown='${command.Cooldown}', Testing='${(command.Testing) ? "true" : "false"}', OfflineOnly='${(command.OfflineOnly) ? "true" : "false"}', OnlineOnly='${(command.OnlineOnly) ? "true" : "false"}' WHERE Name='${command.Name}';`);
         //console.log('updated');
       } else {
-        let queryStr = `INSERT INTO commands (Name, Aliases, Permissions, Description, DynamicDescription, GlobalCooldown, Cooldown, Testing, OfflineOnly, Count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+        let queryStr = `INSERT INTO commands (Name, Aliases, Permissions, Description, DynamicDescription, GlobalCooldown, Cooldown, Testing, OfflineOnly, OnlineOnly, Count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
         let values = [command.Name, JSON.stringify(command.Aliases), JSON.stringify(command.Permissions), command.Description, JSON.stringify(command.DynamicDescription), command.GlobalCooldown, command.Cooldown, (command.Testing) ? "true" : "false", (command.OfflineOnly) ? "true" : "false", (command.OnlineOnly) ? "true" : "false", 0];
         await insertRow(queryStr, values);
         //console.log('New command');

@@ -6,7 +6,7 @@ export const bot = new Client({
 });
 
 export function sendMessageLogDiscord(userstate: CommonUserstate, message: string) {
-	const channel: TextChannel = bot.channels.cache.get('938722986226229308') as TextChannel;
+/* 	const channel: TextChannel = bot.channels.cache.get('938722986226229308') as TextChannel;
 	if (!userstate["badges"]) return channel.send(`${userstate["display-name"]}: ${message}`);
 	let twitchBadges = Object.keys(userstate["badges"]);
 	let badges: any[] = [];
@@ -31,6 +31,6 @@ export function sendMessageLogDiscord(userstate: CommonUserstate, message: strin
 		if (twitchBadges.includes("glitchcon2020")) badges.push("<:glitchcon:938731596947812393>");
 		if (twitchBadges.includes("prime")) badges.push("<:prime:938731597115576350>");
 		if (twitchBadges.includes("turbo")) badges.push("<:turbo:938731597161705483>");
-		channel.send(`${badges.join(" ")} **${userstate["display-name"]}**: ${message}`);
-	}
+		channel.send(`${badges.join(" ")} **${userstate["display-name"]}**: ${message}`); */
+	//}
 }

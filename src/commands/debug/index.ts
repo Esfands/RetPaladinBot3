@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
+import { getLatestVideo } from "../../modules/reddit";
 import { fetchChatters, giveAllChattersRetfuel } from "../../modules/retfuel";
 import { storeEmotes } from "../../utils/emoteData";
 import { getEmotes } from "../../utils/emotes";
@@ -92,6 +93,8 @@ const debug: CommandInt = {
       for (let i = 0; i < 500; i++) {
         await insertRow(`INSERT INTO subathonstats (ID, Username, MessageCount, GiftedSubs, BitsDonated) VALUES (?, ?, ?, ?, ?)`, [Math.floor(Math.random() * 1000000000), generateString(15), Math.floor(Math.random() * 90000) + 10000, Math.floor(Math.random() * 90000) + 10000, Math.floor(Math.random() * 90000) + 10000]);
       }
+    } else if (context[0] === "reddit") {
+      getLatestVideo();
     }
   }
 }

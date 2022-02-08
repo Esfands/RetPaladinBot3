@@ -17,13 +17,19 @@ export default (currentUserstate: CommonUserstate, requiredPermissionsArr: Array
   // put all keys from the TMI 'badges' object into an array
   const currentPermsArr = currentUserstate["badges"] == null ? [] : Object.keys(currentUserstate["badges"]);
 
+  // Check for if user is a developer, admin, or trusted
+  if (requiredPermissionsArr.includes("developer")) {
+    if (config.permissions.developers.includes(currentUserstate["username"])) currentPermsArr.push("developer");
+  }
+  if (requiredPermissionsArr.includes("admin")) {
+    if (config.permissions.admins.includes(currentUserstate["username"])) currentPermsArr.push("admin");
+  }
+  if (requiredPermissionsArr.includes("trusted")) {
+    if (config.permissions.trusted.includes(currentUserstate["username"])) currentPermsArr.push("trusted");
+  }
+
   // if the user has any permission which is exempt from permission handling, we can return true and run the command
   if (EXEMPT.some(perm => currentPermsArr.includes(perm))) return true;
-
-  // Check for if user is a developer, admin, or trusted
-  if (requiredPermissionsArr.includes("developer")) return config.permissions.developers.includes(currentUserstate["username"]);
-  if (requiredPermissionsArr.includes("admin")) return config.permissions.developers.includes(currentUserstate["username"]);
-  if (requiredPermissionsArr.includes("trusted")) return config.permissions.trusted.includes(currentUserstate["username"]);
 
   // otherwise, check if the user has any permissions specified in the command, true : false
   return requiredPermissionsArr.some(perm => currentPermsArr.includes(perm));

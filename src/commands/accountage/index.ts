@@ -5,7 +5,7 @@ import { calcDate, ErrorType, getTarget, logError } from "../../utils";
 
 const accountAge: CommandInt = {
   Name: "accountage",
-  Aliases: [],
+  Aliases: ["accage"],
   Permissions: [],
   GlobalCooldown: 10,
   Cooldown: 30,

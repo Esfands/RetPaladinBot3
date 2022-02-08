@@ -1,4 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { StreamStat } from "../../schemas/StreamStatsSchema";
 import { calcDate, getTarget } from "../../utils";
 import { getStreamData } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
