@@ -15,8 +15,9 @@ import { findOne, insertRow, updateOne } from "../../utils/maria";
   = Game modes =
   !gamble (amount) gamble given retfuel
   !slots (amount) slots for retfuel.
-
-*/
+  !duel (target) (amount)
+  !rockpaperscissors (target) (amount)
+  */
 
 const RetfuelRules = {
   minutes: 10,
@@ -100,7 +101,7 @@ export async function takeRetfuel(username: string, amount: number) {
  * @param user User to set Retfuel to
  * @param amount How much Retfuel to set them to
  */
- export async function setRetfuel(username: string, amount: number) {
+export async function setRetfuel(username: string, amount: number) {
   console.log(username, amount);
   let query = await updateOne(`UPDATE chatters SET RetFuel=${amount} WHERE Username='${username}'`);
   console.log(query);
