@@ -55,7 +55,8 @@ export async function getLatestVideo() {
 
   if (aposRegex.test(videoTitle)) videoTitle = videoTitle.replace(aposRegex, "'");
 
-  await redditPostVideo(videoTitle, `https://www.youtube.com/watch?v=${data["data"]["items"][0]["id"]["videoId"]}`, data["data"]["items"][0]["id"]["videoId"]);
+  console.log(videoTitle, `https://www.youtube.com/watch?v=${data["data"]["items"][0]["id"]["videoId"]}`, data["data"]["items"][0]["id"]["videoId"]);
+  //await redditPostVideo(videoTitle, `https://www.youtube.com/watch?v=${data["data"]["items"][0]["id"]["videoId"]}`, data["data"]["items"][0]["id"]["videoId"]);
 }
 
 async function redditPostVideo(title: string, link: string, id: string) {

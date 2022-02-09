@@ -168,7 +168,7 @@ export async function getEsfandSubs() {
   let query = await findOne('tokens', `Username='esfandtv'`);
   let request = await axios({
     method: "GET",
-    url: "https://api.twitch.tv/helix/subscriptions?broadcaster_id=38746172",
+    url: "https://api.twitch.tv/helix/subscriptions?broadcaster_id=38746172&first=100",
     headers: {
       "Authorization": "Bearer " + query["AccessToken"],
       "Client-Id": config.helixOptions.clientId
@@ -176,5 +176,35 @@ export async function getEsfandSubs() {
   });
 
   let data = request.data;
-  console.log(data);
+  let subs: string[] = [];
+  data["data"].forEach((user: any) => {
+    subs.push(user["user_id"]);
+  });
+
+  let totalPages: number = Math.ceil(data.total / 100);
+  let cursor: string = data["pagination"]["cursor"];
+  let pages: any[] = [];
+
+  for (let i = 1; i < totalPages; i++) {
+    let request2 = await axios({
+      method: "GET",
+      url: "https://api.twitch.tv/helix/subscriptions?broadcaster_id=38746172&first=100&after=" + cursor,
+      headers: {
+        "Authorization": "Bearer " + query["AccessToken"],
+        "Client-Id": config.helixOptions.clientId
+      }
+    });
+
+    let data2 = await request2.data;
+    cursor = data2.pagination.cursor;
+    pages.push(data2.data);
+  }
+
+  for (let i = 0; i < pages.length; i++) {
+    pages[i].forEach((user: any) => {
+      subs.push(user["user_id"]);
+    });
+  }
+
+  return subs;
 }
