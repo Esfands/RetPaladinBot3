@@ -184,14 +184,19 @@ export async function fetchAPI(url: string) {
 }
 
 export async function checkMessageBanPhrase(message: string) {
-  const request = await axios({
-    method: 'POST',
-    url: `https://cyrbot.com/api/v1/banphrases/test/`,
-    headers: { 'Content-Type': 'application/json' },
-    data: { message: message }
-  });
+  let data: any;
+  try {
+    data = await axios({
+      method: 'POST',
+      url: `https://cyrbot.com/api/v1/banphrases/test/`,
+      headers: { 'Content-Type': 'application/json' },
+      data: { message: message }
+    });
+  } catch (error) {
+    data = null;
+  }
 
-  return await request.data.banned;
+  return await data;
 }
 
 /** Transforms a string into a different font.

@@ -1,9 +1,21 @@
 import axios from "axios";
 import config from "../../cfg/config";
+import { refreshEsfandToken } from "../helix";
+import { findOne } from "../maria";
 
-export async function createEventSub() {
-  console.log(`created channel.update event`);
-  axios({
+export async function createEventSub(event: string) {
+  //console.log(`created ${event} event`);
+  let eId = await findOne('tokens', `Username='esfandtv'`);
+  let checkRequest = await axios({
+    method: "GET",
+    url: "https://id.twitch.tv/oauth2/validate",
+    headers: {
+      "Authorization": "Bearer " + eId.AccessToken
+    }
+  });
+
+  console.log(checkRequest.data);
+/*   axios({
     method: "POST",
     url: "https://api.twitch.tv/helix/eventsub/subscriptions",
     headers: {
@@ -11,7 +23,7 @@ export async function createEventSub() {
       "Authorization": "Bearer " + config.helixOptions.appToken
     },
     data: {
-      "type": "stream.offline",
+      "type": event,
       "version": "1",
       "condition": { "broadcaster_user_id": "38746172" },
       "transport": {
@@ -20,7 +32,7 @@ export async function createEventSub() {
         "secret": "dd478c6a25727073f183a56728575ed94618d9cce600c4add602e7a66b78eeac"
       }
     }
-  })
+  }) */
 }
 
 export async function getEventSubs() {

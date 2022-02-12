@@ -17,7 +17,7 @@ let redditClient: Snoowrap;
     refreshToken: config.apiKeys.reddit.refresh
   });
 
-  /* setInterval(checkCurrentVideo, 300 * 1000) // every 5 minutes */
+ /*  setInterval(checkCurrentVideo, 30 * 1000) // every 5 minutes 300 */
 
 })();
 
@@ -52,11 +52,12 @@ export async function getLatestVideo() {
 
   let videoTitle: string = latestVideo["title"];
   let aposRegex = /&#39;/gm; //&#39; = ' 
+  let quoteRegex = /&quot;/gm;
 
   if (aposRegex.test(videoTitle)) videoTitle = videoTitle.replace(aposRegex, "'");
+  if (quoteRegex.test(videoTitle)) videoTitle = videoTitle.replace(quoteRegex, '"');
 
-  console.log(videoTitle, `https://www.youtube.com/watch?v=${data["data"]["items"][0]["id"]["videoId"]}`, data["data"]["items"][0]["id"]["videoId"]);
-  //await redditPostVideo(videoTitle, `https://www.youtube.com/watch?v=${data["data"]["items"][0]["id"]["videoId"]}`, data["data"]["items"][0]["id"]["videoId"]);
+  await redditPostVideo(videoTitle, `https://www.youtube.com/watch?v=${data["data"]["items"][0]["id"]["videoId"]}`, data["data"]["items"][0]["id"]["videoId"]);
 }
 
 async function redditPostVideo(title: string, link: string, id: string) {

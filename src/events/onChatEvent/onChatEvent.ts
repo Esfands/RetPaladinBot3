@@ -10,7 +10,6 @@ import { IKeyword } from "../../schemas/types";
 import { keyWordCooldown } from "../../utils/cooldowns";
 import { otfResponseEmote } from "../../utils/emotes";
 import { subathonLogEvent, SubathonStatType } from "../../modules/subathon-stats";
-import { sendMessageLogDiscord } from "../../discord/main";
 
 export let AllKeywords: Array<IKeyword> = [];
 (async () => {
@@ -18,8 +17,6 @@ export let AllKeywords: Array<IKeyword> = [];
 })();
 
 export default async (client: Actions, channel: string, userstate: CommonUserstate, message: string, self: string) => {
-
-  sendMessageLogDiscord(userstate, message);
 
   let ignoredBots = ["streamelements", "supibot"];
   if (ignoredBots.includes(userstate["username"])) return;

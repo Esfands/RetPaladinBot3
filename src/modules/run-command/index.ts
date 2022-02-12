@@ -26,7 +26,8 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
 
   // Check for banned phrases
   let checkMessage = await checkMessageBanPhrase(message);
-  if (checkMessage["banned"]) return;
+  if (checkMessage === null) return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry there was an API ban phrase error. Please contact Mahcksimus.`);
+  if (checkMessage.data.banned) return;
 
   if (command !== null) {
     if (!command) return;

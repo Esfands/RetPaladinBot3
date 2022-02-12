@@ -208,3 +208,14 @@ export async function getEsfandSubs() {
 
   return subs;
 }
+
+export async function checkGameName(name: string) {
+  let req = await axios({
+    method: "GET",
+    url: "https://api.twitch.tv/helix/games?name="+name,
+    headers: headers
+  });
+
+  let data = req.data.data;
+  return (data.length === 0) ? null : data; 
+}

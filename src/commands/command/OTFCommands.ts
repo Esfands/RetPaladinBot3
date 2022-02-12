@@ -26,7 +26,7 @@ export async function removeOTFCommand(name: string) {
 }
 
 export async function editOTFCommand(cmd: string, message: string) {
-  findAndUpdate(`SELECT * FROM otf WHERE Name='${cmd}';`, `UPffDATE otf SET Response='${message}' WHERE Name='${cmd}';`);
+  findAndUpdate(`SELECT * FROM otf WHERE Name='${cmd}';`, `UPDATE otf SET Response='${message}' WHERE Name='${cmd}';`);
 }
 
 export async function editOTFCommandName(oldName: string, newName: string) {
