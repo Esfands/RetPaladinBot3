@@ -1,6 +1,7 @@
 import { Actions } from "tmi.js";
 import { INotify, Notify } from "../schemas/NotifySchema";
 import { StreamStat } from "../schemas/StreamStatsSchema";
+import { find, findColumn, findQuery } from "./maria";
 
 async function sendPingNotification(client: Actions, channel: string, type: string, toSend: string) {
   Notify.findOne({ type: type }, function (err: Error, res: INotify) {
@@ -42,6 +43,19 @@ export async function checkStreamStatus(client: Actions, channel: string) {
 
       } else if (keys === "category") {
         // Changed categories
+        let specificUsers: string[] = [];
+        findQuery(`SELECT * FROM notifications WHERE Game='${valueUpdated[index].toLowerCase()}';`)
+          .then((res: any) => {
+            res.forEach((user: any) => {
+              specificUsers.push(user["Username"]);
+            });
+
+            let toPing = splitUsers(specificUsers, `[NOTIFYME] EsfandTV changed to your category PagChomp 👉 ${valueUpdated[index]}`);
+            toPing.forEach(function (element) {
+              client.action(channel, `${element}`);
+            });
+          });
+
         sendPingNotification(client, channel, "game", `[NOTIFYME] EsfandTV changed categories to -> ${valueUpdated[index]}`);
       }
     })

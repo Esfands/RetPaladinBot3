@@ -10,6 +10,7 @@ import { IKeyword } from "../../schemas/types";
 import { keyWordCooldown } from "../../utils/cooldowns";
 import { otfResponseEmote } from "../../utils/emotes";
 import { subathonLogEvent, SubathonStatType } from "../../modules/subathon-stats";
+import { StreamStat } from "../../schemas/StreamStatsSchema";
 
 export let AllKeywords: Array<IKeyword> = [];
 (async () => {
@@ -24,6 +25,13 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
 
   // Bot detection.
   checkForBot(client, channel, userstate, message);
+
+  let currentStatus = await StreamStat.find({}).select({ status: 1, _id: 0 });
+  if (currentStatus[0]["status"] === "live") {
+    if (message.split(" ").includes("berryjam")) {
+      client.timeout(channel, userstate["username"], 30, "berryjam - offline");
+    }
+  }
 
   // Keyword detection
   let keyMsg;
