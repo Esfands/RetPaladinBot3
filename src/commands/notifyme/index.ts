@@ -101,6 +101,7 @@ const notifyme: CommandInt = {
           // Toggle sub to game.
           let query = await findQuery(`SELECT * FROM notifications WHERE Username='${user?.toLowerCase()}' AND Game="${action.toLowerCase()}"`);
           if (query.length !== 0) {
+            console.log(action.toLowerCase());
             await removeOne(`notifications`, `Username=? AND Game=?`, [user?.toLowerCase(), action.toLowerCase()]);
             client.action(channel, `@${user} you've opted out of being notified when Esfand switches to ${action.toLowerCase()}`);
           } else {

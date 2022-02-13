@@ -29,7 +29,13 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
   let currentStatus = await StreamStat.find({}).select({ status: 1, _id: 0 });
   if (currentStatus[0]["status"] === "offline") {
     if (message.split(" ").includes("berryjam")) {
-      client.timeout(channel, userstate["username"], 30, "berryjam - offline");
+      client.timeout(channel, userstate["username"], 30, "berryjam - offline")
+        .then((data) => {
+          return;
+        })
+        .catch((err) => {
+          return;
+        });
     }
   }
 
