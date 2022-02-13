@@ -1,5 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { Notify } from "../../schemas/NotifySchema";
+import { checkGameName } from "../../utils/helix";
+import { findOne, findQuery, insertRow, removeOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const notifyme: CommandInt = {
   Name: "notifyme",
@@ -55,33 +57,59 @@ const notifyme: CommandInt = {
               });
           }
         });
-      } else if (option === "game") {
-        Notify.findOne({ type: "game" }, function (err: Error, res: any) {
-          let typeId = res["_id"].toString();
+    } else if (option === "game") {
+        let message = context.join(" ");
 
-          if (res["users"].includes(username)) {
-            // Remove from the array.
-            Notify.updateOne({ _id: typeId }, { $pull: { users: username } },
-              function (err: Error, res: any) {
-                if (err) {
-                  console.log(err);
-                  client.action(channel, `${user} there was an issue removing you from the go change game notification.`)
-                } else {
-                  client.action(channel, `${user} you have opted out of being notified when Esfand changes games Okayge`);
-                }
-              });
+        let action = message.substring(message.indexOf(" ") + 1);
+        if (action === "list") {
+          console.log(action);
+          let query = await findOne(`notifications`, `Username='${userstate["username"]}'`);
+          console.log(query);
+          if (query) {
+
+          } else return client.action(channel, `@${user} you're not subscribed to any specific game. You can do !notifyme game (all/specific game)`);
+
+        } else if (action === "all") {
+          Notify.findOne({ type: "game" }, function (err: Error, res: any) {
+            let typeId = res["_id"].toString();
+
+            if (res["users"].includes(username)) {
+              // Remove from the array.
+              Notify.updateOne({ _id: typeId }, { $pull: { users: username } },
+                function (err: Error, res: any) {
+                  if (err) {
+                    console.log(err);
+                    client.action(channel, `${user} there was an issue removing you from the go change game notification.`)
+                  } else {
+                    client.action(channel, `${user} you have opted out of being notified when Esfand changes games Okayge`);
+                  }
+                });
+            } else {
+              // Add to array
+              Notify.updateOne({ _id: typeId }, { $push: { users: username } },
+                function (err: Error, res: any) {
+                  if (err) {
+                    client.action(channel, `${user} there was an issue signing you up for the change game notification.`)
+                  } else {
+                    client.action(channel, `${user} you'll be notified when Esfand changes games Okayge`);
+                  }
+                });
+            }
+          });
+        } else {
+          let checkGame = await checkGameName(action);
+          // Toggle sub to game.
+          let query = await findQuery(`SELECT * FROM notifications WHERE Username='${user?.toLowerCase()}' AND Game='${action.toLowerCase()}'`);
+          if (query.length !== 0) {
+            await removeOne(`notifications`, `Username=? AND Game=?`, [user?.toLowerCase(), action.toLowerCase()]);
+            client.action(channel, `@${user} you've opted out of being notified when Esfand switches to ${action.toLowerCase()}`);
           } else {
-            // Add to array
-            Notify.updateOne({ _id: typeId }, { $push: { users: username } },
-              function (err: Error, res: any) {
-                if (err) {
-                  client.action(channel, `${user} there was an issue signing you up for the change game notification.`)
-                } else {
-                  client.action(channel, `${user} you'll be notified when Esfand changes games Okayge`);
-                }
-              });
+            if (checkGame) {
+              await insertRow(`INSERT INTO notifications (Type, Username, Game) VALUES (?, ?, ?)`, ["game", user?.toLowerCase(), action.toLowerCase()]);
+              client.action(channel, `@${user} you'll be notified when Esfand switches to "${checkGame[0]["name"]}" Okayge`)
+            } else return client.action(channel, `@${user} sorry I couldn't subscribe you to the game "${action}" since it's not a Twitch category.`);
           }
-        });
+        }
       } else if (option === "title") {
         Notify.findOne({ type: "title" }, function (err: Error, res: any) {
           let typeId = res["_id"].toString();
