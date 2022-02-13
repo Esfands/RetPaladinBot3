@@ -27,7 +27,7 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
   checkForBot(client, channel, userstate, message);
 
   let currentStatus = await StreamStat.find({}).select({ status: 1, _id: 0 });
-  if (currentStatus[0]["status"] === "live") {
+  if (currentStatus[0]["status"] === "offline") {
     if (message.split(" ").includes("berryjam")) {
       client.timeout(channel, userstate["username"], 30, "berryjam - offline");
     }
