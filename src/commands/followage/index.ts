@@ -24,6 +24,7 @@ const followage: CommandInt = {
 
     if (!tagged) return;
     let following = await isFollowingUser(chTarget, tagged.toLowerCase());
+    if (following === null) return client.action(channel, `@${user} "${tagged}" isn't a valid username.`);
 
     if (following["data"].length !== 0) {
       let foundDate = following["data"][0]["followed_at"];

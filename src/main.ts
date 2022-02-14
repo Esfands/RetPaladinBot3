@@ -60,7 +60,6 @@ import onAnonGiftPaidUpgradeEvent from "./events/onAnonGiftPaidUpgradeEvent";
 import onHostingEvent from "./events/onHostingEvent";
 import onCheerEvent from "./events/onCheerEvent";
 import onTimeoutEvent from "./events/onTimeoutEvent";
-import { TextChannel } from "discord.js";
 
 // TODO: Clean up the disaster that is sub events
 client.on("sub", async (channel: any, username: any, method: any, message: any, userstate: any) => await onSubEvent(client, channel, username, method, message, userstate));

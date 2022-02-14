@@ -59,6 +59,8 @@ const subageCommand: CommandInt = {
       let subLength = subcheck["cumulative"];
       let substreak = subcheck["streak"];
 
+      if (subData === undefined) return client.action(channel, `@${user} "${target}" or "${targetChannel}" is not a valid username.`);
+
       if (subData["tier"] === "Custom") {
         return client.action(channel, `${target} is subbed to #${targetChannel} with a permanent sub and has been subbed for a total of ${subLength["months"]} months! They are currently on a ${substreak["months"]} months streak.`);
       }

@@ -16,7 +16,8 @@ async function fetchAllEmotes() {
   let globalArr = JSON.parse(global.toString());
 
   twitchEmotes = thirdPartyArr.concat(globalArr);
-  emoteString = new RegExp(twitchEmotes.join("|"));
+  let emoteNames = twitchEmotes.map(function (emote: any) { return "\\b" + emote + "\\b"; });
+  emoteString = new RegExp("(" + emoteNames.join("|") + ")");
 }
 
 const streakOptions: any = {
@@ -54,12 +55,9 @@ function emoteStreakBroken(user: string, emoteStreak: EmoteStreak) {
   let newRes, newRes2, newRes3;
   if (emoteTag.test(response)) {
     newRes = response.replace(emoteTag, emote);
-    console.log('level 1 broken')
     if (countTag.test(newRes)) {
-      console.log('level 2 broken')
       newRes2 = newRes.replace(countTag, count);
       if (userTag.test(newRes2)) {
-        console.log('level 3 broken')
         newRes3 = newRes2.replace(userTag, user);
         return newRes3;
       } else return newRes2;
