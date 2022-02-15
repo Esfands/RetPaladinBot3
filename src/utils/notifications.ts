@@ -50,10 +50,13 @@ export async function checkStreamStatus(client: Actions, channel: string) {
               specificUsers.push(user["Username"]);
             });
 
-            let toPing = splitUsers(specificUsers, `[NOTIFYME] EsfandTV changed to your category PagChomp 👉 ${valueUpdated[index]}`);
-            toPing.forEach(function (element) {
-              client.action(channel, `${element}`);
-            });
+            if (specificUsers.length !== 0) {
+              let toPing = splitUsers(specificUsers, `[NOTIFYME] EsfandTV changed to your category PagChomp 👉 ${valueUpdated[index]}`);
+              toPing.forEach(function (element) {
+                client.action(channel, `${element}`);
+              });
+            }
+
           });
 
         sendPingNotification(client, channel, "game", `[NOTIFYME] EsfandTV changed categories to -> ${valueUpdated[index]}`);
