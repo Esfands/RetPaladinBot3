@@ -2,14 +2,14 @@ import { Actions, CommonUserstate } from "tmi.js";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const zululCommand: CommandInt = {
-  Name: "",
+  Name: "zulul",
   Aliases: [],
   Permissions: [],
   GlobalCooldown: 10,
   Cooldown: 30,
-  Description: "",
+  Description: "Quotes from Who Killed Captain Alex: Uganda's First Action Movie",
   DynamicDescription: [
-    "<code></code>"
+    "<code>!zulul</code>"
   ],
   Testing: false,
   OfflineOnly: false,
