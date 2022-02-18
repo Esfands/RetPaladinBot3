@@ -1,6 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { getTarget } from "../../utils";
-import { getFollowers } from "../../utils/helix";
+import { getEsfandTotalSubs, getFollowers } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 const subathon: CommandInt = {
   Name: "subathon",
@@ -19,10 +19,8 @@ const subathon: CommandInt = {
     const user = userstate["display-name"];
     let tagged = getTarget(user, context[0]);
 
-    let currFollowers = await getFollowers("esfandtv");
-    let goalFollowers = 1000000 - currFollowers;
-    let response = (goalFollowers >= 1000000) ? `Pause 👉 ${goalFollowers.toLocaleString()} followers away from an uncapped subathon.` : `Esfand's at ${currFollowers.toLocaleString('en-US')} followers, he'll start the subathon February 17th FeelsLateMan`;
-    client.action(channel, `@${tagged} ${response}`);
+    let res = `Subathon is now! 45 seconds per sub/$5/500 bits. Tier 2 is 90 seconds. Tier 3 is 225 seconds.`
+    client.action(channel, `@${tagged} ${res}`);
   }
 }
 

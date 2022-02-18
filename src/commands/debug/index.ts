@@ -5,7 +5,7 @@ import { getLatestVideo } from "../../modules/reddit";
 import { fetchChatters, giveAllChattersRetfuel } from "../../modules/retfuel";
 import { storeEmotes } from "../../utils/emoteData";
 import { getEmotes } from "../../utils/emotes";
-import { createEventSub, getEventSubs } from "../../utils/EventSub";
+import { appAccessToken, createEventSub, deleteEventSub, getEventSubs, refreshToken } from "../../utils/EventSub";
 import { getChannelEmotes, getEsfandSubs, refreshEsfandToken } from "../../utils/helix";
 import { find, findOne, insertRow, updateOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
@@ -102,6 +102,10 @@ const debug: CommandInt = {
       await getEsfandSubs();
     } else if (context[0] === 'createeventsub') {
       await createEventSub(context[1]);
+    } else if (context[0] === "validate") {
+      await appAccessToken();
+    } else if (context[0] === "deleventsub") {
+      await deleteEventSub(context[1]);
     }
   }
 }

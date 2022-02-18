@@ -18,7 +18,7 @@ export async function subathonLogEvent(user: CommonUserstate, event: SubathonSta
   if (config.subathonStarted) {
     let search = await findOne('subathonstats', `ID='${user["user-id"]}'`);
     if (search) {
-      await updateOne(`UPDATE subathonstats SET ${event}=${event}+${total} WHERE ID='${user['user-id']}';`);
+      await updateOne(`UPDATE subathonstats SET ${event}=${event}+'${total}' WHERE ID='${user['user-id']}';`);
     } else {
       if (event === "MessageCount") {
         await insertRow(`INSERT INTO subathonstats (ID, Username, MessageCount, GiftedSubs, BitsDonated) VALUES (?, ?, ?, ?, ?)`, [user["user-id"], user["display-name"], 1, 0, 0]);

@@ -212,10 +212,65 @@ export async function getEsfandSubs() {
 export async function checkGameName(name: string) {
   let req = await axios({
     method: "GET",
-    url: "https://api.twitch.tv/helix/games?name="+name,
+    url: "https://api.twitch.tv/helix/games?name=" + name,
     headers: headers
   });
 
   let data = req.data.data;
-  return (data.length === 0) ? null : data; 
+  return (data.length === 0) ? null : data;
+}
+
+export async function validateToken(token: string) {
+  let res = await axios({
+    method: "GET",
+    url: "https://id.twitch.tv/oauth2/validate",
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  });
+
+  console.log(res);
+}
+
+export async function getEsfandTotalSubs() {
+  let query = await findOne('tokens', `Username='esfandtv'`);
+
+  /*   let req = await axios({
+      method: "GET",
+      url: "https://api.twitch.tv/helix/subscriptions?broadcaster_id=38746172",
+      headers: {
+        "Authorization": "Bearer " + query["AccessToken"],
+        "Client-Id": config.helixOptions.clientId
+      }
+    });
+   */
+  axios({
+    method: "GET",
+    url: "https://api.twitch.tv/helix/subscriptions?broadcaster_id=38746172",
+    headers: {
+      "Authorization": "Bearer " + query["AccessToken"],
+      "Client-Id": config.helixOptions.clientId
+    }
+  }).then((res: any) => {
+    return res;
+  }).catch(async function (error) {
+    if (error.response) {
+      if (error.response.data.message === "Invalid OAuth token") {
+        await refreshEsfandToken().then(async () => {
+          let query = await findOne('tokens', `Username='esfandtv'`);
+          let res = await axios({
+            method: "GET",
+            url: "https://api.twitch.tv/helix/subscriptions?broadcaster_id=38746172",
+            headers: {
+              "Authorization": "Bearer " + query["AccessToken"],
+              "Client-Id": config.helixOptions.clientId
+            }
+          });
+          return res;
+        });
+      }
+    }
+  });
+
+  ///console.log(req);
 }

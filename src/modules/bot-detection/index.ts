@@ -13,7 +13,7 @@ import { Actions, CommonUserstate } from "tmi.js";
 
 export function checkForBot(client: Actions, channel: string, user: CommonUserstate, message: string) {
   if (user["first-msg"]) {
-    let bannedPhrases = new RegExp(/(buy followers|cutt+\.ly|bit+\.ly|twitch+\.tv)/, "igm")
+    let bannedPhrases = new RegExp(/(buy followers|cutt+\.ly|bit+\.ly|twitch+\.tv|t+\.ly)/, "igm")
     if (bannedPhrases.test(message)) {
       client.timeout(channel, user["username"], 1800, `suspicious activity - likely a bot.`);
     } else return;
