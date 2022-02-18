@@ -252,22 +252,11 @@ export async function getEsfandTotalSubs() {
       "Client-Id": config.helixOptions.clientId
     }
   }).then((res: any) => {
-    return res;
+    console.log(res.data.total);
   }).catch(async function (error) {
     if (error.response) {
       if (error.response.data.message === "Invalid OAuth token") {
-        await refreshEsfandToken().then(async () => {
-          let query = await findOne('tokens', `Username='esfandtv'`);
-          let res = await axios({
-            method: "GET",
-            url: "https://api.twitch.tv/helix/subscriptions?broadcaster_id=38746172",
-            headers: {
-              "Authorization": "Bearer " + query["AccessToken"],
-              "Client-Id": config.helixOptions.clientId
-            }
-          });
-          return res;
-        });
+        await refreshEsfandToken();
       }
     }
   });

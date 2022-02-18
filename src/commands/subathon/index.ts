@@ -19,6 +19,7 @@ const subathon: CommandInt = {
     const user = userstate["display-name"];
     let tagged = getTarget(user, context[0]);
 
+    let totalSubs = await getEsfandTotalSubs();
     let res = `Subathon is now! 45 seconds per sub/$5/500 bits. Tier 2 is 90 seconds. Tier 3 is 225 seconds.`
     client.action(channel, `@${tagged} ${res}`);
   }
