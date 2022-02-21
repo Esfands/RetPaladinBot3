@@ -24,7 +24,6 @@ const isbannedCommand: CommandInt = {
       let req = await axios.get(`https://api.ivr.fi/twitch/resolve/${toTarget}`);
 
       let data = req.data;
-      let isBanned = data.banned;
 
       if (toTarget.toLowerCase() !== userstate["username"]) {
         return client.action(channel, `@${user} "${toTarget}" is banned from Twitch monkaOMEGA`);

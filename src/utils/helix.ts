@@ -263,3 +263,13 @@ export async function getEsfandTotalSubs() {
 
   ///console.log(req);
 }
+
+export async function getTags() {
+  let req = await axios({
+    method: "GET",
+    url: "https://api.twitch.tv/helix/streams/tags?broadcaster_id=38746172",
+    headers: headers
+  });
+
+  return req.data;
+}

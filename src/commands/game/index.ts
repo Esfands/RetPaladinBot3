@@ -21,7 +21,6 @@ const gameCommand: CommandInt = {
     let toTarget = getTarget(user, context[0]);
 
     let streamstats = await StreamStat.findOne({ type: "esfandtv" });
-    //
     if (streamstats) {
       if (streamstats.category.toLowerCase() === "just chatting") return client.action(channel, `@${toTarget} Esfand is under the category ${streamstats.category}`);
       client.action(channel, `@${toTarget} Esfand is playing ${streamstats.category}`); 

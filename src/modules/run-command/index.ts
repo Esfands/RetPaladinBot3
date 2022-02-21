@@ -53,6 +53,8 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
   } else {
     let otfNames = await getOTFCommandNames();
     if (!commandName) return;
+
+    // TODO: MAKE THIS USE REGEX
     let matches = otfNames.filter(s => s.includes(commandName));
 
     if (matches.includes(commandName)) {
