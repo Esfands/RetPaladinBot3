@@ -1,3 +1,4 @@
+import { addSubToSpin } from "../../modules/wheel-spin-counter";
 import { getBestAvailableEmote } from "../../utils/emotes";
 
 export default async (client: any, channel: any, username: any, method: any, message: any, userstate: any) => {
@@ -8,4 +9,6 @@ export default async (client: any, channel: any, username: any, method: any, mes
     ? `@EsfandTV - ${username} just subscribed using Prime ${getBestAvailableEmote(["esfandPrime", "PogU", "PagMan", "Pog", "PagChomp"])}`
     : `@EsfandTV - ${username} just subscribed at ${tierList[plan]} ${getBestAvailableEmote(["PogU", "PagMan", "Pog", "PagChomp"])}`;
   client.say(channel, `${msg}`);
+
+  await addSubToSpin(1, username)
 }

@@ -3,11 +3,12 @@ import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
 import { getLatestVideo } from "../../modules/reddit";
 import { fetchChatters, giveAllChattersRetfuel } from "../../modules/retfuel";
+import { addSubToSpin } from "../../modules/wheel-spin-counter";
 import { storeEmotes } from "../../utils/emoteData";
 import { getEmotes } from "../../utils/emotes";
 import { appAccessToken, createEventSub, deleteEventSub, getEventSubs, refreshToken } from "../../utils/EventSub";
 import { getChannelEmotes, getEsfandSubs, refreshEsfandToken } from "../../utils/helix";
-import { find, findOne, insertRow, updateOne } from "../../utils/maria";
+import { find, findOne, findQuery, insertRow, updateOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const debug: CommandInt = {
@@ -106,6 +107,14 @@ const debug: CommandInt = {
       await appAccessToken();
     } else if (context[0] === "deleventsub") {
       await deleteEventSub(context[1]);
+    } else if (context[0] === "wheelspin") {
+      if (context[1].toLowerCase() === "test") {
+        await addSubToSpin(parseInt(context[2]), context[3]);
+      } else if (context[1].toLowerCase() === "completed") {
+        let currentStats = await findQuery(`SELECT * FROM wheelspin`);
+        await updateOne(`UPDATE wheelspin SET Completed=${context[2]}, WheelSpins=${currentStats[0].WheelSpins - parseInt(context[2])}`);
+        client.action(channel, `@${userstate["display-name"]} marked ${context[2]} spins have been completed.`);
+      }
     }
   }
 }
