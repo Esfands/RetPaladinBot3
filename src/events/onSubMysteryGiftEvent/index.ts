@@ -7,5 +7,5 @@ export default async(client: any, channel: any, username: any, numbOfSubs: any, 
   const { prime, plan, planName } = methods;
   client.say(channel, `@EsfandTV - ${username} has gifted ${numbOfSubs} ${tierList[plan]} subs ${getBestAvailableEmote(["PogU", "PagMan", "Pog", "PogChamp"])}`);
   subathonLogEvent(userstate, SubathonStatType.SUB, numbOfSubs);
-  await addSubToSpin(numbOfSubs, userstate["username"]);
+  await addSubToSpin(numbOfSubs, username);
 }
