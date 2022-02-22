@@ -112,7 +112,8 @@ const debug: CommandInt = {
         await addSubToSpin(parseInt(context[2]), context[3]);
       } else if (context[1].toLowerCase() === "completed") {
         let currentStats = await findQuery(`SELECT * FROM wheelspin`);
-        await updateOne(`UPDATE wheelspin SET Completed=${context[2]}, WheelSpins=${currentStats[0].WheelSpins - parseInt(context[2])}`);
+        let newCompleted = currentStats[0].WheelSpins - parseInt(context[2]);
+        await updateOne(`UPDATE wheelspin SET Completed=${context[2]}, WheelSpins=${newCompleted + currentStats.Completed}`);
         client.action(channel, `@${userstate["display-name"]} marked ${context[2]} spins have been completed.`);
       }
     }
