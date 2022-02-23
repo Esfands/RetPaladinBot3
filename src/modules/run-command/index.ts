@@ -63,7 +63,7 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
         let tagged = getTarget(user, context[0]);
 
         // Cooldown for the OTF commands
-        let shouldRun = await cooldownCanContinue(userstate, commandName, 30, 0);
+        let shouldRun = await cooldownCanContinue(userstate, commandName, 20, 5);
         if (shouldRun === false) return;
 
         // Check for special character that 7tv uses.

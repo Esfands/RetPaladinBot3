@@ -85,7 +85,7 @@ export async function cooldownCanContinue(user: CommonUserstate, cmdName: string
   let canRun = true;
 
   // If they are a broadcaster/mod/trusted they don't get a cooldown
-  if (isUserPermitted(user, ["broadcaster", "moderator"]) || config["permissions"]['trusted'].includes(user["username"])) return true;
+  //if (isUserPermitted(user, ["broadcaster", "moderator"]) || config["permissions"]['trusted'].includes(user["username"])) return true;
   
   let isOnGlobalCD = await globalCooldown(cmdName, globalCD);
   // Check if the global cooldown is enabled.
