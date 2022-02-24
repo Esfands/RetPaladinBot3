@@ -1,6 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { getTarget } from "../../utils";
 import { getEsfandTotalSubs, getFollowers } from "../../utils/helix";
+import { findOne, findQuery } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const subathon: CommandInt = {
   Name: "subathon",
@@ -19,8 +20,9 @@ const subathon: CommandInt = {
     const user = userstate["display-name"];
     let tagged = getTarget(user, context[0]);
 
-    let totalSubs = await getEsfandTotalSubs();
-    let res = `Subathon is now! 45 seconds per sub/$5/500 bits. Tier 2 is 90 seconds. Tier 3 is 225 seconds.`
+    let query = await findQuery(`SELECT * FROM wheelspin`);
+    let isPowerHour = query.IsPowerHour;
+    let res = `Subathon is now! ${(isPowerHour ? 90 : 45)} seconds per sub/$5/500 bits. Tier 2 is ${isPowerHour ? 90*2 : 45*2} seconds. Tier 3 is 225 seconds.`
     client.action(channel, `@${tagged} ${res}`);
   }
 }

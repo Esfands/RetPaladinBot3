@@ -61,6 +61,7 @@ import onHostingEvent from "./events/onHostingEvent";
 import onCheerEvent from "./events/onCheerEvent";
 import onTimeoutEvent from "./events/onTimeoutEvent";
 import onSubGiftEvent from "./events/onSubGiftEvent";
+import openEmoteListeners from "./modules/emote-listener";
 
 // TODO: Clean up the disaster that is sub events
 client.on("sub", async (channel: any, username: any, method: any, message: any, userstate: any) => await onSubEvent(client, channel, username, method, message, userstate));
@@ -72,3 +73,5 @@ client.on("subgift", async (channel: any, username: any, streakMonths: any, reci
 client.on("hosting", async (channel: any, target: string, viewers: number) => await onHostingEvent(client, channel, target, viewers));
 client.on("cheer", async (channel: any, userstate: any, message: any) => await onCheerEvent(client, channel, userstate, message));
 client.on("timeout", async (channel: any, username: any, reason: any, duration: any, userstate: any) => await onTimeoutEvent(client, channel, username, reason, duration, userstate));
+
+openEmoteListeners();

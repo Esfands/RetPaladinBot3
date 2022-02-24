@@ -44,19 +44,20 @@ export async function checkStreamStatus(client: Actions, channel: string) {
       } else if (keys === "category") {
         // Changed categories
         let specificUsers: string[] = [];
-        findQuery(`SELECT * FROM notifications WHERE Game='${valueUpdated[index].toLowerCase()}';`)
+        findQuery(`SELECT * FROM notifications WHERE Game="${valueUpdated[index].toLowerCase()}";`)
           .then((res: any) => {
-            res.forEach((user: any) => {
-              specificUsers.push(user["Username"]);
-            });
-
-            if (specificUsers.length !== 0) {
-              let toPing = splitUsers(specificUsers, `[NOTIFYME] EsfandTV changed to your category PagChomp 👉 ${valueUpdated[index]}`);
-              toPing.forEach(function (element) {
-                client.action(channel, `${element}`);
+            if (res) {
+              res.forEach((user: any) => {
+                specificUsers.push(user["Username"]);
               });
-            }
 
+              if (specificUsers.length !== 0) {
+                let toPing = splitUsers(specificUsers, `[NOTIFYME] EsfandTV changed to your category PagChomp 👉 ${valueUpdated[index]}`);
+                toPing.forEach(function (element) {
+                  client.action(channel, `${element}`);
+                });
+              }
+            }
           });
 
         sendPingNotification(client, channel, "game", `[NOTIFYME] EsfandTV changed categories to -> ${valueUpdated[index]}`);

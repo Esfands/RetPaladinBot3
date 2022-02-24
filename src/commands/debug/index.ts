@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
+import { storeAllEmotes } from "../../modules/emote-listener";
 import { getLatestVideo } from "../../modules/reddit";
 import { fetchChatters, giveAllChattersRetfuel } from "../../modules/retfuel";
 import { addSubToSpin } from "../../modules/wheel-spin-counter";
@@ -96,7 +97,7 @@ const debug: CommandInt = {
       }
     } else if (context[0] === "reddit") {
       getLatestVideo();
-    
+
     } else if (context[0] === "rtoken") {
       await refreshEsfandToken();
     } else if (context[0] === 'subs') {
@@ -116,8 +117,14 @@ const debug: CommandInt = {
         await updateOne(`UPDATE wheelspin SET Completed=${context[2]}, WheelSpins=${newCompleted + currentStats.Completed}`);
         client.action(channel, `@${userstate["display-name"]} marked ${context[2]} spins have been completed.`);
       }
+    } else if (context[0] === "testemotes") {
+      await storeAllEmotes("esfandtv", 38746172);
     }
   }
 }
 
 export = debug;
+
+function splitUsers(specificUsers: string[], arg1: string) {
+  throw new Error("Function not implemented.");
+}
