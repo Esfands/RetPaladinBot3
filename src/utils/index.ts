@@ -85,6 +85,8 @@ export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean
     if (includeSeconds) {
       return hourStr + minStr + secStr;
     } else return hourStr + minStr;
+  } else {
+    return dayStr + hourStr + minStr;
   }
   return yearStr + monthStr + dayStr + hourStr;
 

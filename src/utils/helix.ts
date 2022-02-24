@@ -273,3 +273,13 @@ export async function getTags() {
 
   return req.data;
 }
+
+export async function getVodStart(id: number) {
+  let req = await axios({
+    method: "GET",
+    url: "https://api.twitch.tv/helix/videos?id=" + id,
+    headers: headers
+  });
+
+  return req.data;
+}

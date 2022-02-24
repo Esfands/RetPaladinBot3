@@ -8,7 +8,7 @@ import { addSubToSpin } from "../../modules/wheel-spin-counter";
 import { storeEmotes } from "../../utils/emoteData";
 import { getEmotes } from "../../utils/emotes";
 import { appAccessToken, createEventSub, deleteEventSub, getEventSubs, refreshToken } from "../../utils/EventSub";
-import { getChannelEmotes, getEsfandSubs, refreshEsfandToken } from "../../utils/helix";
+import { getChannelEmotes, getEsfandSubs, getVodStart, refreshEsfandToken } from "../../utils/helix";
 import { find, findOne, findQuery, insertRow, updateOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 
@@ -119,6 +119,8 @@ const debug: CommandInt = {
       }
     } else if (context[0] === "testemotes") {
       await storeAllEmotes("esfandtv", 38746172);
+    } else if (context[0] === "vodstart") {
+      console.log(await getVodStart(parseInt(context[1])));
     }
   }
 }
