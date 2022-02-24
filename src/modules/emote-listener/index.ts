@@ -65,11 +65,6 @@ export default async function openEmoteListeners() {
     }
   });
 
-  // TODO: Add support for getting emotes every 1-3 hours for FFZ/BTTV
-  // ADDING: If emote is in data but not in table, add to table.
-  // REMOVING: If emote is isn't in data but in table, remove from table.
-  // Add some way in API to display all emotes that we have so people can click a link to see acceptable emotes.
-  // After API endpoint make a very simple Netlify site that just displays all the current emotes.
 
 }
 
@@ -126,6 +121,13 @@ export async function storeAllEmotes(channelName: string, channelId: number) {
       (emote.zeroWidth) ? "true" : "false"
     ]);
   });
+
+  
+  // TODO: Add support for getting emotes every 1-3 hours for FFZ/BTTV
+  // ADDING: If emote is in data but not in table, add to table.
+  // REMOVING: If emote is isn't in data but in table, remove from table.
+  // Add some way in API to display all emotes that we have so people can click a link to see acceptable emotes.
+  // After API endpoint make a very simple Netlify site that just displays all the current emotes.
 
   try {
     pool.batch('INSERT INTO emotes (Name, ID, Service, Scope, URL, ZeroWidth) VALUES (?, ?, ?, ?, ?, ?)', values);
