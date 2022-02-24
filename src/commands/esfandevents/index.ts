@@ -17,7 +17,7 @@ const esfandeventsCommand: CommandInt = {
   Description: "Add/remove/edit games and formats for EsfandEvents overlay.",
   DynamicDescription: [
     "Add/remove/edit a game with a specific format.",
-    `<code>!esfandevents (add/remove/edit) "game name title" (regular/format)</code>`
+    `<code>!esfandevents (add/remove/edit/check) "game name title" (regular/compact)</code>`
   ],
   Testing: false,
   OfflineOnly: false,
@@ -58,6 +58,12 @@ const esfandeventsCommand: CommandInt = {
           client.action(channel, `@${user} updated ${gameSearch}'s format to ${action}.`);
         } else return client.action(channel, `@${user} sorry the format ${action} isn't an option. Choose either regular or compact.`);
       } else return client.action(channel, `@${user} sorry the game ${gameTitle[0]["name"]} doesn't exist in the database so I'm unable to edit it.`);
+    
+    } else if (command === "check") {
+      let isThere = await findOne('alertsettings', `Game='${gameSearch}'`);
+      if (isThere) {
+        client.action(channel, `@${user} that game has the format: ${isThere.Format}`);
+      } else client.action(channel, `@${user} the game "${gameSearch}" doesn't have a specific format.`);
     }
   }
 }
