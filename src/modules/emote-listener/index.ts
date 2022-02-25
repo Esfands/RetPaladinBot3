@@ -1,7 +1,7 @@
 import axios from "axios";
 import EventSource from "eventsource";
 import { pool } from "../../main";
-import { findOne, insertRow, removeOne } from "../../utils/maria";
+import { findQuery, insertRow, removeOne } from "../../utils/maria";
 
 interface EmoteEventUpdate {
   channel: string;
@@ -64,8 +64,6 @@ export default async function openEmoteListeners() {
       console.log('[7tv] Closed event source.');
     }
   });
-
-
 }
 
 const bttvZeroWidth: string[] = ['SoSnowy', 'IceCold', 'cvHazmat', 'cvMask'];
@@ -109,31 +107,70 @@ interface EmoteObject {
 
 export async function storeAllEmotes(channelName: string, channelId: number) {
   let values: any[] = [];
+  let fetchedIds: string[] = [];
   let emoteData = await getEmoteData(channelName, channelId);
 
   emoteData.forEach((emote: EmoteObject) => {
-    values.push([
-      emote.name,
-      (typeof emote.id === "number") ? emote.id.toString() : emote.id,
-      emote.service,
-      emote.scope,
-      emote.url,
-      (emote.zeroWidth) ? "true" : "false"
-    ]);
+    values.push({
+      name: emote.name,
+      id: (typeof emote.id === "number") ? emote.id.toString() : emote.id,
+      service: emote.service,
+      scope: emote.scope,
+      url: emote.url,
+      zeroWidth: (emote.zeroWidth) ? "true" : "false"
+    });
+
+    fetchedIds.push(emote.id.toString());
   });
 
-  
-  // TODO: Add support for getting emotes every 1-3 hours for FFZ/BTTV
-  // ADDING: If emote is in data but not in table, add to table.
   // REMOVING: If emote is isn't in data but in table, remove from table.
-  // Add some way in API to display all emotes that we have so people can click a link to see acceptable emotes.
-  // After API endpoint make a very simple Netlify site that just displays all the current emotes.
+  let currentTable = await findQuery('SELECT * FROM emotes;');
+  let tableEmotes: any[] = [];
 
-  try {
-    pool.batch('INSERT INTO emotes (Name, ID, Service, Scope, URL, ZeroWidth) VALUES (?, ?, ?, ?, ?, ?)', values);
-  } catch (error) {
-    console.log(error);
+  currentTable.forEach((emote: any) => {
+    tableEmotes.push({
+      name: emote.Name,
+      id: (typeof emote.ID === "number") ? emote.ID.toString() : emote.ID,
+      service: emote.Service,
+      scope: emote.Scope,
+      url: emote.URL,
+      zeroWidth: (emote.zeroWidth) ? "true" : "false"
+    })
+  });
+
+  let notInData = tableEmotes.filter((emote) => !values.find(emote2 => emote.id === emote2.id));
+  notInData.forEach(async (emote) => {
+    await removeOne('emotes', 'ID=?', [emote.id]);
+  });
+
+  // ADDING: If emote is in data but not in table, add to table.
+  let query = await findQuery('SELECT ID FROM emotes;');
+  let queryIds: string[] = [];
+
+  query.forEach((id: any) => {
+    queryIds.push(id.ID);
+  })
+
+  let difference = fetchedIds.filter(x => queryIds.indexOf(x) === -1);
+  let missingEmotes: EmoteObject[] = [];
+
+  difference.forEach((missing: string) => {
+    let found = values.find(e => e.id === missing);
+    missingEmotes.push(found);
+  })
+
+  // Add the emotes missing in the fetched data to the database.
+  let toStore: any[] = [];
+  missingEmotes.forEach((emote: EmoteObject) => toStore.push(Object.values(emote)));
+
+  if (missingEmotes) {
+    try {
+      pool.batch('INSERT INTO emotes (Name, ID, Service, Scope, URL, ZeroWidth) VALUES (?, ?, ?, ?, ?, ?)', toStore);
+    } catch (error) {
+      console.log(error);
+    }
   }
+
 }
 
 function getEmoteData(channelName: string, channelId: number) {
