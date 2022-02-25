@@ -85,6 +85,60 @@ export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean
     if (includeSeconds) {
       return hourStr + minStr + secStr;
     } else return hourStr + minStr;
+  }
+
+  return yearStr + monthStr + dayStr + hourStr;
+}
+
+export function longCalcDate(startDate: Date, endDate: Date, includeSeconds: boolean) {
+  var a = moment(startDate);
+  var b = moment(endDate);
+
+  let years = a.diff(b, 'year');
+  b.add(years, 'years');
+
+  let months = a.diff(b, 'months');
+  b.add(months, 'months');
+
+  let days = a.diff(b, 'days');
+  b.add(days, 'days');
+
+  let hours = a.diff(b, 'hours');
+  b.add(hours, 'hours');
+
+  let minutes = a.diff(b, 'minutes');
+  b.add(minutes, 'minutes');
+
+  let seconds = a.diff(b, 'seconds');
+
+  let yearStr = (years > 0)
+    ? (years == 1) ? years + ' year ' : years + ' years '
+    : "";
+
+  let monthStr = (months > 0)
+    ? (months == 1) ? months + ' month ' : months + ' months '
+    : "";
+
+  let dayStr = (days > 0)
+    ? (days == 1) ? days + ' day ' : days + ' days '
+    : "";
+
+  let hourStr = (hours > 0)
+    ? (hours == 1) ? hours + ' hour ' : hours + " hours "
+    : "";
+
+  let minStr = (minutes > 0)
+    ? (minutes == 1) ? minutes + " minute " : minutes + " minutes "
+    : "";
+
+  let secStr = (seconds > 0)
+    ? (seconds == 1) ? seconds + " second " : seconds + " seconds "
+    : "";
+
+  if (dayStr === "") {
+    if (includeSeconds) {
+      return hourStr + minStr + secStr;
+    } else return hourStr + minStr;
   } else {
     return dayStr + hourStr + minStr;
   }
