@@ -163,6 +163,7 @@ export async function storeAllEmotes(channelName: string, channelId: number) {
   let toStore: any[] = [];
   missingEmotes.forEach((emote: EmoteObject) => toStore.push(Object.values(emote)));
 
+  if (toStore.length === 0) return console.log('[EMOTES] All emotes are up to date...');
   if (missingEmotes) {
     try {
       pool.batch('INSERT INTO emotes (Name, ID, Service, Scope, URL, ZeroWidth) VALUES (?, ?, ?, ?, ?, ?)', toStore);
