@@ -35,8 +35,8 @@ const rank: CommandInt = {
         }
       });
     } catch (error) {
-      await logError(userstate["display-name"]!, ErrorType.API, `Error fetching API for !song - api.riotgames.com`, new Date());
-      return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
+      await logError(userstate["display-name"]!, ErrorType.API, `Error fetching API for !rank - api.riotgames.com`, new Date());
+      return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue trying to get Esfand's League of Legends rank. Please contact Mahcksimus.`);
     }
   }
 }
