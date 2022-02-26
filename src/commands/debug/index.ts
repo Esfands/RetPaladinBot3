@@ -10,12 +10,12 @@ import { getEmotes } from "../../utils/emotes";
 import { appAccessToken, createEventSub, deleteEventSub, getEventSubs, refreshToken } from "../../utils/EventSub";
 import { getChannelEmotes, getEsfandSubs, getVodStart, refreshEsfandToken } from "../../utils/helix";
 import { find, findOne, findQuery, insertRow, updateOne } from "../../utils/maria";
-import { CommandInt } from "../../validation/CommandSchema";
+import { CommandInt, CommandPermissions } from "../../validation/CommandSchema";
 
 const debug: CommandInt = {
   Name: "debug",
   Aliases: ["developer"],
-  Permissions: [],
+  Permissions: [CommandPermissions.DEVELOPER],
   GlobalCooldown: 10,
   Cooldown: 30,
   Description: "Debugger for the bot.",
@@ -113,8 +113,8 @@ const debug: CommandInt = {
         await addSubToSpin(parseInt(context[2]), context[3]);
       } else if (context[1].toLowerCase() === "completed") {
         let currentStats = await findQuery(`SELECT * FROM wheelspin`);
-        let newCompleted = currentStats[0].WheelSpins - parseInt(context[2]);
-        await updateOne(`UPDATE wheelspin SET Completed=${context[2]}, WheelSpins=${newCompleted + currentStats.Completed}`);
+        let newCompleted = currentStats[0].Completed + parseInt(context[2]);
+        await updateOne(`UPDATE wheelspin SET Completed=${newCompleted}, WheelSpins=${currentStats[0].WheelSpins - parseInt(context[2])}`);
         client.action(channel, `@${userstate["display-name"]} marked ${context[2]} spins have been completed.`);
       }
     } else if (context[0] === "testemotes") {
