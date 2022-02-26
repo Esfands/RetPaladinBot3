@@ -174,7 +174,7 @@ export async function storeAllEmotes(channelName: string, channelId: number) {
 
 }
 
-function getEmoteData(channelName: string, channelId: number) {
+export function getEmoteData(channelName: string, channelId: number) {
   return Promise.allSettled([
     getTwitchEmotes('twitch', 'channel', 'name', channelName),
     getBttvChannelEmotes(channelId),

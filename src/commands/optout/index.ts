@@ -19,6 +19,7 @@ const optoutCommand: CommandInt = {
   Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     let user = userstate["display-name"];
 
+    // TODO: Add specific commands to toggle out of
     let findQuery = await findOne('optout', `Username='${user?.toLowerCase()}'`);
     if (!findQuery) {
       await insertRow(`INSERT INTO optout (ID, Username) VALUES (?, ?);`, [userstate["user-id"], user?.toLowerCase()]);
