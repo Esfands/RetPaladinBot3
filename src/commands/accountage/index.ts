@@ -1,7 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { getUser } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
-import { calcDate, ErrorType, getTarget, logError } from "../../utils";
+import { calcDate, ErrorType, getTarget, logError, longCalcDate } from "../../utils";
 
 const accountAge: CommandInt = {
   Name: "accountage",
@@ -28,6 +28,7 @@ const accountAge: CommandInt = {
     try {
       let foundDate = accountInfo["data"][0]["created_at"];
       //let elapsed = calcDate(new Date(), new Date(foundDate), true);
+      console.log(foundDate);
       let elapsed = calcDate(new Date(), new Date(foundDate), false);
       if (tagged.toLowerCase() === userstate["displayname"]) {
         client.say(channel, `You created your account ${elapsed} ago`);
