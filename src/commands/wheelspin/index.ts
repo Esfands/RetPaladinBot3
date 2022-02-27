@@ -20,15 +20,19 @@ const wheelspinCommand: CommandInt = {
     const user = userstate["display-name"];
     let target = getTarget(user, context[0]);
 
-    let one = Math.trunc(6/18 * 100) + "% - 10 gifted subs.";
-    let two = Math.trunc(5/18  * 100) + "% - 20 gifted subs.";
-    let three = Math.trunc(4/18 * 100) + "% - 40 gifted subs.";
-    let four = Math.trunc(2/18 * 100) + "% - power hour.";
-    let five = Math.trunc(1/18 * 100) + "% - 60 gifted subs.";
+    let one = Math.trunc(6/18 * 100) + "% - +4 mins.";
+    let two = Math.trunc(5/18  * 100) + "% - +8 mins.";
+    let three = Math.trunc(3/18 * 100) + "% - +12 mins.";
+    let four = Math.trunc(2/18 * 100) + "% - +15 mins.";
+    let five = Math.trunc(2/18 * 100) + "% - power hour.";
 
     console.log(one, two, three, four, five)
     let wheelStats = await findQuery(`SELECT * FROM wheelspin`);
-    return client.action(channel, `@${target} to spin the wheel it requires a cumulative amount of ${wheelStats[0].AmountNeeded} subs. We're at ${wheelStats[0].Gifted} and Esfand owes ${wheelStats[0].WheelSpins} spins. ${one} ${two} ${three} ${four} ${five}`);
+    if (wheelStats[0].IsCollective === "true") {
+      return client.action(channel, `@${target} to spin the wheel it requires a cumulative amount of ${wheelStats[0].AmountNeeded} subs. We're at ${wheelStats[0].Gifted} and Esfand owes ${wheelStats[0].WheelSpins} spins. ${one} ${two} ${three} ${four} ${five}`);
+    } else {
+      client.action(channel, `@${target} to spin the wheel it's ${wheelStats[0].AmountNeeded} (or ${wheelStats[0].AmountNeeded * 2}) subs at once. ${one} ${two} ${three} ${four} ${five}`);
+    }
   }
 }
 
