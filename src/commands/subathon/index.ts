@@ -21,8 +21,8 @@ const subathon: CommandInt = {
     let tagged = getTarget(user, context[0]);
 
     let query = await findQuery(`SELECT * FROM wheelspin`);
-    let isPowerHour = query.IsPowerHour;
-    let res = `Subathon is now! ${(isPowerHour ? 90 : 45)} seconds per sub/$5/500 bits. Tier 2 is ${isPowerHour ? 90*2 : 45*2} seconds. Tier 3 is 225 seconds.`
+    let isPowerHour = query[0].IsPowerHour;
+    let res = `Subathon is now! ${(isPowerHour ? 60 : 30)} seconds per sub/$5/500 bits. Tier 2 is ${isPowerHour ? 60*2 : 30*2} seconds. Tier 3 is 225 seconds.`
     client.action(channel, `@${tagged} ${res}`);
   }
 }
