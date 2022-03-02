@@ -1,6 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { StreamStat } from "../../schemas/StreamStatsSchema";
-import { calcDate, getTarget, longCalcDate } from "../../utils";
+import { calcDate, getTarget } from "../../utils";
 import { getStreamData } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 
@@ -31,7 +31,7 @@ const uptime: CommandInt = {
 
       // Subathon: remove later
       let subathonTime = new Date("2022-02-18T00:46:03Z");
-      let subaElapsed = longCalcDate(new Date(), subathonTime, false);
+      let subaElapsed = calcDate(new Date(), subathonTime, false);
       client.say(channel, `@${tagged} Esfand's subathon has been going for a total of ${subaElapsed} Current VoD: ${elapsed}`);
 
     } catch (error) {
