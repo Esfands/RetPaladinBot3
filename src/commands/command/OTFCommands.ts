@@ -1,8 +1,5 @@
-import { CommonUserstate } from "tmi.js";
-import { pool } from "../../main";
-import { IOTFCommand } from "../../schemas/types";
 import { otfResponseEmote } from "../../utils/emotes";
-import { findOne, findAndUpdate, findOrCreate, findColumn, updateOne, removeOne, insertRow } from "../../utils/maria";
+import { findOne, findAndUpdate, findColumn, updateOne, removeOne, insertRow } from "../../utils/maria";
 
 export async function createOTFCommand(name: string, response: string, creator: string | null) {
   let query = `INSERT INTO otf (Name, Response, Creator, Count) VALUES (?, ?, ?, ?);`;

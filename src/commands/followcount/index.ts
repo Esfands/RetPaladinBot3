@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { fetchAPI, getTarget, logError } from "../../utils";
+import { fetchAPI, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const followCountCommand: CommandInt = {

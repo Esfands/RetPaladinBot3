@@ -1,5 +1,4 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { ICommand } from "../../schemas/types";
 import { findOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const help: CommandInt = {

@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import { Userstate } from "tmi.js";
-import * as globalemotes from "../../datasets/global_emotes.json";
 import { getEmotes } from "../../utils/emotes";
 
 let twitchEmotes: Array<Buffer> = [];

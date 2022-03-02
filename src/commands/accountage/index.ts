@@ -1,7 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { getUser } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
-import { calcDate, getTarget, logError, longCalcDate } from "../../utils";
+import { calcDate, getTarget, logError } from "../../utils";
 
 const accountAge: CommandInt = {
   Name: "accountage",

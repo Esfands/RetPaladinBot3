@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import { fetchAPI, getTarget, logError, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";

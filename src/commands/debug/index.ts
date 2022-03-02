@@ -3,13 +3,13 @@ import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
 import { storeAllEmotes } from "../../modules/emote-listener";
 import { getLatestVideo } from "../../modules/reddit";
-import { fetchChatters, giveAllChattersRetfuel } from "../../modules/retfuel";
+import { giveAllChattersRetfuel } from "../../modules/retfuel";
 import { addSubToSpin } from "../../modules/wheel-spin-counter";
 import { storeEmotes } from "../../utils/emoteData";
 import { getEmotes } from "../../utils/emotes";
 import { appAccessToken, createEventSub, deleteEventSub, getEventSubs, refreshToken } from "../../utils/EventSub";
 import { getChannelEmotes, getEsfandSubs, getVodStart, refreshEsfandToken } from "../../utils/helix";
-import { find, findOne, findQuery, insertRow, updateOne } from "../../utils/maria";
+import { findOne, findQuery, insertRow, updateOne } from "../../utils/maria";
 import { CommandInt, CommandPermissions } from "../../validation/CommandSchema";
 
 const debug: CommandInt = {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
-import { fetchAPI, getTarget, logError } from "../../utils";
+import { getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const randomLineCommand: CommandInt = {
