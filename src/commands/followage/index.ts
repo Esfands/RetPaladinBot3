@@ -35,7 +35,7 @@ const followage: CommandInt = {
   
       if (following["data"].length !== 0) {
         let foundDate = following["data"][0]["followed_at"];
-        let elapsed = calcDate(new Date(), new Date(foundDate), true);
+        let elapsed = calcDate(new Date(), new Date(foundDate), false);
         if (tagged.toLowerCase() === userstate["username"]) {
           if (chTarget.toLowerCase() === "esfandtv") {
             client.action(channel, `@${tagged}, you have been following for ${elapsed}`);
