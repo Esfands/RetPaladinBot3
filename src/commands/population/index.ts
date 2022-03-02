@@ -1,6 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { CommandInt } from "../../validation/CommandSchema";
-import { fetchAPI, capitalizeFirstLetter, logError, ErrorType } from "../../utils/index";
+import { fetchAPI, capitalizeFirstLetter, logError } from "../../utils/index";
 
 const populationCommand: CommandInt = {
   Name: "population",
@@ -24,7 +24,7 @@ const populationCommand: CommandInt = {
       try {
         res = await fetchAPI(`https://ironforge.pro/api/server/tbc/${server}`);
       } catch (error) {
-        await logError(userstate["display-name"]!, ErrorType.API, `Error fetching API for !population - https://ironforge.pro/api/server/tbc/${server}`, new Date());
+        await logError(userstate["display-name"]!, 'api', `Error fetching API for !population - https://ironforge.pro/api/server/tbc/${server}`, new Date());
         return client.action(channel, `${userstate['display-name']} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
       }
 

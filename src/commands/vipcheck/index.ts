@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { calcDate, ErrorType, fetchAPI, getTarget, logError } from "../../utils";
+import { calcDate, fetchAPI, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const vipCheckCommand: CommandInt = {
@@ -31,7 +31,7 @@ const vipCheckCommand: CommandInt = {
     try {
       vipCheck = await fetchAPI(`https://api.ivr.fi/twitch/modsvips/${targetChannel}`);
     } catch (error) {
-      await logError(user!, ErrorType.API, `Error fetching API for !vipcheck - https://api.ivr.fi/twitch/modsvips/${targetChannel}`, new Date());
+      await logError(user!, 'api', `Error fetching API for !vipcheck - https://api.ivr.fi/twitch/modsvips/${targetChannel}`, new Date());
       return client.action(channel, `@${user} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     }
 

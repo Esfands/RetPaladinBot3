@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { ErrorType, fetchAPI, logError, minsToHours } from "../../utils";
+import { fetchAPI, logError, minsToHours } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 interface TwitchTrakcer {
@@ -33,7 +33,7 @@ const monthlyhours: CommandInt = {
     try {
       monthlyData = fetchAPI("https://twitchtracker.com/api/channels/summary/esfandtv");
     } catch (error) {
-      logError(userstate["display-name"]!, ErrorType.API, `Error fetching API for !monthlyhours - https://twitchtracker.com/api/channels/summary/esfandtv`, new Date());
+      logError(userstate["display-name"]!, 'api', `Error fetching API for !monthlyhours - https://twitchtracker.com/api/channels/summary/esfandtv`, new Date());
       return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`)
     }
 

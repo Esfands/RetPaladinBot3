@@ -1,6 +1,6 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { CommandInt } from "../../validation/CommandSchema";
-import { fetchAPI, getTarget, calcDate, logError, ErrorType } from "../../utils";
+import { fetchAPI, getTarget, calcDate, logError } from "../../utils";
 
 const subageCommand: CommandInt = {
   Name: "subage",
@@ -43,7 +43,7 @@ const subageCommand: CommandInt = {
     try {
       subcheck = await fetchAPI(`https://api.ivr.fi/twitch/subage/${target.toLowerCase()}/${targetChannel.toLowerCase()}`);
     } catch (error) {
-      await logError(user!, ErrorType.API, `Error fetching API for !subage - https://api.ivr.fi/twitch/subage/${target.toLowerCase()}/${targetChannel.toLowerCase()}`, new Date());
+      await logError(user!, 'api', `Error fetching API for !subage - https://api.ivr.fi/twitch/subage/${target.toLowerCase()}/${targetChannel.toLowerCase()}`, new Date());
       return client.action(channel, `@${user} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     }
 

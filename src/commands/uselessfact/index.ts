@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { ErrorType, fetchAPI, logError } from "../../utils";
+import { fetchAPI, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const uselessFact: CommandInt = {
@@ -25,7 +25,7 @@ const uselessFact: CommandInt = {
     try {
       response = await fetchAPI(randomAPI["link"]);
     } catch (error) {
-      await logError(userstate['display-name']!, ErrorType.API, `Error fetching API for !uselessfact - ${randomAPI["link"]}`, new Date());
+      await logError(userstate['display-name']!, 'api', `Error fetching API for !uselessfact - ${randomAPI["link"]}`, new Date());
       return client.action(channel, `@${userstate['display-name']} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     }
 

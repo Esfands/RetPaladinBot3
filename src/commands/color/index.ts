@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { ErrorType, fetchAPI, getTarget, logError } from "../../utils";
+import { fetchAPI, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const colorCommand: CommandInt = {
@@ -29,7 +29,7 @@ const colorCommand: CommandInt = {
       try {
         color = await fetchAPI(`https://api.ivr.fi/twitch/resolve/${target}`);
       } catch (error) {
-        await logError(user!, ErrorType.API, `Error fetching api.ivr.fi/twitch/resolve/${target}. API might be down.`, new Date());
+        await logError(user!, 'api', `Error fetching api.ivr.fi/twitch/resolve/${target}. API might be down.`, new Date());
         return client.action(channel, `@${user}, FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
       }
 
@@ -40,7 +40,7 @@ const colorCommand: CommandInt = {
 
       client.action(channel, msg);
     } catch (err) { 
-      await logError(user!, ErrorType.COMMAND, `Error finding the user name ${target}`, new Date());
+      await logError(user!, 'command', `Error finding the user name ${target}`, new Date());
       return client.action(channel, `@${user} FeelsDankMan sorry, couldn't find the username "${target}"`); 
     }
   }

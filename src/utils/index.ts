@@ -316,19 +316,13 @@ export function capitalizeFirstLetter(string: string) {
 }
 
 // Logging errors
-export enum ErrorType {
-  COMMAND = "COMMAND",
-  API = "API",
-  OTHER = "OTHER"
-}
-
 interface ErrorLog {
   User: string;
-  Type: ErrorType;
+  Type: "COMMAND" | "API" | "OTHER";
   Description: string;
   Timestamp: Date | string;
 }
 
-export async function logError(User: string, Type: ErrorType, Description: string, Timestamp: string | Date) {
+export async function logError(User: string, Type: "command" | "api" | "other", Description: string, Timestamp: string | Date) {
   await insertRow(`INSERT INTO errors (User, Type, Description, Timestamp) VALUES (?, ?, ?, ?)`, [User, Type, Description, Timestamp]);
 }

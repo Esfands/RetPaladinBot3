@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
-import { ErrorType, logError, shortenURL } from "../../utils";
+import { logError, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const dog: CommandInt = {
@@ -24,7 +24,7 @@ const dog: CommandInt = {
       const response = await axios.get("https://dog.ceo/api/breeds/image/random");
       body = await response.data;
     } catch (error) {
-      logError(user!, ErrorType.API, `Error fetching API for !dog: https://dog.ceo/api/breeds/image/random`, new Date());
+      logError(user!, 'api', `Error fetching API for !dog: https://dog.ceo/api/breeds/image/random`, new Date());
       return client.action(channel, `@${user} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     }
     shortenURL(body["message"]).then((res) => {

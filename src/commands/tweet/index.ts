@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
-import { calcDate, ErrorType, logError, shortenURL } from "../../utils";
+import { calcDate, logError, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const tweet: CommandInt = {
   Name: "tweet",
@@ -70,7 +70,7 @@ const tweet: CommandInt = {
       let shortenedLink = await shortenURL(twitterLink);
       client.say(channel, `(@${userSearch}) ${tweetText} | ${elapsed} - ${shortenedLink}`);
     } catch(error) {
-      logError(userstate["display-name"]!, ErrorType.API, `Error fetching API for !tweet: ${userSearch}`, new Date());
+      logError(userstate["display-name"]!, 'api', `Error fetching API for !tweet: ${userSearch}`, new Date());
       return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue trying to get a tweet from "${userSearch}"`);
     }
   }

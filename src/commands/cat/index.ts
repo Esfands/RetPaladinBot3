@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
-import { ErrorType, logError, shortenURL } from "../../utils";
+import { logError, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const cat: CommandInt = {
   Name: 'cat',
@@ -23,7 +23,7 @@ const cat: CommandInt = {
       const response = await axios.get("https://api.thecatapi.com/v1/images/search");
       body = await response.data
     } catch(error) {
-      await logError(userstate["display-name"]!, ErrorType.API, `cat API error with: https://api.thecatapi.com/v1/images/search`, new Date());
+      await logError(userstate["display-name"]!, 'api', `cat API error with: https://api.thecatapi.com/v1/images/search`, new Date());
       return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     }
 

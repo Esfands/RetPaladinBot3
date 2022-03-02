@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { ErrorType, fetchAPI, getTarget, logError } from "../../utils";
+import { fetchAPI, getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const followCountCommand: CommandInt = {
@@ -32,7 +32,7 @@ const followCountCommand: CommandInt = {
     try {
       followCount = await fetchAPI(`https://decapi.me/twitch/followcount/${targetChannel}`);
     } catch (error) {
-      logError(user!, ErrorType.API, `Error fetching API for !followcount: https://decapi.me/twitch/followcount/${targetChannel}`, new Date());
+      logError(user!, 'api', `Error fetching API for !followcount: https://decapi.me/twitch/followcount/${targetChannel}`, new Date());
       return client.action(channel, `@${user} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     }
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
-import { ErrorType, fetchAPI, getTarget, logError, shortenURL } from "../../utils";
+import { fetchAPI, getTarget, logError, shortenURL } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const pfpCommand: CommandInt = {
@@ -36,7 +36,7 @@ const pfpCommand: CommandInt = {
         } else client.action(channel, `@${user} here is their profile picture: ${link}`);
       }
     } catch (err) {
-      logError(user!, ErrorType.API, `Error fetching API for !pfp - https://decapi.me/twitch/avatar/${target}`, new Date());
+      logError(user!, 'api', `Error fetching API for !pfp - https://decapi.me/twitch/avatar/${target}`, new Date());
       client.action(channel, `@${user} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     }
   }

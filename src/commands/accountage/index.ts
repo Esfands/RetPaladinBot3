@@ -1,7 +1,7 @@
 import { Actions, CommonUserstate } from "tmi.js";
 import { getUser } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
-import { calcDate, ErrorType, getTarget, logError, longCalcDate } from "../../utils";
+import { calcDate, getTarget, logError, longCalcDate } from "../../utils";
 
 const accountAge: CommandInt = {
   Name: "accountage",
@@ -36,7 +36,7 @@ const accountAge: CommandInt = {
         client.say(channel, `${tagged} created their account ${elapsed} ago`);
       }
     } catch (error) {
-      await logError(user!, ErrorType.COMMAND, `Twitch API couldn't find the user ${tagged}`, new Date());
+      await logError(user!, "command", `Twitch API couldn't find the user ${tagged}`, new Date());
       client.say(channel, `@${user} sorry I couldn't find the account "${tagged}"`);
     }
   }

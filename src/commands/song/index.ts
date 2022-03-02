@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
-import { ErrorType, getTarget, logError } from "../../utils";
+import { getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const song: CommandInt = {
   Name: "song",
@@ -30,7 +30,7 @@ const song: CommandInt = {
       let recentSong = await data.data.recenttracks.track[0];
       client.action(channel, `@${tagged} current song: ${recentSong["name"]} - ${recentSong["artist"]["#text"]} | Full history -> https://www.last.fm/user/esfandtv/library`);
     } catch (error) {
-      await logError(userstate["display-name"]!, ErrorType.API, `Error fetching API for !song - ws.audioscrobbler.com`, new Date());
+      await logError(userstate["display-name"]!, 'api', `Error fetching API for !song - ws.audioscrobbler.com`, new Date());
       return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     }
   }

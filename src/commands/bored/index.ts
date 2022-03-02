@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
-import { ErrorType, logError } from "../../utils";
+import { logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const bored: CommandInt = {
   Name: "bored",
@@ -23,7 +23,7 @@ const bored: CommandInt = {
       const response = await axios.get("http://www.boredapi.com/api/activity/");
       body = response.data;
     } catch (error) {
-      await logError(userstate["display-name"]!, ErrorType.API, `bored command - error fetching http://www.boredapi.com/api/activity/`, new Date());
+      await logError(userstate["display-name"]!, 'api', `bored command - error fetching http://www.boredapi.com/api/activity/`, new Date());
       return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     }
 

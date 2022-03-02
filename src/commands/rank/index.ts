@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
-import { ErrorType, getTarget, logError } from "../../utils";
+import { getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 const rank: CommandInt = {
   Name: "rank",
@@ -35,7 +35,7 @@ const rank: CommandInt = {
         }
       });
     } catch (error) {
-      await logError(userstate["display-name"]!, ErrorType.API, `Error fetching API for !rank - api.riotgames.com`, new Date());
+      await logError(userstate["display-name"]!, 'api', `Error fetching API for !rank - api.riotgames.com`, new Date());
       return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue trying to get Esfand's League of Legends rank. Please contact Mahcksimus.`);
     }
   }

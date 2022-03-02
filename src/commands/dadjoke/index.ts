@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
-import { ErrorType, logError } from "../../utils";
+import { logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const dadjoke: CommandInt = {
@@ -22,7 +22,7 @@ const dadjoke: CommandInt = {
       client.action(channel, `@${userstate["display-name"]} ${res["data"]["joke"]}`);
     })  
     .catch(async (err) => {
-      await logError(userstate["display-name"]!, ErrorType.API, `Error fetching dadjokes from https://icanhazdadjoke.com/`, new Date());
+      await logError(userstate["display-name"]!, 'api', `Error fetching dadjokes from https://icanhazdadjoke.com/`, new Date());
       client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     });
   }

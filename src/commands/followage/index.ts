@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { calcDate, ErrorType, getTarget, logError } from "../../utils";
+import { calcDate, getTarget, logError } from "../../utils";
 import { isFollowingUser } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 const followage: CommandInt = {
@@ -47,7 +47,7 @@ const followage: CommandInt = {
         }
       } else client.action(channel, `@${user} ${tagged} doesn't follow ${chTarget}.`);
     } catch(error) {
-      logError(user!, ErrorType.API, `Error fetching followage with target "${tagged}" in #${chTarget}`, new Date());
+      logError(user!, 'api', `Error fetching followage with target "${tagged}" in #${chTarget}`, new Date());
       return client.action(channel, `@${user} FeelsDankMan sorry, there was an an issue getting the followage for user(s) ${tagged} in channel ${chTarget}.`);
     }
   }

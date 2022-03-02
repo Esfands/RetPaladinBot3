@@ -1,5 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
-import { ErrorType, getTarget, logError } from "../../utils";
+import { getTarget, logError } from "../../utils";
 import { CommandInt } from "../../validation/CommandSchema";
 
 const roles: CommandInt = {
@@ -26,7 +26,7 @@ const roles: CommandInt = {
     try {
       link = `https://twitchdatabase.com/roles/${target}`;
     } catch (error) {
-      await logError(userstate["display-name"]!, ErrorType.API, `Error fetching API for !roles - https://twitchdatabase.com/roles/${target}`, new Date());
+      await logError(userstate["display-name"]!, 'api', `Error fetching API for !roles - https://twitchdatabase.com/roles/${target}`, new Date());
       return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue please contact Mahcksimus.`);
     }
 
