@@ -27,16 +27,16 @@ const uptime: CommandInt = {
       let startTime = await streamData["data"][0]["started_at"];
       if (typeof startTime === "undefined") return client.say(channel, `@${tagged} stream is offline currently Sadge`);
 
-      let elapsed = calcDate(new Date(), new Date(startTime), false);
+      let elapsed = calcDate(new Date(), new Date(startTime), ['s']);
 
       // Subathon: remove later
       let subathonTime = new Date("2022-02-18T00:46:03Z");
-      let subaElapsed = calcDate(new Date(), subathonTime, false);
+      let subaElapsed = calcDate(new Date(), subathonTime, ['s']);
       client.say(channel, `@${tagged} Esfand's subathon has been going for a total of ${subaElapsed} Current VoD: ${elapsed}`);
 
     } catch (error) {
       let stat = await StreamStat.findOne({ type: "esfandtv" });
-      let elapsed = calcDate(new Date(), new Date(stat!["wentOfflineAt"]), true);
+      let elapsed = calcDate(new Date(), new Date(stat!["wentOfflineAt"]), ['s']);
       client.say(channel, `@${tagged} stream is offline and has been for ${elapsed} Sadeg`);
     }
   }

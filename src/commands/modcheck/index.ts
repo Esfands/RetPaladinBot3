@@ -45,7 +45,7 @@ const modcheckCommand: CommandInt = {
     await isMod.forEach(async function (modstatus: any) {
       if (modstatus.login == rTarget) {
         let modDate = modstatus.grantedAt;
-        modRes = `that user has been a M OMEGALUL D in "${targetChannel}" for - ${calcDate(new Date(), new Date(modDate), true)}`;
+        modRes = `that user has been a M OMEGALUL D in "${targetChannel}" for - ${calcDate(new Date(), new Date(modDate), ['m', 's'])}`;
       }
     });
     

@@ -48,7 +48,7 @@ const streamerBansCommand: CommandInt = {
     let recentTweet = await axios(`https://api.twitter.com/2/tweets?ids=${tweetsData["meta"]["newest_id"]}&tweet.fields=created_at`, { method: "GET", headers: headers });
     let recentData = await recentTweet.data;
 
-    let elapsed = calcDate(new Date(), new Date(recentData["data"][0]["created_at"]), true);
+    let elapsed = calcDate(new Date(), new Date(recentData["data"][0]["created_at"]), []);
     let twitterLink = `https://twitter.com/${userSearch.toLowerCase()}/status/${recentData["data"][0]["id"]}`;
 
     // Check for ->

@@ -36,7 +36,8 @@ export function colorLog(color: string, message: string, options: string): strin
   return toSend;
 }
 
-export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean) {
+type OptionalDateStrings = 's' | 'm' | 'h' | 'd' | 'mo' | 'y';
+export function calcDate(startDate: Date, endDate: Date, exclude: OptionalDateStrings[]) {
   var a = moment(startDate);
   var b = moment(endDate);
 
@@ -59,12 +60,23 @@ export function calcDate(startDate: Date, endDate: Date, includeSeconds: boolean
   b.add(seconds, 'seconds');
 
   let dateArr: string[] = [];
-  if (years > 0) dateArr.push(years + 'y');
-  if (months > 0) dateArr.push(months + 'm');
-  if (days > 0) dateArr.push(days + 'd');
-  if (hours > 0) dateArr.push(hours + 'h');
-  if (minutes > 0) dateArr.push(minutes + 'min');
-  if (includeSeconds) if (seconds > 0) dateArr.push(seconds + "s");
+  if (!exclude.includes('y'))
+    if (years > 0) dateArr.push(years + 'y');
+
+  if (!exclude.includes('mo'))
+    if (months > 0) dateArr.push(months + 'mo');
+
+  if (!exclude.includes('d'))
+    if (days > 0) dateArr.push(days + 'd');
+
+  if (!exclude.includes('h'))
+    if (hours > 0) dateArr.push(hours + 'h');
+
+  if (!exclude.includes('m'))
+    if (minutes > 0) dateArr.push(minutes + 'm');
+
+  if (!exclude.includes('s'))
+    if (seconds > 0) dateArr.push(seconds + "s");
 
   return dateArr.join(", ")
 }

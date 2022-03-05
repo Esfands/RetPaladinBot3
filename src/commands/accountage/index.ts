@@ -28,7 +28,7 @@ const accountAge: CommandInt = {
     try {
       let foundDate = accountInfo["data"][0]["created_at"];
       //let elapsed = calcDate(new Date(), new Date(foundDate), true);
-      let elapsed = calcDate(new Date(), new Date(foundDate), false);
+      let elapsed = calcDate(new Date(), new Date(foundDate), ["s", 'm']);
       if (tagged.toLowerCase() === userstate["displayname"]) {
         client.say(channel, `You created your account ${elapsed} ago`);
       } else {

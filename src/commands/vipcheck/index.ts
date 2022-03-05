@@ -41,7 +41,7 @@ const vipCheckCommand: CommandInt = {
     await isVIP.forEach(async function (vipstatus: any) {
       if (vipstatus.login == rTarget) {
         let vipDate = vipstatus.grantedAt;
-        vipRes = `that user has been a VIP "${targetChannel}" for - ${calcDate(new Date(), new Date(vipDate), true)}`;
+        vipRes = `that user has been a VIP "${targetChannel}" for - ${calcDate(new Date(), new Date(vipDate), ['s'])}`;
       }
     });
 

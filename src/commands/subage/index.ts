@@ -52,7 +52,7 @@ const subageCommand: CommandInt = {
       if (oldSub["months"] === 0 || typeof oldSub["months"] === "undefined") {
         return client.action(channel, `${target} is not subbed to ${targetChannel} and never has been.`);
       } else {
-        return client.action(channel, `${target} is not subbed to ${targetChannel} but has been previously for a total of ${oldSub["months"]} months. Sub ended ${calcDate(new Date(), new Date(oldSub["end"]), true)} ago.`);
+        return client.action(channel, `${target} is not subbed to ${targetChannel} but has been previously for a total of ${oldSub["months"]} months. Sub ended ${calcDate(new Date(), new Date(oldSub["end"]), ['s'])} ago.`);
       }
     } else {
       let subData = subcheck["meta"];
@@ -68,14 +68,14 @@ const subageCommand: CommandInt = {
         return client.action(channel, `${target} is currently subbed to ${targetChannel} with a Tier ${subData["tier"]} sub and has been subbed for a total of ${subLength["months"]} months! They are currently on a ${substreak["months"]} months streak. This is a permanent sub.`);
       }
       if (subData["type"] === "prime") {
-        return client.action(channel, `${target} is currently subbed to ${targetChannel} with a Tier 1 prime sub and has been subbed for a total of ${subLength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${calcDate(new Date(subData["endsAt"]), new Date(), true)}`);
+        return client.action(channel, `${target} is currently subbed to ${targetChannel} with a Tier 1 prime sub and has been subbed for a total of ${subLength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${calcDate(new Date(subData["endsAt"]), new Date(), ['s'])}`);
       }
       if (subData["type"] === "paid") {
-        return client.action(channel, `${target} is currently subbed to ${targetChannel} with a Tier ${subData["tier"]} sub and has been subbed for a total of ${subLength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${calcDate(new Date(subData["endsAt"]), new Date(), true)}`);
+        return client.action(channel, `${target} is currently subbed to ${targetChannel} with a Tier ${subData["tier"]} sub and has been subbed for a total of ${subLength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${calcDate(new Date(subData["endsAt"]), new Date(), ['s'])}`);
       }
       if (subData["type"] === "gift") {
         let gifter = subData["gift"]["name"];
-        return client.action(channel, `${target} is currently subbed to ${targetChannel} with a Tier ${subData["tier"]} sub, gifted by ${gifter} for a total of ${subLength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${calcDate(new Date(subData["endsAt"]), new Date(), true)}`);
+        return client.action(channel, `${target} is currently subbed to ${targetChannel} with a Tier ${subData["tier"]} sub, gifted by ${gifter} for a total of ${subLength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${calcDate(new Date(subData["endsAt"]), new Date(), ['s'])}`);
       }
     }
   }

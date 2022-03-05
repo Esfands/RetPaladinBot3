@@ -36,7 +36,7 @@ const followingCommand: CommandInt = {
       });
 
       let streamers = followerList.map(function (streamer) {
-        return `${streamer['streamer']} - ${calcDate(new Date(), new Date(streamer["date"]), false)}`;
+        return `${streamer['streamer']} - ${calcDate(new Date(), new Date(streamer["date"]), ['s', 'm'])}`;
       });
 
       let getRandomStreamers = followerList.sort(() => Math.random() - Math.random()).slice(0, 5)
