@@ -104,6 +104,6 @@ export default async (client: Actions, channel: string, userstate: CommonUsersta
   // Subathon stats
   await subathonLogEvent(userstate, SubathonStatType.MESSAGE, 1);
 
-  // Save/update chatter in Mongo
+  // Save/update chatter in table
   await updateOrCreateChatter(userstate);
 }
