@@ -10,7 +10,7 @@ const font: CommandInt = {
   Cooldown: 30,
   Description: "Change the font of any text.",
   DynamicDescription: [
-    "Cahnge the font of a message.",
+    "Change the font of a message.",
     "<code>!font (fancy, fancybold, outline) (message)</code>",
     "",
     "= Fonts =",
