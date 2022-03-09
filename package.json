@@ -9,7 +9,8 @@
     "watch": "tsc-watch --onSuccess \"node ./dist/main.js\"",
     "watch-and-run": "ts-node-dev --respawn -- src/main.ts",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pm2": "tsc && pm2 start pm2.config.js"
   },
   "author": "Mahcksimus",
   "license": "ISC",

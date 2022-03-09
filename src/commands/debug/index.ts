@@ -11,6 +11,7 @@ import { appAccessToken, createEventSub, deleteEventSub, getEventSubs, refreshTo
 import { getChannelEmotes, getEsfandSubs, getVodStart, refreshEsfandToken } from "../../utils/helix";
 import { findOne, findQuery, insertRow, updateOne } from "../../utils/maria";
 import { CommandInt, CommandPermissions } from "../../validation/CommandSchema";
+import { execSync, exec } from 'child_process';
 
 const debug: CommandInt = {
   Name: "debug",
@@ -26,6 +27,11 @@ const debug: CommandInt = {
   OfflineOnly: false,
   OnlineOnly: false,
   Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
+
+    function getChanges(arr: any[]) {
+      return arr.find(value => /files? changed/.test(value));
+    }
+
     if (context[0] === "emotes") {
       await getEmotes();
       client.action(channel, `@${userstate["display-name"]} emotes have been updated!`);
@@ -121,6 +127,18 @@ const debug: CommandInt = {
       await storeAllEmotes("esfandtv", 38746172);
     } else if (context[0] === "vodstart") {
       console.log(await getVodStart(parseInt(context[1])));
+    
+    } else if (context[0] === "pull") {
+      const res = execSync('git pull').toString().split('\n').filter(Boolean);
+      if (res.includes('Already up to date.')) return client.action(channel, `@${userstate['display-name']} no changes detected.`);
+      client.action(channel, `@${getChanges(res) || res.join(' | ')}`);
+    
+    } else if (context[0] === "") {
+      const res = execSync('git pull').toString().split('\n').filter(Boolean);
+      if (res.includes('Already up to date.')) client.action(channel, `${userstate['display-name']} restarting without any changes.`);
+      else client.action(channel, `@${userstate['display-name']} restarting ${getChanges(res) || res.join(" | ")}`);
+      exec('pm2 restart mahcksbot');
+
     }
   }
 }

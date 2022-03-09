@@ -45,7 +45,7 @@ async function handleSevenTv(event: EmoteEventUpdate) {
 }
 
 export default async function openEmoteListeners() {
-  let sevenTvConn = new EventSource("https://events.7tv.app/v1/channel-emotes?channel=mahcksimus");
+  let sevenTvConn = new EventSource("https://events.7tv.app/v1/channel-emotes?channel=esfandtv");
 
   sevenTvConn.addEventListener("ready", (e: any) => {
     console.log(`[7tv] Ready and connected to: ${e.data}`);
