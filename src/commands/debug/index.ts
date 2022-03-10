@@ -137,7 +137,7 @@ const debug: CommandInt = {
       const res = execSync('git pull').toString().split('\n').filter(Boolean);
       if (res.includes('Already up to date.')) client.action(channel, `${userstate['display-name']} restarting without any changes.`);
       else client.action(channel, `@${userstate['display-name']} restarting ${getChanges(res) || res.join(" | ")}`);
-      exec('pm2 restart mahcksbot');
+      exec('pm2 restart rpb');
 
     }
   }
