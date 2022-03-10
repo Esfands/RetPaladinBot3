@@ -131,9 +131,9 @@ const debug: CommandInt = {
     } else if (context[0] === "pull") {
       const res = execSync('git pull').toString().split('\n').filter(Boolean);
       if (res.includes('Already up to date.')) return client.action(channel, `@${userstate['display-name']} no changes detected.`);
-      client.action(channel, `@${getChanges(res) || res.join(' | ')}`);
+      client.action(channel, `@${userstate['display-name']}${getChanges(res) || res.join(' | ')}`);
     
-    } else if (context[0] === "") {
+    } else if (context[0] === "restart") {
       const res = execSync('git pull').toString().split('\n').filter(Boolean);
       if (res.includes('Already up to date.')) client.action(channel, `${userstate['display-name']} restarting without any changes.`);
       else client.action(channel, `@${userstate['display-name']} restarting ${getChanges(res) || res.join(" | ")}`);
