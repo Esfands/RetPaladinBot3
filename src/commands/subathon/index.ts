@@ -25,7 +25,7 @@ const subathon: CommandInt = {
     let powerHour = (isPowerHour === "true") ? true : false;
     let res = `Subathon is now! ${(powerHour ? 60 : 30)} seconds per sub/$5/500 bits. Tier 2 is ${powerHour ? 60*2 : 30*2} seconds. Tier 3 is ${powerHour ? 60*5 : 30*5} seconds.`
     //client.action(channel, `@${tagged} ${res}`);
-    client.action(channel, `@${tagged} Subathon is on pause while Esfand goes to L.A for the streamer awards. Timer is paused, donations and subs still add to the timer. Full details here: https://www.youtube.com/watch?v=uwgGPzYtoek`);
+    client.action(channel, `@${tagged} Subathon is on pause while Esfand goes to L.A. for the streamer awards (March 12th @ 5pm PST). Timer is paused, donations and subs still add to the timer. Full details here: https://www.youtube.com/watch?v=uwgGPzYtoek`);
   }
 }
 
