@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import { fetchAPI, getTarget } from "../../utils";
 import { getUserId } from "../../utils/helix";
@@ -30,11 +31,18 @@ const uidCommand: CommandInt = {
 
       let msg: string = "";
       if (target.toLowerCase() === userstate["username"]) {
-        msg = `@${user} your ID is: ${userId}`;
-      } else msg = `@${user} that users ID is: ${userId}`;
+        msg = `@${user} ${userId}`;
+      } else msg = `@${user} ${userId}`;
 
       client.action(channel, msg);
-    } catch (err) { return client.action(channel, `@${user} FeelsDankMan sorry, couldn't find the username "${target}"`); }
+    } catch (err) { 
+      let search = await axios.get('https://api.ivr.fi/twitch/resolve/drdisrespect');
+      let data = search.data;
+
+      if (data.banned) {
+        client.action(channel, `@${user} ${data.id} ⛔ banned`);
+      } else client.action(channel, `@${user} FeelsDankMan sorry, couldn't find the username "${target}"`); 
+    }
   }
 }
 
