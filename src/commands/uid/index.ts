@@ -40,7 +40,7 @@ const uidCommand: CommandInt = {
       let data = search.data;
 
       if (data.banned) {
-        client.action(channel, `@${user} ${data.id} ⛔ banned`);
+        client.action(channel, `@${user} ${data.id} ⛔`);
       } else client.action(channel, `@${user} FeelsDankMan sorry, couldn't find the username "${target}"`); 
     }
   }
