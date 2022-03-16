@@ -76,4 +76,4 @@ client.on("timeout", async (channel: any, username: any, reason: any, duration: 
 client.on("emoteonly", async (channel: string, enabled: boolean) => { if (enabled) return client.action(channel, "TriHard") });
 
 // Listens for new emotes being added.
-openEmoteListeners();
+openEmoteListeners(client);

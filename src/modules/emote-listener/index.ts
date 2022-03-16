@@ -1,5 +1,6 @@
 import axios from "axios";
 import EventSource from "eventsource";
+import { Actions } from "tmi.js";
 import { pool } from "../../main";
 import { findQuery, insertRow, removeOne } from "../../utils/maria";
 
@@ -29,11 +30,23 @@ interface ExtraEmoteData {
   urls: [[string, string]];
 }
 
-async function handleSevenTv(event: EmoteEventUpdate) {
+export const handleSevenTVUpdate = async (client: Actions, event: EmoteEventUpdate) => {
+  let eventType = event.action;
+  if (eventType === "ADD") {
+    client.action(event.channel, `[7tv] ${event.actor} added the emote ${event.name}`);
+  } else if (eventType === "REMOVE") {
+    client.action(event.channel, `[7tv] ${event.actor} removed the emote ${event.name}`);
+  } else if (eventType === "UPDATE") {
+    client.action(event.channel, `[7tv] ${event.actor} set the name from ${event.emote?.name} to ${event.name}`);
+  }
+}
+
+async function handleSevenTv(event: EmoteEventUpdate, client: Actions) {
   if (event.action === "ADD") {
     console.log(`[7tv] Added new emote: ${event.emote?.name}`);
     let values = [event.name, event.emote_id, "7tv", "channel", `${event.emote?.urls[0][1]}`];
     await insertRow(`INSERT INTO emotes (Name, ID, Service, Scope, URL, ZeroWidth) VALUES (?, ?, ?, ?, ?, ?)`, values);
+    handleSevenTVUpdate
 
   } else if (event.action === "UPDATE") {
     console.log(`[7tv] Updated emote: ${event.emote?.name}`);
@@ -42,9 +55,11 @@ async function handleSevenTv(event: EmoteEventUpdate) {
     console.log(`[7tv] Removed emote: ${event.name}`);
     await removeOne(`emotes`, 'Name=?', [event.name]);
   }
+
+  handleSevenTVUpdate(client, event);
 }
 
-export default async function openEmoteListeners() {
+export default async function openEmoteListeners(client: Actions) {
   let sevenTvConn = new EventSource("https://events.7tv.app/v1/channel-emotes?channel=esfandtv");
 
   sevenTvConn.addEventListener("ready", (e: any) => {
@@ -52,7 +67,7 @@ export default async function openEmoteListeners() {
   });
 
   sevenTvConn.addEventListener("update", async (e: any) => {
-    await handleSevenTv(JSON.parse(e.data));
+    await handleSevenTv(JSON.parse(e.data), client);
   });
 
   sevenTvConn.addEventListener("open", (e: any) => {
