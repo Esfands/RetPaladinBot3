@@ -30,6 +30,8 @@ const notifyme: CommandInt = {
     let username = userstate["username"];
     let option = context[0]
 
+    return client.action(channel, `@${user} this feature is deprecated.`);
+
     if (option) {
       if (option === "live") {
         Notify.findOne({ type: "live" }, function (err: Error, res: any) {
