@@ -52,10 +52,10 @@ export async function checkStreamStatus(client: Actions, channel: string) {
               });
 
               if (specificUsers.length !== 0) {
-                let toPing = splitUsers(specificUsers, `[NOTIFYME] EsfandTV changed to your category PagChomp 👉 ${valueUpdated[index]}`);
+                /* let toPing = splitUsers(specificUsers, `[NOTIFYME] EsfandTV changed to your category PagChomp 👉 ${valueUpdated[index]}`);
                 toPing.forEach(function (element) {
                   client.action(channel, `${element}`);
-                });
+                }); */
               }
             }
           });
