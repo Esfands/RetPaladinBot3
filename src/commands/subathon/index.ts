@@ -24,7 +24,7 @@ const subathon: CommandInt = {
     let isPowerHour = query[0].IsPowerHour;
     let powerHour = (isPowerHour === "true") ? true : false;
     let res = `${(powerHour) ? "POWER HOUR!" : ""} ${(powerHour ? 40 : 20)} seconds per sub/$5/500 bits. Tier 2 is ${powerHour ? 40*2 : 20*2} seconds. Tier 3 is ${powerHour ? 40*5 : 20*5} seconds.`
-    client.action(channel, `@${tagged} ${res}`);
+    client.action(channel, `@${tagged} timer hit 0. Mods do not have permission to end stream. Waiting on Esfand to wake up. We're unsure what he will do with remaining spins.`);
     //client.action(channel, `@${tagged} Subathon is on pause while Esfand goes to L.A. for the streamer awards (March 12th @ 5pm PST). Timer is paused at 12h 9m 41s, donations and subs still add to the timer. Full details here: https://www.youtube.com/watch?v=uwgGPzYtoek`);
   }
 }
