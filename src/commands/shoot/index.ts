@@ -1,4 +1,5 @@
 import { Actions, CommonUserstate } from "tmi.js";
+import { randomItemFromArray } from "../../utils";
 import { checkUserTimeout, getUser, getUserId } from "../../utils/helix";
 import { CommandInt } from "../../validation/CommandSchema";
 
@@ -38,6 +39,7 @@ const shoot: CommandInt = {
           return client.action(channel, message);
         })
         .catch((err) => {
+          console.log(err);
           let errMsg: string = "";
           switch (err) {
             case "bad_timeout_mod":
@@ -45,6 +47,7 @@ const shoot: CommandInt = {
               break;
 
             case "bad_timeout_broadcaster":
+              if (target === user) return;
               errMsg = `${user} that user has a show to run esfandW`;
               break;
 
@@ -52,6 +55,10 @@ const shoot: CommandInt = {
               errMsg = `${user} sorry I couldn't find that user.`;
               break;
 
+            case "No repsonse from Twitch.":
+              errMsg = `${user} error with Twitch responding. Try again later.`
+            break;
+            
             default:
               errMsg = `${user} sorry I couldn't find that user.`;
               break;
@@ -67,11 +74,13 @@ const shoot: CommandInt = {
       let alreadyTimedout = await checkUserTimeout(uid);
       console.log(alreadyTimedout);
 /*       if (!alreadyTimedout) { */
-        timeoutUser(userstate["username"], context[0], `${user} shot ${context[0]} dead! D:`);
+        let messages = [`${user} shot ${context[0]} dead! D:`, `Smoking on that ${context[0]} pack RIPBOZO`, `BOGGED ${user} he's been taken out.`];
+        timeoutUser(userstate["username"], context[0], randomItemFromArray(messages));
         context[0] = (context[0].startsWith("@")) ? context[0].substring(1) : context[0];
 /*       } else return client.action(channel, `@${user} that user is already dead TriSad`); */
     } else {
-      timeoutUser(userstate["username"], user, `${user} shot themselves in the foot!`);
+      let backfire = ["shot themselves in the foot", "gun exploded in your face", "Clueless oops wrong way"]
+      timeoutUser(userstate["username"], user, `${user} ${randomItemFromArray(backfire)}`);
     }
   }
 }

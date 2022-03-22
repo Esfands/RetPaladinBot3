@@ -254,3 +254,7 @@ export function capitalizeFirstLetter(string: string) {
 export async function logError(User: string, Type: "command" | "api" | "other", Description: string, Timestamp: string | Date) {
   await insertRow(`INSERT INTO errors (User, Type, Description, Timestamp) VALUES (?, ?, ?, ?)`, [User, Type, Description, Timestamp]);
 }
+
+export function randomItemFromArray(array: any[]) {
+  return array[Math.floor(Math.random()*array.length)];
+}
