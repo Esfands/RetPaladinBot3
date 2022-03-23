@@ -74,7 +74,7 @@ const shoot: CommandInt = {
       let alreadyTimedout = await checkUserTimeout(uid);
       console.log(alreadyTimedout);
 /*       if (!alreadyTimedout) { */
-        let messages = [`${user} shot ${context[0]} dead! D:`, `Smoking on that ${context[0]} pack RIPBOZO`, `BOGGED ${user} he's been taken out.`];
+        let messages = [`${user} shot ${context[0]} dead! D:`, `Smoking on that ${context[0]} pack RIPBOZO`, `BOGGED ${user} they've been taken out.`];
         timeoutUser(userstate["username"], context[0], randomItemFromArray(messages));
         context[0] = (context[0].startsWith("@")) ? context[0].substring(1) : context[0];
 /*       } else return client.action(channel, `@${user} that user is already dead TriSad`); */
