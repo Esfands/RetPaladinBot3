@@ -30,9 +30,7 @@ const uptime: CommandInt = {
       let elapsed = calcDate(new Date(), new Date(startTime), ['s']);
 
       // Subathon: remove later
-      let subathonTime = new Date("2022-02-18T00:46:03Z");
-      let subaElapsed = calcDate(new Date(), subathonTime, ['s']);
-      client.say(channel, `@${tagged} Esfand's subathon has been going for a total of ${subaElapsed} Current VoD: ${elapsed}`);
+      client.say(channel, `@${tagged} uptime: ${elapsed}`);
 
     } catch (error) {
       let stat = await StreamStat.findOne({ type: "esfandtv" });
