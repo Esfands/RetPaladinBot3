@@ -27,6 +27,7 @@ const randomLineCommand: CommandInt = {
     const user = userstate["display-name"];
     let target = getTarget(user, context[0]);
     target = (target.startsWith("@")) ? target.substring(1) : target;
+    if (target === "ilovejesus222") return;
 
     let targetChannel = context[1];
     if (!targetChannel) targetChannel = 'esfandtv';
