@@ -258,3 +258,13 @@ export async function logError(User: string, Type: "command" | "api" | "other", 
 export function randomItemFromArray(array: any[]) {
   return array[Math.floor(Math.random()*array.length)];
 }
+
+export function humanizeNumber(number: number) {
+  var mainStr: string | undefined = number.toString();
+  mainStr = mainStr.split('').reverse().join('');
+
+  mainStr = mainStr.match(/.{1,3}/g)?.join(' ');
+  mainStr = mainStr!.split('').reverse().join('');
+
+  return mainStr;
+}
