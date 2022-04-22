@@ -23,7 +23,7 @@ const rank: CommandInt = {
 
     let ranking = await findOne(`wowarenas`, 'Bracket="5v5"');
     let elapsed = calcDate(new Date(), ranking["LastUpdated"], ['s']);
-    client.action(channel, `${target} current rating: ${ranking["Rating"]} W${ranking["Won"]} L${ranking["Lost"]} last updated ${elapsed} ago`);
+    client.action(channel, `@${target} current rating: ${ranking["Rating"]} W${ranking["Won"]} L${ranking["Lost"]} last updated ${elapsed} ago`);
 /*     const user = userstate["display-name"];
     let tagged = getTarget(user, context[0]);
 
