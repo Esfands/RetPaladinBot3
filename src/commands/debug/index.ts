@@ -58,14 +58,15 @@ const debug: CommandInt = {
       console.log(new Date());
       let res = await axios({
         method: "GET",
-        url: `https://us.api.blizzard.com/data/wow/pvp-region/1/pvp-season/3/pvp-leaderboard/3v3?namespace=dynamic-classic-us&locale=en_US&access_token=${config.apiKeys.blizzard}`,
+        url: `https://us.api.blizzard.com/data/wow/pvp-region/1/pvp-season/3/pvp-leaderboard/5v5?namespace=dynamic-classic-us&locale=en_US&access_token=${config.apiKeys.blizzard}`,
       });
 
       let teams = res.data["entries"];
       teams.forEach(async (team: any) => {
-        if (team["team"]["name"] === "West Coast Tragedy") {
-          await updateOne(`UPDATE wowarenas SET Rank='${team["rank"]}', Rating='${team["rating"]}', Won='${team["season_match_statistics"]["won"]}', Lost='${team["season_match_statistics"]["lost"]}', LastUpdated='${new Date().getTime()}' WHERE Bracket='2v2';`);
-          client.action(channel, `Updated rating: for 3v3s - Ranking: ${team["rank"]} Rating: ${team["rating"]} W ${team["season_match_statistics"]["won"]} L ${team["season_match_statistics"]["lost"]}`);
+        // West Coast Tragedy = 3v3s
+        if (team["team"]["name"] === "Scuffed Gaming") {
+          await updateOne(`UPDATE wowarenas SET Rank='${team["rank"]}', Rating='${team["rating"]}', Won='${team["season_match_statistics"]["won"]}', Lost='${team["season_match_statistics"]["lost"]}', LastUpdated='${new Date().getTime()}' WHERE Bracket='5v5';`);
+          client.action(channel, `Updated rating: for 5v5s - Ranking: ${team["rank"]} Rating: ${team["rating"]} W ${team["season_match_statistics"]["won"]} L ${team["season_match_statistics"]["lost"]}`);
           return;
         }
       });

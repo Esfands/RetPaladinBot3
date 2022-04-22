@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Actions, CommonUserstate } from "tmi.js";
 import config from "../../cfg/config";
-import { getTarget, logError } from "../../utils";
+import { calcDate, getTarget, logError } from "../../utils";
+import { findOne } from "../../utils/maria";
 import { CommandInt } from "../../validation/CommandSchema";
 const rank: CommandInt = {
   Name: "rank",
@@ -18,6 +19,12 @@ const rank: CommandInt = {
   OnlineOnly: false,
   Code: async (client: Actions, channel: string, userstate: CommonUserstate, context: Array<string>) => {
     const user = userstate["display-name"];
+    let target = getTarget(user, context[0]);
+
+    let ranking = await findOne(`wowarenas`, 'Bracket="5v5"');
+    let elapsed = calcDate(new Date(), ranking["LastUpdated"], ['s']);
+    client.action(channel, `${target} current rating: ${ranking["Rating"]} W${ranking["Won"]} L${ranking["Lost"]} last updated ${elapsed} ago`);
+/*     const user = userstate["display-name"];
     let tagged = getTarget(user, context[0]);
 
     try {
@@ -37,7 +44,7 @@ const rank: CommandInt = {
     } catch (error) {
       await logError(userstate["display-name"]!, 'api', `Error fetching API for !rank - api.riotgames.com`, new Date());
       return client.action(channel, `@${userstate["display-name"]} FeelsDankMan sorry, there was an API issue trying to get Esfand's League of Legends rank. Please contact Mahcksimus.`);
-    }
+    } */
   }
 }
 
