@@ -22,6 +22,7 @@ const shoot: CommandInt = {
     const user = userstate["display-name"];
     if (!context[0]) return client.action(channel, `@${user} please target a user to shoot.`);
 
+    if (context[0].includes('mahcksbot')) return client.action(channel, `MrDestructoid I don't shoot my brother.`);
     function timeoutUser(userRan: CommonUserstate, target: any, message: string) {
       if (target.toLowerCase() === userstate["username"]) {
         client.timeout(channel, userstate["username"], TIMEOUT_LENGTH, "!shoot command")
@@ -40,7 +41,7 @@ const shoot: CommandInt = {
         })
         .catch((err) => {
           console.log(err);
-          let errMsg: string = "";
+          let errMsg = "";
           switch (err) {
             case "bad_timeout_mod":
               errMsg = `${user} that user has body armor GIGACHAD`;
