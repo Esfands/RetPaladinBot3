@@ -30,10 +30,7 @@ const time: CommandInt = {
     let cst = date.toLocaleString("en-US", { timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: true });
     let mil = date.toLocaleString("en-US", { timeZone: "America/Chicago", hour: 'numeric', minute: 'numeric', hour12: false });
 
-    let date2 = addHours(9, date);
-    let kst = date2.toLocaleString("en-US", { timeZone: "UTC", hour: 'numeric', minute: 'numeric', hour12: true });
-    let mil2 = date2.toLocaleString("en-US", { timeZone: "UTC", hour: 'numeric', minute: 'numeric', hour12: false });
-    response = `Esfand's local time is ${cst} CST KKona (${mil}) Korea: ${kst} KST (${mil2})`;
+    response = `Esfand's local time is ${cst} CST KKona (${mil})`;
 
     client.action(channel, `@${tagged} ${response}`);
   }
