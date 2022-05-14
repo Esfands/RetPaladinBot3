@@ -69,7 +69,7 @@ const shoot: CommandInt = {
     }
 
     let chance = Math.random();
-    let result = (chance < 0.3) ? false : true; // false = hurt self, true = shot user
+    let result = (chance < 0.1) ? false : true; // false = hurt self, true = shot user
     if (result) {
       let uid = await getUserId(context[0] = (context[0].startsWith("@") ? context[0].substring(1) : context[0]));
       let alreadyTimedout = await checkUserTimeout(uid);
