@@ -30,7 +30,7 @@ const shoot: CommandInt = {
             //return client.action(channel, `${user} shot themselves in the foot!`);
           })
           .catch((err) => {
-            if (err === "bad_timeout_mod" || err === "bad_timeout_broadcaster") {
+            if (err === "bad_timeout_mod" || err === "bad_timeout_broadcaster" || err === "bad_timeout_staff") {
               return client.action(channel, `${user} missed their target!`);
             } else return;
           })
@@ -54,6 +54,10 @@ const shoot: CommandInt = {
 
             case "invalid_user":
               errMsg = `${user} sorry I couldn't find that user.`;
+              break;
+
+            case "bad_timeout_staff":
+              errMsg = `${user} that's a staff member . . . monkaW`;
               break;
 
             case "No repsonse from Twitch.":
